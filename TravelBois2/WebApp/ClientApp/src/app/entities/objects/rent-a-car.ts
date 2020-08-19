@@ -1,11 +1,13 @@
 import { Filijala } from './filijala'
 import { Ocena } from '../misc/ocena'
 import { Kola } from './kola';
+import { AppComponent } from '../../app.component';
 
 export class RentACar {
     Naziv: string;
     Adresa: string;
-    Opis: string;
+  Opis: string;
+  AdminID: string;
     Filijale: Array<Filijala>;
     Ocene: Array<Ocena>;
     filtriranaKola: Array<Kola>;
@@ -19,7 +21,7 @@ export class RentACar {
         //console.trace();
         this.Naziv = naz;
         this.Adresa = adr;
-        this.Opis = 'Opis rente';
+      this.Opis = 'Opis rente';
         this.Filijale = new Array<Filijala>();
         this.Ocene = new Array<Ocena>();
         this.filtriranaKola = new Array<Kola>();

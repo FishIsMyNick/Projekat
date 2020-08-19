@@ -9,7 +9,7 @@ import { AnyTxtRecord } from 'dns';
 import { NavigationEnd, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Ocena } from 'src/app/entities/misc/ocena';
-import { AvioAdminService } from 'src/app/shared/avio-admin.service';
+import { RentService } from 'src/app/shared/rent.service';
 import { OcenaService } from 'src/app/shared/ocena.service';
 
 @Component({
@@ -39,14 +39,15 @@ export class SveRenteComponent implements OnInit {
   klasaKolaSlika: string = 'kola-slika';
   tip: string = 'RentACar/Kola'
 
-  constructor(private router: Router, public fb: FormBuilder, private service: AvioAdminService, private serviceO: OcenaService) { 
+  constructor(private router: Router, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService) { 
     this.rente = new Array<RentACar>();
     this.currentUser = AppComponent.currentUser;
     this.prikaz = RentPrikaz.listaKompanija;
     this.ocene = new Array<Ocena>();
   }
   ngOnInit(): void {
-    this.rente.push(new RentACar('Car2Go', 'Cirpanova 7'));
+    console.debug(this.service.GetAllRents())
+    //this.rente.push(new RentACar('Car2Go', 'Cirpanova 7'));
 
     //  this.prikaz = RentPrikaz.kola;
     //  this.sr = this.rente[0];

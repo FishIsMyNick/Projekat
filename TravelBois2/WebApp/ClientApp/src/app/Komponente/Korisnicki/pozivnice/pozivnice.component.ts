@@ -24,7 +24,7 @@ export class PozivniceComponent implements OnInit {
   sediste: Sediste;
 
   constructor(private router: Router, private service: LetoviService, private toastr: ToastrService) {
-    this.currentUser = AppComponent.currentUser;
+    this.currentUser = <RegisteredUser>AppComponent.currentUser;
     
 
     

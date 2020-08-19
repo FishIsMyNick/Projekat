@@ -30,7 +30,7 @@ export class BrzeRezervacijeComponent implements OnInit {
 
 
   constructor(private router: Router, private service: LetoviService, private toastr: ToastrService) { 
-    this.currentUser = AppComponent.currentUser ;
+    this.currentUser = <RegisteredUser>AppComponent.currentUser ;
     this.letData = new Array<Array<string>>();
     this.kolaData = new Array<Array<string>>();
     this.empty = 0;

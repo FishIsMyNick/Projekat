@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +12,12 @@ using ServerApp.Models;
 using WebApp.Data;
 using WebApp.Models;
 using WebApp.Models.Misc;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using Azure.Storage.Blobs;
+using System.Text;
+using System.Reflection.Metadata;
+using WebApp.Helpers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,9 +28,11 @@ namespace WebApp.Controllers
 	public class RentController : ControllerBase
 	{
 		private readonly RentaContext _context;
-		public RentController(RentaContext context)
+		private readonly UserContext _userContext;
+		public RentController(RentaContext context, UserContext userContext)
 		{
 			_context = context;
+			_userContext = userContext;
 		}
 
 		#region GET
@@ -80,8 +91,23 @@ namespace WebApp.Controllers
 			}
 			else
 			{
-				return BadRequest();
+				return new StatusCodeResult((int)HttpStatusCode.BadRequest);
 			}
+		}
+		// POST: api/Rent/AddCompanyImage
+		[HttpPost]
+		[Route("AddCompanyImage")]
+		public async Task<HttpResponseMessage> AddCompanyImage()
+		{
+			var httpRequest = HttpContext.Request;
+
+			//Get image from request
+			var postedFile = httpRequest.Form.Files[0];
+			
+			//Save file locally and upload to blob
+			await BlobHandler.UploadCompanyImage(postedFile);
+
+			return new HttpResponseMessage(HttpStatusCode.OK);
 		}
 		[HttpPost]
 		[Route("AddKola")]

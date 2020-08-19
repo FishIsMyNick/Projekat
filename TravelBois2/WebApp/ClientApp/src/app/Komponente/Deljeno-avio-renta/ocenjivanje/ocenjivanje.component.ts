@@ -26,7 +26,7 @@ export class OcenjivanjeComponent implements OnInit {
   poruka: string;
 
   constructor(private route: ActivatedRoute, private location: Location, private service: OcenaService, private serviceA: AvioAdminService) {
-    this.currentUser = AppComponent.currentUser;
+    this.currentUser = <RegisteredUser>AppComponent.currentUser;
   }
 
   ngOnInit(): void {

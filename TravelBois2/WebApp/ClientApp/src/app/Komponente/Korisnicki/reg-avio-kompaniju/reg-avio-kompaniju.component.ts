@@ -20,6 +20,7 @@ export class RegAvioKompanijuComponent implements OnInit {
   adresa: string;
   opis: string;
   avioKompanija: AvioKompanija;
+  
   constructor(private location: Location, public service: AvioAdminService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {

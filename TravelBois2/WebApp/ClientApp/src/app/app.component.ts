@@ -31,7 +31,7 @@ export class AppComponent {
   userDetails;
   static tipKorisnika: string;
   static reset = false;
-  static currentUser;
+  static currentUser: User;
   static datum: Date;
   static avioKompanija: AvioKompanija;
   static rente: Array<RentACar>;
@@ -64,7 +64,8 @@ export class AppComponent {
           this.userDetails = res;
         }
         else {
-          AppComponent.currentUser = new User();
+          //AppComponent.currentUser = new User();
+          AppComponent.currentUser = new RegisteredUser('tel', 'novi shad', 'pera', 'peric', 'peraCar', 'brpasosa');
           AppComponent.tipKorisnika = "User";
         }
       },

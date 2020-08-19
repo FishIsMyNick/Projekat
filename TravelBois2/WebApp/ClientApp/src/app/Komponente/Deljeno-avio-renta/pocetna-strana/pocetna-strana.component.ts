@@ -39,7 +39,6 @@ export class PocetnaStranaComponent implements OnInit {
   constructor(private service: UserService, private serviceAvio: AvioAdminService, private serviceO: OcenaService) { }
 
   ngOnInit(): void {
-
     this.currentUser = AppComponent.currentUser;
     this.provera();
     this.ucitajAviokompaniju();

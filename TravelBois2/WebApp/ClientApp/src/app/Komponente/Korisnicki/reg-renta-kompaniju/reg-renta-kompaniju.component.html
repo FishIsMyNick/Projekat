@@ -1,12 +1,21 @@
 <div class="container"> 
     <h1>Registracija rent-a-car kompanije</h1>
-    <form [formGroup]="service.rentAdminFormModel" (ngSubmit)="onSubmit()">
+    <form [formGroup]="regRentaForm" (ngSubmit)="onSubmit()">
         <div class="form">
             <div>
                 <label for="naziv">Naziv:</label>
                 <input type="text" id="naziv" formControlName="naziv" class="form-control">
                 <div *ngIf="regRentaForm.controls.naziv.invalid">
                     Unesite naziv
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <label for="adresa">Adresa:</label>
+                <input type="text" id="adresa" formControlName="adresa" class="form-control">
+                <div *ngIf="regRentaForm.controls.adresa.invalid">
+                    Unesite adresu
                 </div>
             </div>
         </div>
@@ -20,8 +29,18 @@
             </div>
         </div>
         <div>
+            <div style="display: inline;">
+                <label for="slika">Slika: </label>
+                <input type="file" accept="image/x-png,image/jpeg" id="slika" formControlName="slika" style="margin-left: 7px;" (change)="onFileChanged($event.target.files)">
+                <img [src]="imgURL" height="200" *ngIf="imgURL">
+                <div *ngIf="regRentaForm.controls.slika.invalid">
+                    Izaberite sliku
+                </div>
+            </div>
+        </div>
+        <div>
             <div>
-                <button [disabled]="!regRentaForm.valid" type="submit" class="btn btn-success">Sacuvaj</button>
+                <button [disabled]="!regRentaForm.valid" type="button" (click)="onSubmit()" class="btn btn-success">Sacuvaj</button>
             </div>
             <div>
                 <button class="btn btn-primary" (click)="onBack()" type="button">Nazad</button>

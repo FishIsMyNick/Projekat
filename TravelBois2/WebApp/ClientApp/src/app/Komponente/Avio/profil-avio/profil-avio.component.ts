@@ -22,7 +22,7 @@ export class ProfilAvioComponent implements OnInit {
   aviokompanija: AvioKompanija;
 
   constructor(private router: Router, private service: AvioAdminService, private toastr: ToastrService) {
-    this.currentUser = AppComponent.currentUser;
+    this.currentUser = <AvioAdmin>AppComponent.currentUser;
   }
 
   ngOnInit(): void {

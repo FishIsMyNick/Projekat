@@ -57,7 +57,7 @@ export class RezervacijaLetaComponent implements OnInit {
   };
 
   constructor(private route: ActivatedRoute, private location: Location, private formBuilder: FormBuilder, private service: LetoviService, private serviceP: UserService) {
-    this.currentUser = AppComponent.currentUser;
+    this.currentUser = <RegisteredUser>AppComponent.currentUser;
     this.podaciForm = new FormGroup({
       'ime': new FormControl('', Validators.required),
       'prezime': new FormControl('', Validators.required),

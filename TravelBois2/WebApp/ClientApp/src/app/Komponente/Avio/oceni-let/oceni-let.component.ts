@@ -23,7 +23,7 @@ export class OceniLetComponent implements OnInit {
   poruka: string;
 
   constructor(private route: ActivatedRoute, private location: Location, private service: OcenaService) {
-    this.currentUser = AppComponent.currentUser;
+    this.currentUser = <RegisteredUser>AppComponent.currentUser;
     this.empty = 0;
   }
 
