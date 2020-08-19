@@ -12,8 +12,7 @@ import { OcenaAviokompanije } from '../../../entities/misc/ocena-aviokompanije';
 
 @Component({
   selector: 'app-ocenjivanje',
-  templateUrl: './ocenjivanje.component.html',
-  styleUrls: ['./ocenjivanje.component.css']
+  templateUrl: './ocenjivanje.component.html'
 })
 export class OcenjivanjeComponent implements OnInit {
   kompanija: string;

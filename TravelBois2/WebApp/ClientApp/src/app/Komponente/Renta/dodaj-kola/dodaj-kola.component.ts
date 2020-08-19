@@ -5,8 +5,7 @@ import { Kola } from 'src/app/entities/objects/kola';
 
 @Component({
   selector: 'app-dodaj-kola',
-  templateUrl: './dodaj-kola.component.html',
-  styleUrls: ['./dodaj-kola.component.css']
+  templateUrl: './dodaj-kola.component.html'
 })
 export class DodajKolaComponent implements OnInit {
   carForm: FormGroup;

@@ -4,8 +4,7 @@ import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.css']
+  templateUrl: './nav-bar.component.html'
 })
 export class NavBarComponent implements OnInit {
   user: User;

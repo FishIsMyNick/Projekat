@@ -6,8 +6,7 @@ import { AppComponent } from '../../../app.component';
 @Component({
   selector: 'app-rent-a-car',
   template: '<p>test</p>',
-  templateUrl: './rent-a-car.component.html',
-  styleUrls: ['./rent-a-car.component.css']
+  templateUrl: './rent-a-car.component.html'
 })
 export class RentACarComponent implements OnInit {
   rente: Array<RentACar>;

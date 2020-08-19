@@ -5,8 +5,7 @@ import { RentACarAdmin } from 'src/app/entities/users/rent-a-car-admin/rent-a-ca
 
 @Component({
   selector: 'app-vozila',
-  templateUrl: './vozila.component.html',
-  styleUrls: ['./vozila.component.css']
+  templateUrl: './vozila.component.html'
 })
 export class VozilaComponent implements OnInit {
   currentUser: RentACarAdmin;

@@ -7,8 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-reg-admina-rente',
-  templateUrl: './reg-admina-rente.component.html',
-  styleUrls: ['./reg-admina-rente.component.css']
+  templateUrl: './reg-admina-rente.component.html'
 })
 export class RegAdminaRenteComponent implements OnInit {
   regRenteAdminForm: FormGroup;

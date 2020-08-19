@@ -6,8 +6,7 @@ import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-profil-admina',
-  templateUrl: './profil-admina.component.html',
-  styleUrls: ['./profil-admina.component.css']
+  templateUrl: './profil-admina.component.html'
 })
 export class ProfilAdminaComponent implements OnInit {
   podaciForm: FormGroup;

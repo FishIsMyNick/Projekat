@@ -14,8 +14,7 @@ import { OcenaAviokompanije } from '../../../entities/misc/ocena-aviokompanije';
 
 @Component({
   selector: 'app-avio-kompanije',
-  templateUrl: './avio-kompanije.component.html',
-  styleUrls: ['./avio-kompanije.component.css']
+  templateUrl: './avio-kompanije.component.html'
 })
 export class AvioKompanijeComponent implements OnInit {
   kompanije: Array<AvioKompanija>;

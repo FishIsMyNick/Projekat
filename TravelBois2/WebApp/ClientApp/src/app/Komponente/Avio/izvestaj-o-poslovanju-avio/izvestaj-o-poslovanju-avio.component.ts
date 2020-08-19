@@ -12,8 +12,7 @@ import { OcenaService } from '../../../shared/ocena.service';
 
 @Component({
   selector: 'app-izvestaj-o-poslovanju-avio',
-  templateUrl: './izvestaj-o-poslovanju-avio.component.html',
-  styleUrls: ['./izvestaj-o-poslovanju-avio.component.css']
+  templateUrl: './izvestaj-o-poslovanju-avio.component.html'
 })
 export class IzvestajOPoslovanjuAvioComponent implements OnInit {
   currentUser: AvioAdmin;

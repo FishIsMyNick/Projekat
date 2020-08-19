@@ -11,8 +11,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-reg-renta-kompaniju',
-  templateUrl: './reg-renta-kompaniju.component.html',
-  styleUrls: ['./reg-renta-kompaniju.component.css']
+  templateUrl: './reg-renta-kompaniju.component.html'
 })
 export class RegRentaKompanijuComponent implements OnInit {
   regRentaForm: FormGroup;

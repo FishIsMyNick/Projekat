@@ -14,8 +14,7 @@ import { Pozivnica } from '../../../entities/objects/pozivnica';
 
 @Component({
   selector: 'app-rezervacija-leta',
-  templateUrl: './rezervacija-leta.component.html',
-  styleUrls: ['./rezervacija-leta.component.css']
+  templateUrl: './rezervacija-leta.component.html'
 })
 export class RezervacijaLetaComponent implements OnInit {
   idLeta: number;

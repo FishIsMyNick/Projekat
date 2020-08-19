@@ -6,8 +6,7 @@ import { RentPrikaz } from 'src/app/_enums';
 
 @Component({
   selector: 'app-raspolozivost-vozila',
-  templateUrl: './raspolozivost-vozila.component.html',
-  styleUrls: ['./raspolozivost-vozila.component.css']
+  templateUrl: './raspolozivost-vozila.component.html'
 })
 export class RaspolozivostVozilaComponent implements OnInit {
   cu: RentACarAdmin;

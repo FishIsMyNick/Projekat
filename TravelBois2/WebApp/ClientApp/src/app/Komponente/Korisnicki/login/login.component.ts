@@ -8,8 +8,7 @@ import { RegisteredUser } from '../../../entities/users/registered-user/register
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styles: []
+  templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnInit {
   formModel = {

@@ -9,8 +9,7 @@ import { UserService } from '../../../shared/user.service';
 
 @Component({
   selector: 'app-profil-registrovanog',
-  templateUrl: './profil-registrovanog.component.html',
-  styleUrls: ['./profil-registrovanog.component.css']
+  templateUrl: './profil-registrovanog.component.html'
 })
 export class ProfilRegistrovanogComponent implements OnInit {
   podaciForm: FormGroup;

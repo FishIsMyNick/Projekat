@@ -4,8 +4,7 @@ import { Datum } from '../../entities/misc/datum';
 
 @Component({
   selector: 'kalendar',
-  templateUrl: './kalendar.component.html',
-  styleUrls: ['./kalendar.component.css']
+  templateUrl: './kalendar.component.html'
 })
 export class KalendarComponent implements OnInit {
   @Input() kola: Kola;

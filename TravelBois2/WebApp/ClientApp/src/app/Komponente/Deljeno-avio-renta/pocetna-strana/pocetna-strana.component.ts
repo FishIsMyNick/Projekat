@@ -16,8 +16,7 @@ import { element } from 'protractor';
 @Component({
   selector: 'app-pocetna-strana',
   //template: '{{user}}',
-  templateUrl: './pocetna-strana.component.html',
-  styleUrls: ['./pocetna-strana.component.css']
+  templateUrl: './pocetna-strana.component.html'
 })
 export class PocetnaStranaComponent implements OnInit {
   currentUser: User;

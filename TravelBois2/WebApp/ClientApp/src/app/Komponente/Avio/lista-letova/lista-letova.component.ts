@@ -12,8 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-lista-letova',
-  templateUrl: './lista-letova.component.html',
-  styleUrls: ['./lista-letova.component.css']
+  templateUrl: './lista-letova.component.html'
 })
 export class ListaLetovaComponent implements OnInit {
   letHeaders = ['Mesto polaska', 'Mesto dolaska', 'Datum polaska', 'Datum dolaska', 'Klasa','Tip leta','Vreme poletanja', 'Vreme sletanja','Kilometraza', 'Cena' ];

@@ -9,8 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-let-brza-rezervacija',
-  templateUrl: './let-brza-rezervacija.component.html',
-  styleUrls: ['./let-brza-rezervacija.component.css']
+  templateUrl: './let-brza-rezervacija.component.html'
 })
 export class LetBrzaRezervacijaComponent implements OnInit {
   cenaForm: FormGroup;

@@ -12,8 +12,7 @@ import { Presedanje } from '../../../entities/objects/presedanje';
 
 @Component({
   selector: 'app-dodaj-let',
-  templateUrl: './dodaj-let.component.html',
-  styleUrls: ['./dodaj-let.component.css']
+  templateUrl: './dodaj-let.component.html'
 })
 export class DodajLetComponent implements OnInit {
   letPodaciForm: FormGroup;

@@ -12,8 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-brze-rezervacije',
-  templateUrl: './brze-rezervacije.component.html',
-  styleUrls: ['./brze-rezervacije.component.css']
+  templateUrl: './brze-rezervacije.component.html'
 })
 export class BrzeRezervacijeComponent implements OnInit {
   currentUser : RegisteredUser;

@@ -7,8 +7,7 @@ import { DodajKolaComponent } from '../dodaj-kola/dodaj-kola.component';
 
 @Component({
   selector: 'app-izvestaj-o-poslovanju-renta',
-  templateUrl: './izvestaj-o-poslovanju-renta.component.html',
-  styleUrls: ['./izvestaj-o-poslovanju-renta.component.css']
+  templateUrl: './izvestaj-o-poslovanju-renta.component.html'
 })
 export class IzvestajOPoslovanjuRentaComponent implements OnInit {
   currentUser: RentACarAdmin;

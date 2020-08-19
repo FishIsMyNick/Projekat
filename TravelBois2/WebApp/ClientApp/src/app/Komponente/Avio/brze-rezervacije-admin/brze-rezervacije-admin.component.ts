@@ -8,8 +8,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-brze-rezervacije-admin',
-  templateUrl: './brze-rezervacije-admin.component.html',
-  styleUrls: ['./brze-rezervacije-admin.component.css']
+  templateUrl: './brze-rezervacije-admin.component.html'
 })
 export class BrzeRezervacijeAdminComponent implements OnInit {
   letHeaders = ['Mesto polaska', 'Mesto dolaska', 'Datum polaska', 'Datum dolaska', 'Vreme poletanja', 'Vreme sletanja', 'Klasa', 'Tip puta', 'Cena'];

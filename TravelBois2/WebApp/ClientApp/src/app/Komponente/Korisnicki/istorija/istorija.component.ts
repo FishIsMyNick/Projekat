@@ -13,8 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-istorija',
-  templateUrl: './istorija.component.html',
-  styleUrls: ['./istorija.component.css']
+  templateUrl: './istorija.component.html'
 })
 export class IstorijaComponent implements OnInit {
   letHeadersIstorija = ['Aviokompanija','Mesto polaska', 'Mesto dolaska', 'Datum polaska', 'Datum dolaska'];

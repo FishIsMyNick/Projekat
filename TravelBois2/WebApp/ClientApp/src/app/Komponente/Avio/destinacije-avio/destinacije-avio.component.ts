@@ -11,8 +11,7 @@ import { AppComponent } from '../../../app.component';
 
 @Component({
   selector: 'app-destinacije-avio',
-  templateUrl: './destinacije-avio.component.html',
-  styleUrls: ['./destinacije-avio.component.css']
+  templateUrl: './destinacije-avio.component.html'
 
 })
 export class DestinacijeAvioComponent implements OnInit {

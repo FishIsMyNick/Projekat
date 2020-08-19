@@ -13,8 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profil-avio',
-  templateUrl: './profil-avio.component.html',
-  styleUrls: ['./profil-avio.component.css']
+  templateUrl: './profil-avio.component.html'
 })
 export class ProfilAvioComponent implements OnInit {
   avioPodaciForm: FormGroup;

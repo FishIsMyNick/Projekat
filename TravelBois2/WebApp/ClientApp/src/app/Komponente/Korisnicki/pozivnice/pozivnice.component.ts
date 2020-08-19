@@ -11,8 +11,7 @@ import { Sediste } from '../../../entities/objects/sediste';
 
 @Component({
   selector: 'app-pozivnice',
-  templateUrl: './pozivnice.component.html',
-  styleUrls: ['./pozivnice.component.css']
+  templateUrl: './pozivnice.component.html'
 })
 export class PozivniceComponent implements OnInit {
   empty: number;

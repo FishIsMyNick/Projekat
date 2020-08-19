@@ -10,8 +10,7 @@ import { AvioKompanija } from '../../../entities/objects/avio-kompanija';
 
 @Component({
   selector: 'app-reg-avio-kompaniju',
-  templateUrl: './reg-avio-kompaniju.component.html',
-  styleUrls: ['./reg-avio-kompaniju.component.css']
+  templateUrl: './reg-avio-kompaniju.component.html'
 })
 export class RegAvioKompanijuComponent implements OnInit {
   avioAdminFormModel: FormGroup;

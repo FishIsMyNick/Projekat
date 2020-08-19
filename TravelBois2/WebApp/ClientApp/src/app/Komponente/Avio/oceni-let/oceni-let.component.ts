@@ -9,8 +9,7 @@ import { element } from 'protractor';
 
 @Component({
   selector: 'app-oceni-let',
-  templateUrl: './oceni-let.component.html',
-  styleUrls: ['./oceni-let.component.css']
+  templateUrl: './oceni-let.component.html'
 })
 export class OceniLetComponent implements OnInit {
   currentUser: RegisteredUser;

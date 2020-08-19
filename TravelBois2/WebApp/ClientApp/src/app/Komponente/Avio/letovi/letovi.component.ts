@@ -13,8 +13,7 @@ import { LetoviService } from '../../../shared/letovi.service';
 
 @Component({
   selector: 'app-letovi',
-  templateUrl: './letovi.component.html',
-  styleUrls: ['./letovi.component.css']
+  templateUrl: './letovi.component.html'
 })
 export class LetoviComponent implements OnInit {
   letHeaders = ['Mesto polaska', 'Mesto dolaska', 'Datum polaska', 'Datum dolaska', 'Vreme poletanja', 'Vreme sletanja',  'Klasa', 'Tip puta', 'Cena'];

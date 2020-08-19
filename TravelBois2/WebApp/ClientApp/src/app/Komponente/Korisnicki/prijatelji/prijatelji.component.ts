@@ -12,8 +12,7 @@ import { PrihvacenPrijatelj } from '../../../entities/objects/prihvacen-prijatel
 
 @Component({
   selector: 'app-prijatelji',
-  templateUrl: './prijatelji.component.html',
-  styleUrls: ['./prijatelji.component.css']
+  templateUrl: './prijatelji.component.html'
 })
 export class PrijateljiComponent implements OnInit {
   prijateljPodaciForm: FormGroup;

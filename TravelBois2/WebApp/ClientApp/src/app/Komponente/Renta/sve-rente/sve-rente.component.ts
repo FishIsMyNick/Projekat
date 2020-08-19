@@ -14,8 +14,7 @@ import { OcenaService } from 'src/app/shared/ocena.service';
 
 @Component({
   selector: 'app-rent-a-car',
-  templateUrl: './sve-rente.component.html',
-  styleUrls: ['./sve-rente.component.css']
+  templateUrl: './sve-rente.component.html'
 })
 export class SveRenteComponent implements OnInit {
   rente: Array<RentACar>;
