@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Location} from '@angular/common';
-import { RentAdminService } from 'src/app/shared/rent-admin.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { RentACar } from 'src/app/entities/objects/rent-a-car';
 import { AppComponent } from 'src/app/app.component';
 import { AnyTxtRecord } from 'dns';
 import { HttpClient } from '@angular/common/http';
+import { RentService } from 'src/app/shared/rent.service';
 
 @Component({
   selector: 'app-reg-renta-kompaniju',
@@ -27,7 +27,7 @@ export class RegRentaKompanijuComponent implements OnInit {
   base64Data: any;
   convertedImage: any;
 
-  constructor(private location: Location, public service: RentAdminService, private router: Router, private toastr: ToastrService, private httpClient: HttpClient) { }
+  constructor(private location: Location, public service: RentService, private router: Router, private toastr: ToastrService, private httpClient: HttpClient) { }
 
   /// Slanje podataka /////////////////////////
   onFileChanged(file: FileList){
