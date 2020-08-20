@@ -34,13 +34,14 @@ namespace WebApp.Controllers
         {
             var claims = User.Claims;            
             var ListClaims = claims.ToList();
-            if(ListClaims.Count != 0) { 
-            var prvi = ListClaims.First();
+            if (ListClaims.Count != 0)
+            {
+                var prvi = ListClaims.First();
 
-            //string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            string userId = prvi.Value;            
+                //string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                string userId = prvi.Value;
                 var user = await _userManager.FindByIdAsync(userId);
-                if(user.TipKorisnika == "AvioAdmin")
+                if (user.TipKorisnika == "AvioAdmin")
                 {
                     AvioAdmin admin = user as AvioAdmin;
                     return new
@@ -71,7 +72,6 @@ namespace WebApp.Controllers
                         user.TipKorisnika
                     };
                 }
-                
             }
             else
             {
