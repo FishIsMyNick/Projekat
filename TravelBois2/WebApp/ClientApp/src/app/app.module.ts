@@ -23,7 +23,7 @@ import { ProfilAdminaComponent } from './Komponente/Korisnicki/profil-admina/pro
 import { RegAdminaRenteComponent } from './Komponente/Korisnicki/reg-admina-rente/reg-admina-rente.component';
 import { RegAdminaAvioComponent } from './Komponente/Korisnicki/reg-admina-avio/reg-admina-avio.component';
 import { RegAvioKompanijuComponent } from './Komponente/Korisnicki/reg-avio-kompaniju/reg-avio-kompaniju.component';
-import { RegRentaKompanijuComponent } from './Komponente/Korisnicki/reg-renta-kompaniju/reg-renta-kompaniju.component';
+import { RegRentaKompanijuComponent } from './Komponente/Admin/reg-renta-kompaniju/reg-renta-kompaniju.component';
 import { DynamicImageComponent } from './Helpers/dynamic-image/dynamic-image.component';
 import { LetoviComponent } from './Komponente/Avio/letovi/letovi.component';
 import { SveRenteComponent } from './Komponente/Renta/sve-rente/sve-rente.component';
