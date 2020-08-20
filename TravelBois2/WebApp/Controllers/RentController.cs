@@ -155,15 +155,6 @@ namespace WebApp.Controllers
 			}
 			return BadRequest();
 		}
-		[HttpPost]
-		[Route("RentAdminExists")]
-		public async Task<HttpResponseMessage> RentAdminExists(string adminID)
-		{
-			if (_userContext.RentAdmins.Any(e => e.UserName == adminID))
-				return new HttpResponseMessage(HttpStatusCode.OK);
-			else
-				return new HttpResponseMessage(HttpStatusCode.BadRequest);
-		}
 		#endregion
 
 		#region Helpers
