@@ -142,12 +142,18 @@ namespace WebApp.Controllers
             }
         }
 
+        /// ///////////////////////////////////////////////////////////////////
+        /// ///////////////////////////////////////////////////////////////////
+        /// OVA METODA RADI
+        /// ///////////////////////////////////////////////////////////////////
+        /// ///////////////////////////////////////////////////////////////////
+        /// ///////////////////////////////////////////////////////////////////
         [HttpPost]
         [Route("Login")]
         //POST: /api/ApplicationUser/Login
         public async Task<IActionResult> Login([FromBody]LoginModel model)
         {
-            var user = await _userManager.FindByNameAsync(model.UserName);
+            var user = await _userManager.FindByNameAsync(model.UserName);  // ovo radi kako treba
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 var tokenDescriptor = new SecurityTokenDescriptor

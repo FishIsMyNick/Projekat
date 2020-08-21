@@ -22,8 +22,12 @@ export class RentService {
   addRentKompanija(rentKompanija: RentACar): Observable<RentACar> {
     return this.http.post<RentACar>(this.BaseURI + '/Rent/AddRent', rentKompanija);
   }
-
   addRentImage(image: FormData): Observable<Object> {
     return this.http.post(this.BaseURI + '/Rent/AddCompanyImage', image);
+  }
+  checkForRentAdmin(adminID: string): Observable<string> {
+    const formData = new FormData();
+  formData.append(adminID, "adminID");
+    return this.http.post<any>(this.BaseURI + '/Rent/RentAdminExists', formData)
   }
 }

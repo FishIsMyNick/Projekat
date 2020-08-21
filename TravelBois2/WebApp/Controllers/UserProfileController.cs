@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Data;
 using WebApp.Models;
 
 namespace WebApp.Controllers
@@ -18,13 +19,20 @@ namespace WebApp.Controllers
     public class UserProfileController : ControllerBase
     {
         private UserManager<ApplicationUser> _userManager;
+        private UserContext _userContext;
 
-        public UserProfileController(UserManager<ApplicationUser> userManager)
+        public UserProfileController(UserManager<ApplicationUser> userManager, UserContext userContext)
         {
             _userManager = userManager;
+            _userContext = userContext;
         }
 
-
+        /// /////////////////////////////////////////////////////////////////////////
+        /// OVA METODA RADI
+        /// /////////////////////////////////////////////////////////////////////////
+        /// /////////////////////////////////////////////////////////////////////////
+        /// /////////////////////////////////////////////////////////////////////////
+        /// /////////////////////////////////////////////////////////////////////////
         [HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         //[Authorize]
@@ -32,15 +40,16 @@ namespace WebApp.Controllers
         //GET: api/GetUserProfile
         public async Task<Object> GetUserProfile()
         {
-            var claims = User.Claims;            
+            var claims = User.Claims;
             var ListClaims = claims.ToList();
-            if(ListClaims.Count != 0) { 
-            var prvi = ListClaims.First();
+            if (ListClaims.Count != 0)
+            {
+                var prvi = ListClaims.First();
 
-            //string userId = User.Claims.First(c => c.Type == "UserID").Value;
-            string userId = prvi.Value;            
-                var user = await _userManager.FindByIdAsync(userId);
-                if(user.TipKorisnika == "AvioAdmin")
+                //string userId = User.Claims.First(c => c.Type == "UserID").Value;
+                string userId = prvi.Value;
+                var user = await _userManager.FindByIdAsync(userId);    // ovde dobro radi
+                if (user.TipKorisnika == "AvioAdmin")
                 {
                     AvioAdmin admin = user as AvioAdmin;
                     return new
@@ -71,13 +80,12 @@ namespace WebApp.Controllers
                         user.TipKorisnika
                     };
                 }
-                
+
             }
             else
             {
                 return "";
             }
         }
-
     }
 }

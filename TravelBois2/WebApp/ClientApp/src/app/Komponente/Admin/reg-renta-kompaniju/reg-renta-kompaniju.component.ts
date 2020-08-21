@@ -16,6 +16,7 @@ import { RentService } from 'src/app/shared/rent.service';
 export class RegRentaKompanijuComponent implements OnInit {
   regRentaForm: FormGroup;
   naziv: string;
+  adminID: string;
   adresa: string;
   opis: string;
   renta: RentACar;
@@ -46,34 +47,54 @@ export class RegRentaKompanijuComponent implements OnInit {
     this.naziv = this.regRentaForm.get('naziv').value;
     this.opis = this.regRentaForm.get('opis').value;
     this.adresa = this.regRentaForm.get('adresa').value;
+    this.adminID = this.regRentaForm.get('admin').value;
+
     this.renta = new RentACar(this.naziv, this.adresa);
-    this.renta.AdminID = AppComponent.currentUser.Username;
+    this.renta.AdminID = this.adminID;
+    this.renta.Opis = this.opis;
 
-    this.service.addRentKompanija(this.renta).subscribe(
-      (res: any) =>{
-        const uploadData = new FormData();
-        uploadData.append('myFile', this.selectedFile, this.selectedFile.name);
+    this.service.checkForRentAdmin(this.adminID).subscribe(
+      (res: any) => {
+        if(res.statusCode == 200) {
+          console.log('postoji admin')
+          this.service.addRentKompanija(this.renta).subscribe(
+            (res: any) =>{
+              const uploadData = new FormData();
+              uploadData.append('myFile', this.selectedFile);
+              uploadData.append(this.naziv, 'filename')
 
-        this.service.addRentImage(uploadData).subscribe(
-          (res) => {
-            console.debug(res);
-            this.recievedImageData = res;
-            this.base64Data = this.recievedImageData.pic;
-            this.convertedImage = 'data:image/jpeg;base64,' + this.base64Data;},
-          (err) =>{
-            console.debug('Error during image saving: ' + err)
-          }
-        )
-      },
-      (err) => {
-        if(err.status == 400){
-          this.toastr.error("Ime kompanije je zauzeto");
+              this.service.addRentImage(uploadData).subscribe(
+                (res) => {
+                  console.debug(res);
+                  this.recievedImageData = res;
+                  this.base64Data = this.recievedImageData.pic;
+                  this.convertedImage = 'data:image/jpeg;base64,' + this.base64Data;
+                  this.router.navigate(['/pocetna'])},
+                (err) =>{
+                  console.debug('Error during image saving: ' + err)
+                }
+              )
+            },
+            (err) => {
+              if(err.status == 400){
+                this.toastr.error("Ime kompanije je zauzeto");
+              }
+              else {
+                console.log(err);
+              }
+            }
+          );
         }
         else {
-          console.log(err);
+          this.toastr.error('Admin Rent-A-Car servisa sa datim usernameom ne postoji');
+          this.regRentaForm.controls.admin.validator.apply(false);
         }
+      },
+      (err: any) => {
+        console.log(err)
       }
-    );
+    )
+    
   }
   sendImage(){
 
@@ -90,7 +111,8 @@ export class RegRentaKompanijuComponent implements OnInit {
       'naziv': new FormControl('', Validators.required),
       'adresa': new FormControl('', Validators.required),
       'opis': new FormControl('', Validators.required),
-      'slika': new FormControl('', Validators.required)
+      'slika': new FormControl('', Validators.required),
+      'admin': new FormControl('', Validators.required)
     });
   }
 

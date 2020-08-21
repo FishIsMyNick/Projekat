@@ -18,6 +18,11 @@ using Azure.Storage.Blobs;
 using System.Text;
 using System.Reflection.Metadata;
 using WebApp.Helpers;
+using Microsoft.AspNetCore.Identity;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,11 +32,13 @@ namespace WebApp.Controllers
 	[ApiController]
 	public class RentController : ControllerBase
 	{
-		private readonly RentaContext _context;
-		private readonly UserContext _userContext;
-		public RentController(RentaContext context, UserContext userContext)
+		private RentaContext _context;
+		private UserManager<ApplicationUser> _userManager;
+		private UserContext _userContext;
+		public RentController(RentaContext context, UserManager<ApplicationUser> userManager, UserContext userContext)
 		{
 			_context = context;
+			_userManager = userManager;
 			_userContext = userContext;
 		}
 
@@ -103,9 +110,10 @@ namespace WebApp.Controllers
 
 			//Get image from request
 			var postedFile = httpRequest.Form.Files[0];
+			var filename = httpRequest.Form.Keys.First();
 			
 			//Save file locally and upload to blob
-			await BlobHandler.UploadCompanyImage(postedFile);
+			await BlobHandler.UploadCompanyImage(postedFile, filename);
 
 			return new HttpResponseMessage(HttpStatusCode.OK);
 		}
@@ -154,6 +162,19 @@ namespace WebApp.Controllers
 				return NoContent();
 			}
 			return BadRequest();
+		}
+		[HttpPost]
+		[Route("RentAdminExists")]
+		public async Task<HttpResponseMessage> RentAdminExists()
+		{
+			var httpRequest = HttpContext.Request;
+			string admin = httpRequest.Form.Keys.First();
+
+			var user = await _userManager.FindByNameAsync(admin);
+			if (user != null && user.TipKorisnika == "RentAdmin")
+				return new HttpResponseMessage(HttpStatusCode.OK);
+			else
+				return new HttpResponseMessage(HttpStatusCode.BadRequest);
 		}
 		#endregion
 

@@ -63,7 +63,7 @@ namespace WebApp.Helpers
             }
         }
 
-        public static async Task UploadCarImage(IFormFile img)
+        public static async Task UploadCarImage(IFormFile img, IFormFile filename)
         {
             //Make name
             string imageName = img.FileName.Replace(" ", "-").Split('.')[0] + ".jpg";
@@ -76,10 +76,10 @@ namespace WebApp.Helpers
             //Save locally
             await FileHandler.SaveImage(img, filePath);
         }
-        public static async Task UploadCompanyImage(IFormFile img)
+        public static async Task UploadCompanyImage(IFormFile img, string filename)
         {
 			//Make name
-            string imageName = img.FileName.Replace(" ", "-").Split('.')[0] + ".jpg";
+            string imageName = filename.Replace(" ", "-").Split('.')[0] + ".jpg";
             //Make path
             string filePath = Path.Combine(downloadFileDirKompanije, imageName);
             //Get blob client

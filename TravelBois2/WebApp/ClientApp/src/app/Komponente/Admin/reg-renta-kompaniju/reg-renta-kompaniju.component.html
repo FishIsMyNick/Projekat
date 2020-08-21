@@ -10,7 +10,7 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="form">
             <div>
                 <label for="adresa">Adresa:</label>
                 <input type="text" id="adresa" formControlName="adresa" class="form-control">
@@ -19,7 +19,16 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="form">
+            <div>
+                <label for="admin">Username admina:</label>
+                <input type="text" id="admin" formControlName="admin" class="form-control">
+                <div *ngIf="regRentaForm.controls.admin.invalid">
+                    Unesite validan username admina Rent-A-Car servisa
+                </div>
+            </div>
+        </div>
+        <div class="form">
             <div>
                 <label for="opis">Opis:</label>
                 <input type="text" id="opis" formControlName="opis" class="form-control">
@@ -28,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div>
+        <div class="form">
             <div style="display: inline;">
                 <label for="slika">Slika: </label>
                 <input type="file" accept="image/x-png,image/jpeg" id="slika" formControlName="slika" style="margin-left: 7px;" (change)="onFileChanged($event.target.files)">
