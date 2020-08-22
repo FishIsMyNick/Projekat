@@ -19,17 +19,19 @@
     </ul>
     <ul *ngIf="getType() === 'RegisteredUser'" style="float: right;">
         <li routerLink="/profilKorisnika">Profil</li>
-      <li (click)="onLogOut()">LogOut</li>
+        <li (click)="onLogOut()">LogOut</li>
     </ul>
     <ul *ngIf="getType() === 'Admin'" style="float: right;">
         <li routerLink="/profilAdmina">Profil</li>
+        <li (click)="onLogOut()">LogOut</li>
     </ul>
     <ul *ngIf="getType() === 'AvioAdmin'" style="float: right;">
       <li routerLink="/profilAvio">Profil</li>
       <li (click)="onLogOut()">LogOut</li>
     </ul>
-    <ul *ngIf="getType() === 'RentACarAdmin'" style="float: right;">
+    <ul *ngIf="getType() === 'RentAdmin'" style="float: right;">
         <li routerLink="/profilRenta">Profil</li>
+        <li (click)="onLogOut()">LogOut</li>
     </ul>
 </div> 
 <!--BODY-->

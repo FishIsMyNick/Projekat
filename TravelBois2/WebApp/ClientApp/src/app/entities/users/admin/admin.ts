@@ -5,6 +5,6 @@ export class Admin extends User {
         super();
         this.Username = username;
         this.Password = password;
-        this.TipKorisnika = 'Admin';
+        this.tipKorisnika = 'Admin';
     }
 }

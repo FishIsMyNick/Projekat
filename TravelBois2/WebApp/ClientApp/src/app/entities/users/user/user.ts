@@ -9,7 +9,7 @@ export class User {
     Prezime: string;
     Username: string;
     Password: string;
-    TipKorisnika: string;
+    tipKorisnika: string;
 
     constructor(brTel: string='', grad: string='', ime: string='', 
         prezime: string='', username: string='', password: string=''){
@@ -20,6 +20,7 @@ export class User {
             this.Prezime = prezime;
             this.Username = username;
             this.Password = password;
+            this.tipKorisnika = 'User';
         }
     
     register(){

@@ -44,7 +44,7 @@ export class PocetnaStranaComponent implements OnInit {
     this.ucitajOcene();
   }
   getType() {
-    return AppComponent.tipKorisnika;
+    return AppComponent.currentUser.tipKorisnika;
   }
 
   provera() {

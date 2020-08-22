@@ -22,6 +22,7 @@ export class RegisteredUser extends User implements OnInit{
       brPasosa: string) {
             super(brTel, grad, ime, prezime, username);
             super.register();
+            this.tipKorisnika = 'RegisteredUser';
             this.BrojPasosa = brPasosa;
             this.IstorijaKola = new Array<Kola>();
             this.MojaKola = new Array<Kola>();

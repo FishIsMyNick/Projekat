@@ -1,5 +1,5 @@
 <div class="container">
-    <h1>Registracija aviokompanije</h1>
+    <h1>Registracija admina Rent-A-Car servisa</h1>
     <form [formGroup]="service.rentAdminFormModel" (ngSubmit)="onSubmit()">
       <div class="form">
         <table>
@@ -50,15 +50,6 @@
                   <label *ngIf="service.rentAdminFormModel.get('Grad').touched && service.rentAdminFormModel.get('Grad').errors?.required">Grad je potreban</label>
 
                 </td>
-            </tr>
-            <tr>
-              <td>Naziv rent kompanije:</td>
-              <td>
-                  <input type="text" name="NazivKompanije" formControlName="NazivKompanije"> 
-              </td>
-              <td>
-                <label *ngIf="service.rentAdminFormModel.get('NazivKompanije').touched && service.rentAdminFormModel.get('NazivKompanije').errors?.required">Naziva viokompanije je potreban</label>
-              </td>
             </tr>
             <tr>
                 <td>Broj telefona:</td>

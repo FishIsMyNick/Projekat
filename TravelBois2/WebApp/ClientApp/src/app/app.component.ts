@@ -64,9 +64,9 @@ export class AppComponent {
           this.userDetails = res;
         }
         else {
-          //AppComponent.currentUser = new User();
-          AppComponent.currentUser = new RegisteredUser('tel', 'novi shad', 'pera', 'peric', 'peraCar', 'brpasosa');
-          AppComponent.tipKorisnika = "User";
+          AppComponent.currentUser = new User();
+          //AppComponent.currentUser = new RegisteredUser('tel', 'novi shad', 'pera', 'peric', 'peraCar', 'brpasosa');
+          //AppComponent.tipKorisnika = "User";
         }
       },
       err => {
@@ -82,7 +82,7 @@ export class AppComponent {
     
   } 
   getType() {
-    return AppComponent.tipKorisnika;
+    return AppComponent.currentUser.tipKorisnika;
   }
 
   onLogOut() {
