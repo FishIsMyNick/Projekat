@@ -20,7 +20,7 @@ export class RentACarAdmin extends User {
     }
     PromeniSifru(pass:string){
         this.PromenioSifru = true;
-        this.Password = pass;
+        this.password = pass;
     }
     DodajFilijalu(f:Filijala){
         this.Renta.DodajFilijalu(f);

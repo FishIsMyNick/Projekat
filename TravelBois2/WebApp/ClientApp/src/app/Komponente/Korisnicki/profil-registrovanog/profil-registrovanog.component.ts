@@ -18,7 +18,7 @@ export class ProfilRegistrovanogComponent implements OnInit {
   constructor(private router: Router, private toastr: ToastrService, private service: UserService) { }
 
   ngOnInit(): void {
-    this.service.getUserProfileByName(AppComponent.currentUser.Username).subscribe(
+    this.service.getUserProfileByName(AppComponent.currentUser.userName).subscribe(
       (res: any) => {
         this.currentUser = res as RegisteredUser;
         this.initForm();
@@ -48,13 +48,13 @@ export class ProfilRegistrovanogComponent implements OnInit {
   }
 
   onSubmit() {
-    if ((this.podaciForm.get('brojTelefona').value != this.currentUser.BrojTelefona) || (this.podaciForm.get('grad').value != this.currentUser.Grad) ||
-      (this.podaciForm.get('ime').value != this.currentUser.Ime) || (this.podaciForm.get('prezime').value != this.currentUser.Prezime) || (this.podaciForm.get('brojPasosa').value != this.currentUser.BrojPasosa))
+    if ((this.podaciForm.get('brojTelefona').value != this.currentUser.brojTelefona) || (this.podaciForm.get('grad').value != this.currentUser.grad) ||
+      (this.podaciForm.get('ime').value != this.currentUser.name) || (this.podaciForm.get('prezime').value != this.currentUser.lastname) || (this.podaciForm.get('brojPasosa').value != this.currentUser.brojPasosa))
     {
       this.brojP = this.podaciForm.get('brojPasosa').value;
 
       var body = {
-        UserName: this.currentUser.Username,
+        UserName: this.currentUser.userName,
         Name: this.podaciForm.get('ime').value,
         Lastname: this.podaciForm.get('prezime').value,
         Grad: this.podaciForm.get('grad').value,

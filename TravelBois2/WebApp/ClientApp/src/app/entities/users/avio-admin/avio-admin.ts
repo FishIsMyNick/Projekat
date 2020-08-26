@@ -21,7 +21,7 @@ export class AvioAdmin extends User{
 
     PromeniSifru(pass:string){
         this.promenioSifru = true;
-        this.Password = pass;
+        this.password = pass;
     }
 
 }

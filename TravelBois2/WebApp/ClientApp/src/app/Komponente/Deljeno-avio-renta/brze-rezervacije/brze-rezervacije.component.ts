@@ -96,7 +96,7 @@ export class BrzeRezervacijeComponent implements OnInit {
     var idSedista = this.letData[i][7];
     var idBrzeRezervacije = this.idBrzihRezervacija[i];
     var cenaSedista = this.letData[i][9];
-    var sediste = new Sediste(parseInt(idLeta), idSedista, this.currentUser.Ime, this.currentUser.Prezime, this.currentUser.BrojPasosa, true, parseInt(cenaSedista));
+    var sediste = new Sediste(parseInt(idLeta), idSedista, this.currentUser.name, this.currentUser.lastname, this.currentUser.brojPasosa, true, parseInt(cenaSedista));
 
     this.rezervisi(sediste, idBrzeRezervacije);
     this.letData.splice(i, 1);

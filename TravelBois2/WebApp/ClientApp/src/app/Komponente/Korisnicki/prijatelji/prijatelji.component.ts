@@ -76,10 +76,10 @@ export class PrijateljiComponent implements OnInit {
 
   sortiraj(kriterijum: string) {
     if (kriterijum == 'ime') {
-      this.mojiPrijatelji.sort((a, b) => a.Ime.localeCompare(b.Ime));
+      this.mojiPrijatelji.sort((a, b) => a.name.localeCompare(b.name));
     }
     else if (kriterijum == 'prezime') {
-      this.mojiPrijatelji.sort((a, b) => a.Prezime.localeCompare(b.Prezime));
+      this.mojiPrijatelji.sort((a, b) => a.lastname.localeCompare(b.lastname));
     }
   }
 
@@ -106,7 +106,7 @@ export class PrijateljiComponent implements OnInit {
         if (element.tipKorisnika == "RegularUser") {        
           if (element.name == this.ime) {
             if (element.lastname == this.prezime) {
-              if (element.userName != this.currentUser.Username) {
+              if (element.userName != this.currentUser.userName) {
                 if (this.zahtevi.some(x => x === element.userName)) {
                   this.empty3 = 1;                
                 }
@@ -134,7 +134,7 @@ export class PrijateljiComponent implements OnInit {
       this.korisnici.forEach(element => {
         if (element.tipKorisnika == "RegularUser") {
           if (element.name == this.ime) {
-            if (element.userName != this.currentUser.Username) {
+            if (element.userName != this.currentUser.userName) {
               if (this.zahtevi.some(x => x === element.userName)) {
                 this.empty3 = 1;
               }
@@ -160,7 +160,7 @@ export class PrijateljiComponent implements OnInit {
       this.korisnici.forEach(element => {
         if (element.tipKorisnika == "RegularUser") {
           if (element.lastname == this.prezime) {
-            if (element.userName != this.currentUser.Username) {
+            if (element.userName != this.currentUser.userName) {
               if (this.zahtevi.some(x => x === element.userName)) {
                 this.empty3 = 1;
               }
@@ -199,7 +199,7 @@ export class PrijateljiComponent implements OnInit {
     this.zahtevi = new Array<string>();
     this.service.getZahtevi().subscribe(zahtevi =>
       zahtevi.forEach(element => {
-        if (element.primio == this.currentUser.Username) {
+        if (element.primio == this.currentUser.userName) {
           this.zahtevi.push(element.poslao);
           this.idZahteva.push({ id: element.id, username: element.poslao });
         }
@@ -227,11 +227,11 @@ export class PrijateljiComponent implements OnInit {
     this.listaPrijatelja = new Array<string>();
     this.service.getPrijatelji().subscribe(prijatelji => {
       prijatelji.forEach(element => {
-        if (element.username1 == this.currentUser.Username) {
+        if (element.username1 == this.currentUser.userName) {
           this.listaPrijatelja.push(element.username2);
           this.idPrijatelja.push({ id: element.id, username: element.username2 });
         }
-        else if (element.username2 == this.currentUser.Username) {
+        else if (element.username2 == this.currentUser.userName) {
           this.listaPrijatelja.push(element.username1);
           this.idPrijatelja.push({ id: element.id, username: element.username1 });
         }
@@ -258,7 +258,7 @@ export class PrijateljiComponent implements OnInit {
   }
 
   dodajPrijatelja(username: string) {
-    this.prijatelj = new Prijatelj(username, this.currentUser.Username);
+    this.prijatelj = new Prijatelj(username, this.currentUser.userName);
     this.service.sendZahtev(this.prijatelj).subscribe();
     this.empty2 = 2;
     this.poruka = "Zahtev za prijateljstvo poslat!";
@@ -270,7 +270,7 @@ export class PrijateljiComponent implements OnInit {
     this.idPrijatelja.forEach(element => {
       if (element.username == username) {
         this.service.deletePrijatelj(element.id).subscribe();
-        this.mojiPrijatelji = this.mojiPrijatelji.filter(f => f.Username != username);
+        this.mojiPrijatelji = this.mojiPrijatelji.filter(f => f.userName != username);
         if (this.mojiPrijatelji.length == 0) {
           this.empty = 0;
           this.toastr.success("Refreshujte stranicu.");
@@ -287,7 +287,7 @@ export class PrijateljiComponent implements OnInit {
     this.idZahteva.forEach(element => {
       if (element.username == username) {
         this.service.deleteZahtev(element.id).subscribe();
-        this.zahteviZaPrijatelja = this.zahteviZaPrijatelja.filter(f => f.Username != username);
+        this.zahteviZaPrijatelja = this.zahteviZaPrijatelja.filter(f => f.userName != username);
         this.empty = 0
         if (this.zahteviZaPrijatelja.length == 0) {
           this.empty1 = 0;
@@ -296,7 +296,7 @@ export class PrijateljiComponent implements OnInit {
     })
 
     //////plus dodavanje u listu prijatelja
-    this.prihvacenPrijatelj = new PrihvacenPrijatelj(this.currentUser.Username, username);
+    this.prihvacenPrijatelj = new PrihvacenPrijatelj(this.currentUser.userName, username);
     this.service.addPrijatelj(this.prihvacenPrijatelj).subscribe();
     this.ucitajZahteve();
     this.ucitajPrijatelje();
@@ -307,7 +307,7 @@ export class PrijateljiComponent implements OnInit {
     this.idZahteva.forEach(element => {
       if (element.username == username) {
         this.service.deleteZahtev(element.id).subscribe();
-        this.zahteviZaPrijatelja = this.zahteviZaPrijatelja.filter(f => f.Username != username);
+        this.zahteviZaPrijatelja = this.zahteviZaPrijatelja.filter(f => f.userName != username);
         if (this.zahteviZaPrijatelja.length == 0) {
           this.empty1 = 0;
           this.toastr.success("Refreshujte stranicu.");

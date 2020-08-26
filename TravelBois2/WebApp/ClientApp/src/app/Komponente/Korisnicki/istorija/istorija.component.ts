@@ -50,7 +50,7 @@ export class IstorijaComponent implements OnInit {
     this.avioSediste = new Array<{ idLeta: number, idSedista: string, cenaSedista: number }>();
     this.service.getSediste().subscribe(sedista => {
       sedista.forEach(element => {
-        if (element.brojPasosa == this.currentUser.BrojPasosa) {
+        if (element.brojPasosa == this.currentUser.brojPasosa) {
           if (element.rezervisano) {
 
             this.avioSediste.push({ idLeta: element.idLeta, idSedista: element.idSedista, cenaSedista: element.cenaSedista });

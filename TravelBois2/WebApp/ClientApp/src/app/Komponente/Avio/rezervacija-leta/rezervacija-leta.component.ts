@@ -252,7 +252,7 @@ export class RezervacijaLetaComponent implements OnInit {
       this.empty = 1;
 
       this.idSedista = this.cart.selectedSeats[0].toString();
-      var sediste = new Sediste(this.idLeta, this.idSedista, this.currentUser.Ime, this.currentUser.Prezime, this.currentUser.BrojPasosa, true, this.cenaSedista);
+      var sediste = new Sediste(this.idLeta, this.idSedista, this.currentUser.name, this.currentUser.lastname, this.currentUser.brojPasosa, true, this.cenaSedista);
       this.service.rezervisiSediste(sediste).subscribe();
     }
   }
@@ -309,10 +309,10 @@ export class RezervacijaLetaComponent implements OnInit {
 
     this.serviceP.getPrijatelji().subscribe(prijatelji => {
       prijatelji.forEach(element => {
-        if (element.username1 == this.currentUser.Username) {
+        if (element.username1 == this.currentUser.userName) {
           this.prijateljiUSername.push(element.username2);
         }
-        else if (element.username2 == this.currentUser.Username) {
+        else if (element.username2 == this.currentUser.userName) {
           this.prijateljiUSername.push(element.username1);
         }
       })
@@ -365,7 +365,7 @@ export class RezervacijaLetaComponent implements OnInit {
   PrijateljiCheckBox() {
     this.idSedista = this.cart.selectedSeats[0].toString(); ///moje sediste
     
-    var sediste = new Sediste(this.idLeta, this.idSedista, this.currentUser.Ime, this.currentUser.Prezime, this.currentUser.BrojPasosa, true, this.cenaSedista);
+    var sediste = new Sediste(this.idLeta, this.idSedista, this.currentUser.name, this.currentUser.lastname, this.currentUser.brojPasosa, true, this.cenaSedista);
     this.service.rezervisiSediste(sediste).subscribe();
 
     var lista = new Array<string>();
@@ -383,7 +383,7 @@ export class RezervacijaLetaComponent implements OnInit {
             this.idSedista = this.cart.selectedSeats[0].toString(); 
             this.cart.selectedSeats.splice(0, 1);
             this.sediste = new Sediste(this.idLeta, this.idSedista, p.name, p.lastname, p.brojPasosa, false, this.cenaSedista);
-            this.pozivnica = new Pozivnica(this.idLeta, this.idSedista, p.name, p.lastname, p.brojPasosa, true, this.cenaSedista, this.currentUser.Username);
+            this.pozivnica = new Pozivnica(this.idLeta, this.idSedista, p.name, p.lastname, p.brojPasosa, true, this.cenaSedista, this.currentUser.userName);
             this.service.rezervisiSediste(this.sediste).subscribe();
             this.service.posaljiPozivnicu(this.pozivnica).subscribe();
           }
@@ -402,7 +402,7 @@ export class RezervacijaLetaComponent implements OnInit {
             this.idSedista = this.cart.selectedSeats[0].toString(); 
             this.cart.selectedSeats.splice(0, 1);
             this.sediste = new Sediste(this.idLeta, this.idSedista, p.name, p.lastname, p.brojPasosa, false, this.cenaSedista);
-            this.pozivnica = new Pozivnica(this.idLeta, this.idSedista, p.name, p.lastname, p.brojPasosa, true, this.cenaSedista, this.currentUser.Username);
+            this.pozivnica = new Pozivnica(this.idLeta, this.idSedista, p.name, p.lastname, p.brojPasosa, true, this.cenaSedista, this.currentUser.userName);
             this.service.rezervisiSediste(this.sediste).subscribe();
             this.service.posaljiPozivnicu(this.pozivnica).subscribe();
           }

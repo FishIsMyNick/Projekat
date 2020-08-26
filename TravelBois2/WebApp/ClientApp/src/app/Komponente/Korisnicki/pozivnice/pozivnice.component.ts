@@ -36,7 +36,7 @@ export class PozivniceComponent implements OnInit {
 
     this.service.getPozivnice().subscribe(pozivnice => {
       pozivnice.forEach(element => {
-        if (element.brojPasosa == this.currentUser.BrojPasosa) {
+        if (element.brojPasosa == this.currentUser.brojPasosa) {
           this.pozivnice.push(new Pozivnica(element.idLeta, element.idSedista, element.ime, element.prezime, element.brojPasosa, element.rezervisano, element.cenaSedista, element.pozvaoUsername));
           this.idLetova.push({ idLeta: element.idLeta, pozvaoUsername: element.pozvaoUsername, idPozivnice: element.id, idSedista: element.idSedista });
         }

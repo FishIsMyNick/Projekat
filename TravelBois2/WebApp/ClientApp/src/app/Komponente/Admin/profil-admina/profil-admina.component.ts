@@ -20,8 +20,8 @@ export class ProfilAdminaComponent implements OnInit {
 
   private initForm(currentUser: User){
     this.podaciForm = new FormGroup({
-      'username': new FormControl(currentUser.Username, [Validators.required, Validators.maxLength(15), Validators.minLength(3)]),
-      'password': new FormControl(currentUser.Password, Validators.required)
+      'username': new FormControl(currentUser.userName, [Validators.required, Validators.maxLength(15), Validators.minLength(3)]),
+      'password': new FormControl(currentUser.userName, Validators.required)
     });
   }
   onSubmit(){

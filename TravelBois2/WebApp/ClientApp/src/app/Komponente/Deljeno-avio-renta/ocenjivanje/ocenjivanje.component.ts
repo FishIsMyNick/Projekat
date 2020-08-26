@@ -32,7 +32,7 @@ export class OcenjivanjeComponent implements OnInit {
     this.kompanija = this.route.snapshot.paramMap.get("naziv");
     this.service.getOceneAvio().subscribe(ocene => {
       ocene.forEach(element => {
-        if (element.userID == this.currentUser.Username && element.kompanija == this.kompanija) {
+        if (element.userID == this.currentUser.userName && element.kompanija == this.kompanija) {
           this.empty = 1;
           this.poruka = "Vec ste ocenili aviokompaniju!";
         }
@@ -44,7 +44,7 @@ export class OcenjivanjeComponent implements OnInit {
     this.empty = 1;
     this.poruka = "Hvala na oceni!";
 
-    this.ocena = new OcenaAviokompanije(this.value, this.currentUser.Username, this.kompanija);
+    this.ocena = new OcenaAviokompanije(this.value, this.currentUser.userName, this.kompanija);
     this.service.oceniAviokompaniju(this.ocena).subscribe();
     
   }

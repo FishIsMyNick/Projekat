@@ -31,7 +31,7 @@ export class OceniLetComponent implements OnInit {
     this.id = parseInt(this.route.snapshot.paramMap.get("id"));
     this.service.getOceneLeta().subscribe(ocene => {
       ocene.forEach(element => {
-        if (element.userID == this.currentUser.Username && element.idLeta == this.id) {
+        if (element.userID == this.currentUser.userName && element.idLeta == this.id) {
           this.empty = 1;
           this.poruka = "Vec ste ocenili let!";
         }
@@ -41,7 +41,7 @@ export class OceniLetComponent implements OnInit {
 
   onRateChange(rating: number) {
     this.value = rating;
-    this.ocena = new OcenaLeta(this.value, this.currentUser.Username, this.id);
+    this.ocena = new OcenaLeta(this.value, this.currentUser.userName, this.id);
     this.service.oceniLet(this.ocena).subscribe();
 
     this.poruka = "Hvala na oceni!";
