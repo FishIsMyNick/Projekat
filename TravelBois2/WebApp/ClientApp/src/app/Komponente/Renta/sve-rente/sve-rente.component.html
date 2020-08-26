@@ -3,17 +3,15 @@
     <ul class="lista-kompanija">
         <li *ngFor="let renta of rente">
             <div class="kompanija-container">
-                <div class="kompanija-element">Naziv: {{renta.Naziv}}</div>
+                <div class="kompanija-element">Naziv: {{renta.naziv}}</div>
                 <hr>
-                <div class="kompanija-element">Adresa: {{renta.Adresa}}</div>
+                <div class="kompanija-element">Adresa: {{renta.adresa}}</div>
                 <hr>
-                <div class="kompanija-element">Opis: {{renta.Opis}}</div>
+                <div class="kompanija-element">Opis: {{renta.opis}}</div>
                 <hr>
-                <div class="kompanija-element">Ocena: {{renta.ProsecnaOcena()}}</div>
-                <dynamic-image
-                [tip]="renta.tip"
-                [naziv]="renta.Naziv"
-                [klasa]="renta.klasa"></dynamic-image>
+                <img [src]="renta.imgUrl" class="kompanija-slika">
+                <!--Prosecna ocena ovde-->
+                <hr>
                 <button (click)="prikaziRentu(renta.Naziv)">Otvori</button>
             </div>
         </li>

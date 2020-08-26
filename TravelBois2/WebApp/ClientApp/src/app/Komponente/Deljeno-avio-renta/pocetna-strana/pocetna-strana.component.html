@@ -5,7 +5,7 @@
 <div *ngIf="getType() === 'User' " class="grid-container" style="height: 200px;"> 
     <a routerLink="/avioKompanije" >
         <div class="servis-blok" >
-            <img class="servis-image" src="assets/images/pocetna/unregistered/avio-kompanija.jpg" >
+            <img class="servis-image" [src]="testUrl" >
             <div class="img-text-container" >
                 Avio kompanije
             </div>

@@ -33,13 +33,16 @@ export class SveRenteComponent implements OnInit {
   static sd2: Date = new Date(1970, 1, 1);
 
   //ZA CSS
-  klasa: string = 'kompanija-slika';
+  klasaContainer: string = 'kompanija-slika';
   klasaKolaGrid: string = 'kola-ikonica';
   klasaKolaSlika: string = 'kola-slika';
-  tip: string = 'RentACar/Kola'
+  tipKola: string = 'RentACar/Kola'
+  tipKompanija: string = 'RentACar/Kompanije'
+
+  testUrl: string = 'assets/images/RentACar/Kompanije/Car-2-Go.jpg';
 
   constructor(private router: Router, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService) { 
-    this.rente = new Array<RentACar>();
+    this.rente = new Array<any>();
     this.currentUser = AppComponent.currentUser;
     this.prikaz = RentPrikaz.listaKompanija;
     this.ocene = new Array<Ocena>();
@@ -47,9 +50,10 @@ export class SveRenteComponent implements OnInit {
   ngOnInit(): void {
     var resp = this.service.GetAllRents().subscribe(
       (res:any) => {
-        console.log('dobio sve rente')
         res.forEach(element => {
-          this.rente.push(new RentACar(element.naziv, element.adresa))
+          element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
+          console.debug(element.imgUrl)
+          this.rente.push(element)
         });
       },
       (err) =>{
@@ -60,6 +64,10 @@ export class SveRenteComponent implements OnInit {
   GetCurrentUserType(){
     return this.currentUser.constructor.name;
   }
+  GetCompanyImgUrl(naziv: string){
+    return 'assets/images/RentACar/Kompanije/' + naziv.replace(/ /g, '-') + '.jpg';
+  }
+
   test(val){
     console.debug(val)
   }

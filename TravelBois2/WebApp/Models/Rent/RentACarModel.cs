@@ -12,6 +12,7 @@ namespace WebApp.Models
 		public string Grad { get; set; }
 		public string Drzava { get; set; }
 		public string AdminID { get; set; }
+		public string Opis { get; set; }
 		public float ProsecnaOcena { get; set; }
 		public int BrojOcena { get; set; }
 	}

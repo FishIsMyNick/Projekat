@@ -13,7 +13,7 @@ export class RentACar {
     filtriranaKola: Array<Kola>;
 
     //Za CSS
-    tip: string = 'RentACar';
+    tip: string = 'RentACar/Kompanije';
     klasa: string = 'kompanija-slika'
 
     constructor(naz:string, adr: string) {

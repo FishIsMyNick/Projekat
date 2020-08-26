@@ -14,11 +14,13 @@ export class DynamicImageComponent implements OnInit{
   @Input() tip: string; // ubacen da moze da se udje u odgovarajuci direktorijum
   
   constructor(){
+    console.debug('naziv: ' + this.naziv)
+    console.debug('tip: ' + this.tip)
   }
 
   ngOnInit(){
-    // console.debug('naziv: ' + this.naziv)
-    // console.debug('tip: ' + this.tip)
+     console.debug('naziv: ' + this.naziv)
+     console.debug('tip: ' + this.tip)
     // console.debug('klasa:' + this.klasa)
   }
 }
