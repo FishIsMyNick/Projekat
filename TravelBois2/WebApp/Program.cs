@@ -41,7 +41,7 @@ namespace WebApp
             ///////////////////////////////////////////////////
             ///
 			#endregion
-
+            
 			//using FileStream uploadFileStream = File.OpenRead(localFilePath);
 			//await blobClient.UploadAsync(uploadFileStream, true);
 			//uploadFileStream.Close();

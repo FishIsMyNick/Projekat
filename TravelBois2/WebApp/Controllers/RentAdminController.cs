@@ -40,9 +40,8 @@ namespace WebApp.Controllers
                 Name = body.Name,
                 Lastname = body.Lastname,
                 Grad = body.Grad,
-                NazivRente = body.NazivRente,
                 BrojPasosa = body.BrojPasosa.ToString(),
-                BrojTelefona = body.BrojTelefona.ToString(),
+                PhoneNumber = body.BrojTelefona.ToString(),
                 TipKorisnika = body.TipKorisnika,
                 PromenioPassword = false
             };

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Location} from '@angular/common';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -20,6 +20,7 @@ export class RegRentaKompanijuComponent implements OnInit {
   adresa: string;
   opis: string;
   renta: RentACar;
+
 
   public selectedFile: File = null;
   public event1;

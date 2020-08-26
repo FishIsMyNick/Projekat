@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp.Data;
 
-namespace WebApp.Migrations.Renta
+namespace WebApp.Migrations
 {
     [DbContext(typeof(RentaContext))]
     partial class RentaContextModelSnapshot : ModelSnapshot
@@ -21,7 +21,7 @@ namespace WebApp.Migrations.Renta
 
             modelBuilder.Entity("WebApp.Models.Kola", b =>
                 {
-                    b.Property<string>("ID")
+                    b.Property<string>("Naziv")
                         .HasColumnType("nvarchar(40)");
 
                     b.Property<byte>("BrojMesta")
@@ -30,61 +30,98 @@ namespace WebApp.Migrations.Renta
                     b.Property<short>("Godiste")
                         .HasColumnType("smallint");
 
-                    b.Property<string>("Naziv")
-                        .HasColumnType("nvarchar(40)");
-
                     b.Property<byte>("TipVozila")
                         .HasColumnType("tinyint");
 
-                    b.HasKey("ID");
+                    b.HasKey("Naziv");
 
-                    b.ToTable("Kolas");
+                    b.ToTable("Kola");
                 });
 
-            modelBuilder.Entity("WebApp.Models.Misc.Ocena", b =>
+            modelBuilder.Entity("WebApp.Models.Misc.OcenaKola", b =>
                 {
                     b.Property<string>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Kompanija")
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<string>("UserID")
+                    b.Property<string>("Naziv")
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<byte>("Val")
-                        .HasColumnType("tinyint");
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(1,1)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Ocene");
+                    b.ToTable("OceneKola");
+                });
+
+            modelBuilder.Entity("WebApp.Models.Misc.OcenaRente", b =>
+                {
+                    b.Property<string>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("decimal(1,1)");
+
+                    b.Property<string>("kompanija")
+                        .HasColumnType("nvarchar(40)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("OceneRente");
                 });
 
             modelBuilder.Entity("WebApp.Models.Misc.Zauzetost", b =>
                 {
                     b.Property<string>("ID")
-                        .HasColumnType("nvarchar(40)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Do")
                         .HasColumnType("date");
 
-                    b.Property<string>("KolaID")
+                    b.Property<string>("Kola")
                         .HasColumnType("nvarchar(40)");
 
                     b.Property<DateTime>("Od")
                         .HasColumnType("date");
 
+                    b.Property<string>("Renta")
+                        .HasColumnType("nvarchar(40)");
+
                     b.HasKey("ID");
 
-                    b.ToTable("Zauzetosts");
+                    b.ToTable("Zauzetost");
                 });
 
             modelBuilder.Entity("WebApp.Models.RentACar", b =>
                 {
-                    b.Property<string>("ID")
+                    b.Property<string>("Naziv")
                         .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("AdminID")
                         .HasColumnType("nvarchar(40)");
 
-                    b.HasKey("ID");
+                    b.Property<string>("Adresa")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("BrojOcena")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Drzava")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Grad")
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<decimal>("ProsecnaOcena")
+                        .HasColumnType("decimal(1,1)");
+
+                    b.HasKey("Naziv");
 
                     b.ToTable("Rente");
                 });

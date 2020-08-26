@@ -16,7 +16,5 @@ namespace WebApp.Models.Misc
 		public string ID { get; set; }
 		[Column(TypeName = "decimal(1,1)")]
 		public float Value { get; set; }
-		[Column(TypeName = "int")]
-		public int BrojOcena { get; set; }
 	}
 }

@@ -18,19 +18,32 @@ export class ProfilRegistrovanogComponent implements OnInit {
   constructor(private router: Router, private toastr: ToastrService, private service: UserService) { }
 
   ngOnInit(): void {
-    this.currentUser = AppComponent.currentUser as RegisteredUser ;
-    this.initForm(this.currentUser);
+    this.service.getUserProfileByName(AppComponent.currentUser.Username).subscribe(
+      (res: any) => {
+        this.currentUser = res as RegisteredUser;
+        this.initForm();
+      },
+      (err) => {
+        console.log(err);
+      });
+    this.initForm();
   }
 
-  private initForm(currentUser: User)
+  private initForm()
   {
+    var ime = this.currentUser.name;
+    var prezime = this.currentUser.lastname;
+    var grad = this.currentUser.grad;
+    var brTel = this.currentUser.brojTelefona;
+    var brPas = this.currentUser.brojPasosa;
+    var username = this.currentUser.userName;
     this.podaciForm = new FormGroup({
-      'ime': new FormControl(this.currentUser.Ime, [Validators.required, Validators.maxLength(15), Validators.minLength(3)]),
-      'prezime': new FormControl(this.currentUser.Prezime, [Validators.required, Validators.maxLength(20), Validators.minLength(3)]),
-      'grad': new FormControl(this.currentUser.Grad, [Validators.required, Validators.maxLength(10), Validators.minLength(3)]),
-      'brojTelefona': new FormControl(currentUser.BrojTelefona, Validators.required),
-      'brojPasosa': new FormControl(this.currentUser.BrojPasosa, Validators.required),
-      'username': new FormControl(this.currentUser.Username, Validators.required),
+      'ime': new FormControl(ime, [Validators.required, Validators.maxLength(15), Validators.minLength(3)]),
+      'prezime': new FormControl(prezime, [Validators.required, Validators.maxLength(20), Validators.minLength(3)]),
+      'grad': new FormControl(grad, [Validators.required, Validators.maxLength(20), Validators.minLength(3)]),
+      'brojTelefona': new FormControl(brTel, Validators.required),
+      'brojPasosa': new FormControl(brPas, Validators.required),
+      'username': new FormControl(username, Validators.required),
     });
   }
 

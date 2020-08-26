@@ -9,7 +9,7 @@ import { RentACar } from '../../objects/rent-a-car';
 import { AppComponent } from 'src/app/app.component';
 
 export class RegisteredUser extends User implements OnInit{
-    BrojPasosa: string;
+    brojPasosa: string;
     IstorijaKola: Array<Kola>;
     IstorijaLetova: Array<Let>;
     RezervacijaLetova: Array<Let>;

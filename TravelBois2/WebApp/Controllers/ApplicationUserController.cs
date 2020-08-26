@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -118,7 +119,6 @@ namespace WebApp.Controllers
                 Name = body.Name,
                 Lastname = body.Lastname,
                 Grad = body.Grad,
-                NazivRente = body.NazivRente,
                 BrojPasosa = body.BrojPasosa.ToString(),
                 BrojTelefona = body.BrojTelefona.ToString(),
                 PromenioPassword = false,
@@ -185,32 +185,21 @@ namespace WebApp.Controllers
             }
 
             var user = await _userManager.FindByNameAsync(body.UserName);
-            _context.AppUsers.Remove(user);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            await _userManager.DeleteAsync(user);
 
             user.BrojPasosa = body.BrojPasosa;
             user.BrojTelefona = body.BrojTelefona;
             user.Grad = body.Grad;
             user.Name = body.Name;
             user.Lastname = body.Lastname;
-            _context.AppUsers.Add(user);
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _userManager.CreateAsync(user);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
+            catch(Exception e)
+			{
+				Console.WriteLine(e);
+			}
             return NoContent();
         }
 
@@ -218,12 +207,12 @@ namespace WebApp.Controllers
         [Route("GetUsers")]
         public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetUsers()
         {
-            return await _context.AppUsers.ToListAsync();
+            return await _userManager.Users.ToListAsync();
         }
 
         [HttpPost]
         [Route("AddZahtev")]
-        public async Task<ActionResult<Prijatelj>> AddZahtev(Prijatelj prijatelj) 
+        public async Task<ActionResult<PrijateljZahtev>> AddZahtev(PrijateljZahtev prijatelj) 
         {
 
             _context.Zahtevi.Add(prijatelj);
@@ -234,14 +223,14 @@ namespace WebApp.Controllers
 
         [HttpGet]
         [Route("GetZahtevi")]
-        public async Task<ActionResult<IEnumerable<Prijatelj>>> GetZahtevi()
+        public async Task<ActionResult<IEnumerable<PrijateljZahtev>>> GetZahtevi()
         {
             return await _context.Zahtevi.ToListAsync();
         }
 
         [HttpDelete]
         [Route("DeleteZahtev/{id}")]
-        public async Task<ActionResult<Prijatelj>> DeleteZahtev(int id)
+        public async Task<ActionResult<PrijateljZahtev>> DeleteZahtev(int id)
         {
             var zahtev = await _context.Zahtevi.FindAsync(id);
             if (zahtev == null)
@@ -290,7 +279,7 @@ namespace WebApp.Controllers
 
         private bool UserExists(string username)
         {
-            return _context.AppUsers.Any(e => e.UserName == username);
+            return _userManager.Users.Any(e => e.UserName == username);
         }
     }
 }

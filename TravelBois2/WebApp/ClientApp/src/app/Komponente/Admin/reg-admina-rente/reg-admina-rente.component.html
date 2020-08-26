@@ -104,3 +104,7 @@
       </div>
     </form>
 </div>
+<button value="check" (click)="checkForm()">check</button>
+<ul>
+    <li *ngFor="let control of invalidControls">{{control}}</li>
+</ul>

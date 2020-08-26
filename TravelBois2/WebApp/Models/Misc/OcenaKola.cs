@@ -11,6 +11,8 @@ namespace WebApp.Models.Misc
 	public class OcenaKola : Ocena
 	{
 		[Column(TypeName = "nvarchar(40)")]
-		public string naziv { get; set; }
+		public string Naziv { get; set; }
+		[Column(TypeName = "nvarchar(40)")]
+		public string Kompanija { get; set; }
 	}
 }

@@ -8,6 +8,9 @@ namespace WebApp.Models
 	public class RentACarModel
 	{
 		public string Naziv { get; set; }
+		public string Adresa { get; set; }
+		public string Grad { get; set; }
+		public string Drzava { get; set; }
 		public string AdminID { get; set; }
 		public float ProsecnaOcena { get; set; }
 		public int BrojOcena { get; set; }

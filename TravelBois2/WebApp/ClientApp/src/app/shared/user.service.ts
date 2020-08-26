@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { RegisteredUser } from '../entities/users/registered-user/registered-user';
 import { Observable } from 'rxjs';
 import { User } from '../entities/users/user/user';
@@ -33,7 +33,6 @@ export class UserService {
     Name: ['', [Validators.required]],
     Lastname: ['', [Validators.required]],
     Grad: ['', [Validators.required]],
-    NazivKompanije: ['', [Validators.required]],
     BrojTelefona: ['', [Validators.required]],
     BrojPasosa: ['', [Validators.required]],
     Passwords: this.fb.group({
@@ -126,6 +125,12 @@ export class UserService {
 
   getUserProfile() {
     return this.http.get(this.BaseURI + '/UserProfile/GetUserProfile');
+  }
+  getUserProfileByName(username: string): Observable<string>{
+    const formData = new FormData();
+    formData.append(username, 'username');
+
+    return this.http.post<any>(this.BaseURI + '/UserProfile/GetUserProfileByName', formData);
   }
   getAdminProfile() {
     return this.http.get(this.BaseURI + '/AvioAdmin/GetAvioAdminProfile');

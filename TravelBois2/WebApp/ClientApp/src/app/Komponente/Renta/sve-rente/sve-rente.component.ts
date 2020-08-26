@@ -45,12 +45,17 @@ export class SveRenteComponent implements OnInit {
     this.ocene = new Array<Ocena>();
   }
   ngOnInit(): void {
-    console.debug(this.service.GetAllRents())
-    //this.rente.push(new RentACar('Car2Go', 'Cirpanova 7'));
-
-    //  this.prikaz = RentPrikaz.kola;
-    //  this.sr = this.rente[0];
-    //  this.sc = this.rente[0].filtriranaKola[0];
+    var resp = this.service.GetAllRents().subscribe(
+      (res:any) => {
+        console.log('dobio sve rente')
+        res.forEach(element => {
+          this.rente.push(new RentACar(element.naziv, element.adresa))
+        });
+      },
+      (err) =>{
+        console.log(err)
+      }
+    )
   }
   GetCurrentUserType(){
     return this.currentUser.constructor.name;

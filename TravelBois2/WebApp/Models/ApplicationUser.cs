@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -18,9 +19,12 @@ namespace WebApp.Models
 		public string Grad { get; set; }
 		[Column(TypeName = "nvarchar(20)")]
 		public string BrojPasosa { get; set; }
-		[Column(TypeName = "nvarchar(15)")]
+		[Column(TypeName = "nvarchar(20)")]
 		public string BrojTelefona { get; set; }
 		[Column(TypeName = "nvarchar(15)")]
 		public string TipKorisnika { get; set; }
+		[Column(TypeName = "bit")]
+		[DefaultValue("null")]
+		public bool PromenioPassword { get; set; }
 	}
 }

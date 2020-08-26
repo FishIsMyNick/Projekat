@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Location } from '@angular/common';
 import { UserService } from 'src/app/shared/user.service';
 import { Router } from '@angular/router';
@@ -11,6 +11,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegAdminaRenteComponent implements OnInit {
   regRenteAdminForm: FormGroup;
+
+  invalidControls;
+
   constructor(private location: Location, public service: UserService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
@@ -54,4 +57,14 @@ export class RegAdminaRenteComponent implements OnInit {
     this.location.back();
   }
 
+  checkForm() {
+    this.invalidControls = new Array<AbstractControl>();
+    const invalid = [];
+    var controls = this.service.rentAdminFormModel.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.invalidControls.push(name);
+      }
+    }
+  }
 }

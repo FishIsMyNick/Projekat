@@ -43,7 +43,7 @@ namespace WebApp.Controllers
                 Grad = body.Grad,
                 NazivAviokompanije = body.NazivAviokompanije,
                 BrojPasosa = body.BrojPasosa.ToString(),
-                BrojTelefona = body.BrojTelefona.ToString(),
+                PhoneNumber = body.BrojTelefona.ToString(),
                 PromenioPassword = false,
                 TipKorisnika = body.TipKorisnika
             };

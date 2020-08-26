@@ -66,19 +66,19 @@ namespace WebApp.Controllers
 		[Route("GetAllKolas")]
 		public async Task<ActionResult<IEnumerable<Kola>>> GetAllKolas()
 		{
-			return await _context.Kolas.ToListAsync();
+			return await _context.Kola.ToListAsync();
 		}
 		[HttpGet]
 		[Route("GetKola")]
 		public async Task<ActionResult<Kola>> GetKola(string naziv)
 		{
-			return await _context.Kolas.FindAsync(naziv);
+			return await _context.Kola.FindAsync(naziv);
 		}
 		[HttpGet]
 		[Route("GetProsecnaOcena")]
 		public float GetProsecnaOcena(string naziv)
 		{
-			Ocena ocena = GetOcena(naziv);
+			Ocena ocena = GetOcenaKola(naziv);
 			return ocena != null ? ocena.Value : -1;
 		}
 		#endregion
@@ -123,7 +123,7 @@ namespace WebApp.Controllers
 		{
 			if (!KolaExists(kola.Naziv))
 			{
-				_context.Kolas.Add(kola);
+				_context.Kola.Add(kola);
 				await _context.SaveChangesAsync();
 
 				return CreatedAtAction("GetKola", new { naziv = kola.Naziv }, kola);
@@ -137,31 +137,27 @@ namespace WebApp.Controllers
 		[Route("AddOcena")]
 		public async Task<ActionResult<float>> AddOcena(string naziv, short val)
 		{
-			Ocena ocena = GetOcena(naziv);
-			if (ocena != null)
-			{
-				ocena.Value = ocena.Value * ocena.BrojOcena + val;
-				ocena.BrojOcena++;
-				_context.Entry(ocena).State = EntityState.Modified;
+			OcenaRente ocena = new OcenaRente();
+			ocena.kompanija = naziv;
+			ocena.Value = val;
+			_context.OceneRente.Add(ocena);
 
-				try
-				{
-					await _context.SaveChangesAsync();
-				}
-				catch (DbUpdateConcurrencyException)
-				{
-					if (GetOcena(naziv) == null)
-					{
-						return NotFound();
-					}
-					else
-					{
-						throw;
-					}
-				}
-				return NoContent();
+			try
+			{
+				await _context.SaveChangesAsync();
 			}
-			return BadRequest();
+			catch (DbUpdateConcurrencyException)
+			{
+				if (GetOcenaKola(naziv) == null)
+				{
+					return NotFound();
+				}
+				else
+				{
+					throw;
+				}
+			}
+			return NoContent();
 		}
 		[HttpPost]
 		[Route("RentAdminExists")]
@@ -185,17 +181,13 @@ namespace WebApp.Controllers
 		}
 		private bool KolaExists(string naziv)
 		{
-			return _context.Kolas.Any(e => e.Naziv == naziv);
+			return _context.Kola.Any(e => e.Naziv == naziv);
 		}
-		private Ocena GetOcena(string naziv)
+		private OcenaRente GetOcenaKola(string naziv)
 		{
-			if (_context.OceneRente.Any(e => e.kompanija == naziv))
+			if (_context.OceneKola.Any(e => e.Naziv == naziv))
 			{
-				return (OcenaRente)_context.OceneRente.ToList().Where(e => e.kompanija == naziv);
-			}
-			else if (_context.OceneKola.Any(e => e.naziv == naziv))
-			{
-				return (OcenaRente)_context.OceneKola.ToList().Where(e => e.naziv == naziv);
+				return (OcenaRente)_context.OceneKola.ToList().Where(e => e.Naziv == naziv);
 			}
 			else return null;
 		}

@@ -27,6 +27,14 @@ namespace WebApp.Controllers
             _userContext = userContext;
         }
 
+        [HttpPost]
+        [Route("GetUserProfileByName")]
+        public async Task<ApplicationUser> GetUserByName()
+		{
+            var request = HttpContext.Request;
+
+            return await _userManager.FindByNameAsync(request.Form.Keys.First());
+		}
         /// /////////////////////////////////////////////////////////////////////////
         /// OVA METODA RADI
         /// /////////////////////////////////////////////////////////////////////////
@@ -59,7 +67,7 @@ namespace WebApp.Controllers
                         user.Name,
                         user.Lastname,
                         user.Grad,
-                        user.BrojTelefona,
+                        user.PhoneNumber,
                         user.BrojPasosa,
                         user.TipKorisnika,
                         admin.NazivAviokompanije
@@ -75,7 +83,7 @@ namespace WebApp.Controllers
                         user.Name,
                         user.Lastname,
                         user.Grad,
-                        user.BrojTelefona,
+                        user.PhoneNumber,
                         user.BrojPasosa,
                         user.TipKorisnika
                     };

@@ -8,15 +8,12 @@ using WebApp.Models;
 
 namespace WebApp.Data
 {
-	public class UserContext : IdentityDbContext
+	public class UserContext : DbContext
 	{
 		public UserContext(DbContextOptions<UserContext> options) : base(options)
 		{ }
 		public DbSet<ApplicationUser> AppUsers { get; set; }
-		public DbSet<RentAdmin> RentAdmins { get; set; }
-		public DbSet<AvioAdmin> AvioAdmins { get; set; }
-		public DbSet<Admin> Admins { get; set; }
-		public DbSet<Prijatelj> Zahtevi { get; set; }
+		public DbSet<PrijateljZahtev> Zahtevi { get; set; }
 		public DbSet<PrihvacenPrijatelj> Prijatelji { get; set; }
 	}
 }

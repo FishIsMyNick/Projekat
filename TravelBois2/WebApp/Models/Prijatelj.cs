@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebApp.Models
 {
-    public class Prijatelj
+    public class PrijateljZahtev
     {
         [Key]
         [Required]

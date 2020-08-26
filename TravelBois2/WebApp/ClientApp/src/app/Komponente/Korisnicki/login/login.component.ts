@@ -33,8 +33,10 @@ export class LoginComponent implements OnInit {
       (res: any) => {
         localStorage.setItem('token', res.token);
         this.toastr.success("Uspesno ste se ulogovali!", "Logovanje uspesno.");
-        AppComponent.currentUser = res.user;
+        AppComponent.currentUser = res.user as RegisteredUser;
         var test = AppComponent.currentUser;
+        console.log('test ' + test.BrojTelefona);
+        console.log('AC ' + AppComponent.currentUser.BrojTelefona);
         this.router.navigate(['/pocetna'])
       },
       (err) =>{

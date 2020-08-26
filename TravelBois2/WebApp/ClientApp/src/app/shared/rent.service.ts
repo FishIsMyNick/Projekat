@@ -27,7 +27,8 @@ export class RentService {
   }
   checkForRentAdmin(adminID: string): Observable<string> {
     const formData = new FormData();
-  formData.append(adminID, "adminID");
+    formData.append(adminID, "adminID");
+
     return this.http.post<any>(this.BaseURI + '/Rent/RentAdminExists', formData)
   }
 }

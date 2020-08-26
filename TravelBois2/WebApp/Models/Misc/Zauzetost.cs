@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,10 +10,13 @@ namespace WebApp.Models.Misc
 {
 	public class Zauzetost
 	{
-		[Column(TypeName = "nvarchar(40)")]
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public string ID { get; set; }
 		[Column(TypeName = "nvarchar(40)")]
-		public string KolaID { get; set; }	// FOREIGN KEY
+		public string Kola { get; set; }
+		[Column(TypeName = "nvarchar(40)")]
+		public string Renta { get; set; }	// FOREIGN KEY
 		[Column(TypeName ="date")]
 		public DateTime Od { get; set; }
 		[Column(TypeName = "date")]
