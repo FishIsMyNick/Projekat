@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { RentACar } from '../entities/objects/rent-a-car';
 import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { Kola } from '../entities/objects/kola';
+import { basename } from 'path';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +17,11 @@ export class RentService {
   GetAllRents(){
     return this.http.get(this.BaseURI + '/Rent/GetAllRents');
   }
-  GetRent(naziv: string, adminID: string){
-    let params = {naziv, adminID}
-    //return this.http.get(this.BaseURI + 'Rent/GetRent', params)
+  async GetRent(adminID: string): Promise<RentACar> {
+    const formData = new FormData();
+    formData.append(adminID, 'admin');
+
+    return await this.http.post<any>(this.BaseURI + '/Rent/GetRent', formData).toPromise();
   }
   addRentKompanija(rentKompanija: RentACar): Observable<RentACar> {
     return this.http.post<RentACar>(this.BaseURI + '/Rent/AddRent', rentKompanija);
@@ -30,5 +34,14 @@ export class RentService {
     formData.append(adminID, "adminID");
 
     return this.http.post<any>(this.BaseURI + '/Rent/RentAdminExists', formData)
+  }
+  GetCars(rentaID: string): Observable<string> {
+    const formData = new FormData();
+    formData.append(rentaID, 'rentaID');
+
+    return this.http.post<any>(this.BaseURI + '/Rent/GetCars', formData);
+  }
+  AddCar(kola: Kola): Observable<Kola> {
+    return this.http.post<Kola>(this.BaseURI + '/Rent/AddCar', kola);
   }
 }

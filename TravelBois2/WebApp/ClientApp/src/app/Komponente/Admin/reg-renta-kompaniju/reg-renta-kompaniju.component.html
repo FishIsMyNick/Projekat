@@ -5,7 +5,7 @@
             <div>
                 <label for="naziv">Naziv:</label>
                 <input type="text" id="naziv" formControlName="naziv" class="form-control">
-                <div *ngIf="regRentaForm.controls.naziv.invalid">
+                <div *ngIf="regRentaForm.controls.naziv.invalid && regRentaForm.get('naziv').touched">
                     Unesite naziv
                 </div>
             </div>
@@ -14,7 +14,7 @@
             <div>
                 <label for="adresa">Adresa:</label>
                 <input type="text" id="adresa" formControlName="adresa" class="form-control">
-                <div *ngIf="regRentaForm.controls.adresa.invalid">
+                <div *ngIf="regRentaForm.controls.adresa.invalid && regRentaForm.get('adresa').touched">
                     Unesite adresu
                 </div>
             </div>
@@ -23,7 +23,7 @@
             <div>
                 <label for="admin">Username admina:</label>
                 <input type="text" id="admin" formControlName="admin" class="form-control">
-                <div *ngIf="regRentaForm.controls.admin.invalid">
+                <div *ngIf="regRentaForm.controls.admin.invalid && regRentaForm.get('admin').touched">
                     Unesite validan username admina Rent-A-Car servisa
                 </div>
             </div>
@@ -32,7 +32,7 @@
             <div>
                 <label for="opis">Opis:</label>
                 <input type="text" id="opis" formControlName="opis" class="form-control">
-                <div *ngIf="regRentaForm.controls.opis.invalid">
+                <div *ngIf="regRentaForm.controls.opis.invalid && regRentaForm.get('opis').touched">
                     Unesite opis
                 </div>
             </div>
@@ -42,9 +42,6 @@
                 <label for="slika">Slika: </label>
                 <input type="file" accept="image/x-png,image/jpeg" id="slika" formControlName="slika" style="margin-left: 7px;" (change)="onFileChanged($event.target.files)">
                 <img [src]="imgURL" height="200" *ngIf="imgURL">
-                <div *ngIf="regRentaForm.controls.slika.invalid">
-                    Izaberite sliku
-                </div>
             </div>
         </div>
         <div>

@@ -14,6 +14,8 @@ namespace WebApp.Models
 		public int BrojMesta { get; set; }
 		public int Godiste { get; set; }
 		public Enums.TipKola TipVozila { get; set; }
+		public int Cena { get; set; }
+		public bool BrzaRezervacija { get; set; }
 		// Van tabele BP
 		public List<OcenaKola> Ocene { get; set; }
 		public List<Tuple<DateTime, DateTime>> Zauzetost { get; set; }

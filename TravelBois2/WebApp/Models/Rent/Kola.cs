@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -13,11 +14,18 @@ namespace WebApp.Models
 		[Key]
 		[Column(TypeName = "nvarchar(40)")]
 		public string Naziv { get; set; }
+		[ForeignKey("renta")]
+		[Column(TypeName = "nvarchar(40)")]
+		public string NazivRente { get; set; }
 		[Column(TypeName = "tinyint")]
 		public int BrojMesta { get; set; }
 		[Column(TypeName = "smallint")]
 		public int Godiste { get; set; }
 		[Column(TypeName = "tinyint")]
 		public Enums.TipKola TipVozila { get; set; }
+		[Column(TypeName = "smallint")]
+		public int Cena { get; set; }
+		[Column(TypeName = "bit"), DefaultValue(null)]
+		public bool BrzaRezervacija { get; set; }
 	}
 }

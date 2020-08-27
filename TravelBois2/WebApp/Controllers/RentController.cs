@@ -51,15 +51,17 @@ namespace WebApp.Controllers
 			return await _context.Rente.ToListAsync();
 		}
 		// GET: api/Rent/GetRent
-		[HttpGet]
+		[HttpPost]
 		[Route("GetRent")]
-		public async Task<ActionResult<RentACar>> GetRent(Tuple<string,string> data)
+		public ActionResult<RentACar> GetRent()
 		{
-			RentACar rent = await _context.Rente.FindAsync(data.Item1);
-			if (rent.AdminID == data.Item2)
-				return rent;
-			else
-				return null;
+			List<RentACar> rente = _context.Rente.ToList();
+			foreach(RentACar r in rente)
+			{
+				if (r.AdminID == HttpContext.Request.Form.Keys.First())
+					return r;
+			}
+			return null;
 		}
 		// GET: api/Rent/GetAllKolas
 		[HttpGet]
@@ -111,17 +113,32 @@ namespace WebApp.Controllers
 			//Get image from request
 			var postedFile = httpRequest.Form.Files[0];
 			var filename = httpRequest.Form.Keys.First();
-			
+
 			//Save file locally and upload to blob
 			await BlobHandler.UploadCompanyImage(postedFile, filename);
 
 			return new HttpResponseMessage(HttpStatusCode.OK);
 		}
 		[HttpPost]
-		[Route("AddKola")]
-		public async Task<ActionResult<Kola>> AddKola(Kola kola)
+		[Route("GetCars")]
+		public async Task<ActionResult<List<Kola>>> GetCars()
 		{
-			if (!KolaExists(kola.Naziv))
+			List<RentACar> rente = await _context.Rente.ToListAsync();
+			List<Kola> kola = await _context.Kola.ToListAsync();
+
+			List<Kola> ret = new List<Kola>();
+			foreach (RentACar rent in rente.Where(e => e.AdminID == HttpContext.Request.Form.Keys.First()))
+			{
+				ret.AddRange(kola.Where(e => e.NazivRente == rent.Naziv));
+			}
+			return ret;
+		}
+			
+		[HttpPost]
+		[Route("AddCar")]
+		public async Task<ActionResult<Kola>> AddCar(Kola kola)
+		{
+			if (!CarExists(kola.Naziv, kola.NazivRente))
 			{
 				_context.Kola.Add(kola);
 				await _context.SaveChangesAsync();
@@ -179,9 +196,9 @@ namespace WebApp.Controllers
 		{
 			return _context.Rente.Any(e => e.Naziv == naziv);
 		}
-		private bool KolaExists(string naziv)
+		private bool CarExists(string naziv, string nazivRente)
 		{
-			return _context.Kola.Any(e => e.Naziv == naziv);
+			return _context.Kola.Any(e => e.Naziv == naziv && e.NazivRente == nazivRente);
 		}
 		private OcenaRente GetOcenaKola(string naziv)
 		{

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp.Data;
 
 namespace WebApp.Migrations
 {
     [DbContext(typeof(RentaContext))]
-    partial class RentaContextModelSnapshot : ModelSnapshot
+    [Migration("20200827131546_RentKolaRentID")]
+    partial class RentKolaRentID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,12 +28,6 @@ namespace WebApp.Migrations
 
                     b.Property<byte>("BrojMesta")
                         .HasColumnType("tinyint");
-
-                    b.Property<bool>("BrzaRezervacija")
-                        .HasColumnType("bit");
-
-                    b.Property<short>("Cena")
-                        .HasColumnType("smallint");
 
                     b.Property<short>("Godiste")
                         .HasColumnType("smallint");

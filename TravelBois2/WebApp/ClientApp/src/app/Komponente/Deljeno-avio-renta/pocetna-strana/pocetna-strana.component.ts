@@ -34,6 +34,8 @@ export class PocetnaStranaComponent implements OnInit {
   gradAvio: string;
   opisAvio: string;
 
+  //rentUserProfil: string;
+
   testUrl = 'assets/images/pocetna/unregistered/avio-kompanija.jpg';
 
   constructor(private service: UserService, private serviceAvio: AvioAdminService, private serviceO: OcenaService) { }

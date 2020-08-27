@@ -20,7 +20,7 @@ export class RegRentaKompanijuComponent implements OnInit {
   adresa: string;
   opis: string;
   renta: RentACar;
-
+  submitAttempted: boolean = false;
 
   public selectedFile: File = null;
   public event1;
@@ -45,6 +45,7 @@ export class RegRentaKompanijuComponent implements OnInit {
   }
   
   onSubmit(){
+    this.submitAttempted = true;
     this.naziv = this.regRentaForm.get('naziv').value;
     this.opis = this.regRentaForm.get('opis').value;
     this.adresa = this.regRentaForm.get('adresa').value;
