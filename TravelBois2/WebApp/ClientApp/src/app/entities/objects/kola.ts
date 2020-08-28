@@ -4,7 +4,7 @@ import { TipVozila } from 'src/app/_enums'
 import { RentACar } from './rent-a-car';
 
 export class Kola {
-    renta: string;
+    NazivRente: string;
     BrojMesta: number;
     BrzaRezervacija: boolean;
     Cena: number;
@@ -23,7 +23,7 @@ export class Kola {
         this.Tip = tip;
         this.BrzaRezervacija = brzaRezervacija;
         this.Cena = cena;
-        this.renta = renta;
+        this.NazivRente = renta;
         
         //Ne radi kako treba
         //this.ID = IdHandler.GenerateKolaID();

@@ -17,7 +17,7 @@ export class RentService {
   GetAllRents(){
     return this.http.get(this.BaseURI + '/Rent/GetAllRents');
   }
-  async GetRent(adminID: string): Promise<RentACar> {
+  async GetRent(adminID: string): Promise<any> {
     const formData = new FormData();
     formData.append(adminID, 'admin');
 
@@ -28,6 +28,9 @@ export class RentService {
   }
   addRentImage(image: FormData): Observable<Object> {
     return this.http.post(this.BaseURI + '/Rent/AddCompanyImage', image);
+  }
+  addCarImage(image: FormData): Observable<Object> {
+    return this.http.post(this.BaseURI + '/Rent/AddCarImage', image);
   }
   checkForRentAdmin(adminID: string): Observable<string> {
     const formData = new FormData();

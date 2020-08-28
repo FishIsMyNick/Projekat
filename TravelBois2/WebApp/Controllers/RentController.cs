@@ -108,15 +108,25 @@ namespace WebApp.Controllers
 		[Route("AddCompanyImage")]
 		public async Task<HttpResponseMessage> AddCompanyImage()
 		{
-			var httpRequest = HttpContext.Request;
-
-			//Get image from request
-			var postedFile = httpRequest.Form.Files[0];
-			var filename = httpRequest.Form.Keys.First();
+			IFormFile postedFile;
+			string filename;
+			GetImageFromHttpContext(out postedFile, out filename);
 
 			//Save file locally and upload to blob
 			await BlobHandler.UploadCompanyImage(postedFile, filename);
 
+			return new HttpResponseMessage(HttpStatusCode.OK);
+		}
+		// POST: api/Rent/AddCarImage
+		[HttpPost]
+		[Route("AddCarImage")]
+		public async Task<HttpResponseMessage> AddCarImage()
+		{
+			IFormFile postedFile;
+			string filename;
+			GetImageFromHttpContext(out postedFile, out filename);
+
+			await BlobHandler.UploadCarImage(postedFile, filename);
 			return new HttpResponseMessage(HttpStatusCode.OK);
 		}
 		[HttpPost]
@@ -207,6 +217,14 @@ namespace WebApp.Controllers
 				return (OcenaRente)_context.OceneKola.ToList().Where(e => e.Naziv == naziv);
 			}
 			else return null;
+		}
+		private void GetImageFromHttpContext(out IFormFile pic, out string filename)
+		{
+			var httpRequest = HttpContext.Request;
+
+			//Get image from request
+			pic = httpRequest.Form.Files[0];
+			filename = httpRequest.Form.Keys.First();
 		}
 		#endregion
 	}

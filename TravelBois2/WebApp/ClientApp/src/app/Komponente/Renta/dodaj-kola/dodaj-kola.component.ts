@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TipVozila, GetStringValues } from 'src/app/_enums';
 import { Kola } from 'src/app/entities/objects/kola';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RentService } from 'src/app/shared/rent.service';
 import { AppComponent } from 'src/app/app.component';
 import { RentACar } from 'src/app/entities/objects/rent-a-car';
@@ -22,12 +22,13 @@ export class DodajKolaComponent implements OnInit {
   public event1;
   imgURL: string = 'https://wiki.tripwireinteractive.com/images/4/47/Placeholder.png';
   recievedImageData: any;
+  base64Data: any;
+  convertedImage: string;
 
-  constructor(private route: ActivatedRoute, private servis: RentService) {
+  constructor(private route: ActivatedRoute, private servis: RentService, private router: Router) {
    }
 
   ngOnInit(): void {
-    console.debug(this.route.snapshot.paramMap.get('naziv'));
     let year = new Date();
     this.carForm = new FormGroup({
       'marka': new FormControl('', Validators.required),
@@ -40,10 +41,10 @@ export class DodajKolaComponent implements OnInit {
       'slika': new FormControl('', Validators.required)
             })
   }
-  async onSubmit(){
+  async onSubmit() {
     console.debug('submit')
-    let rent = await this.servis.GetRent(AppComponent.currentUser.userName);
-    console.debug(rent.Naziv);
+    var rent = await this.servis.GetRent(AppComponent.currentUser.userName);
+    console.debug(rent.naziv);
 
     var kola: Kola = new Kola(
       this.carForm.get('brojMesta').value,
@@ -51,11 +52,34 @@ export class DodajKolaComponent implements OnInit {
       this.carForm.get('marka').value,
       this.carForm.get('model').value,
       this.carForm.get('tip').value,
-      rent.Naziv,
+      rent.naziv,
       this.carForm.get('cena').value,
       this.brzaRezervacija);
-      
-      this.servis.AddCar(kola);
+
+    this.servis.AddCar(kola).subscribe(
+      (res) => {
+        console.debug('kola dodata u bp. cuvanje slike...');
+        const uploadData = new FormData();
+        uploadData.append('myFile', this.selectedFile);
+        uploadData.append(kola.Naziv, 'filename')
+
+        this.servis.addCarImage(uploadData).subscribe(
+          (res) => {
+            console.debug(res);
+            this.recievedImageData = res;
+            this.base64Data = this.recievedImageData.pic;
+            this.convertedImage = 'data:image/jpeg;base64,' + this.base64Data;
+            this.router.navigate(['/pocetna'])
+          },
+          (err) => {
+            console.debug('Error during image saving: ' + err)
+          }
+        )
+      },
+      (err) => {
+        console.debug(err);
+      }
+    );
   }
   GetTipovi(): Array<string>
   {

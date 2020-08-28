@@ -63,16 +63,16 @@ namespace WebApp.Helpers
             }
         }
 
-        public static async Task UploadCarImage(IFormFile img, IFormFile filename)
+        public static async Task UploadCarImage(IFormFile img, string filename)
         {
             //Make name
-            string imageName = img.FileName.Replace(" ", "-").Split('.')[0] + ".jpg";
+            string imageName = filename.Replace(" ", "-").Split('.')[0] + ".jpg";
             //Make path
             string filePath = Path.Combine(downloadFileDirKola, imageName);
             //Get blob client
             _blobClient = _kolaContainerClient.GetBlobClient(imageName);
             //Upload to blob
-            await _blobClient.UploadAsync(img.OpenReadStream());
+            var response = await _blobClient.UploadAsync(img.OpenReadStream());
             //Save locally
             await FileHandler.SaveImage(img, filePath);
         }
