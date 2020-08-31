@@ -95,7 +95,7 @@ export class SveRenteComponent implements OnInit {
     this.kola = await this.service.GetCarsFromRent(this.sr.naziv);
     this.filtriranaKola = this.kola;
     this.filtriranaKola.forEach(element => element.imgURL = 'assets/images/RentACar/Kola/' + element.naziv + '.jpg');
-    this.sr.prosecnaOcena = await this.service.ProsecnaOcenaRente(this.sr);
+    //this.sr.prosecnaOcena = await this.service.ProsecnaOcenaRente(this.sr);
 
     this.prikaz = RentPrikaz.kompanija;
   }
