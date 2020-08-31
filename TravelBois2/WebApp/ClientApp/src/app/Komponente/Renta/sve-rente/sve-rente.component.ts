@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RentACar } from '../../../entities/objects/rent-a-car';
 import { User } from '../../../entities/users/user/user';
 import { AppComponent } from '../../../app.component';
-import { RentPrikaz, Meseci } from '../../../_enums';
+import { RentPrikaz, Meseci, TipVozila } from '../../../_enums';
 import { Kola } from '../../../entities/objects/kola';
 import { Datum } from '../../../entities/misc/datum';
 import { AnyTxtRecord } from 'dns';
@@ -11,18 +11,22 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Ocena } from 'src/app/entities/misc/ocena';
 import { RentService } from 'src/app/shared/rent.service';
 import { OcenaService } from 'src/app/shared/ocena.service';
+import { KalendarComponent } from 'src/app/Helpers/kalendar/kalendar.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-rent-a-car',
   templateUrl: './sve-rente.component.html'
 })
 export class SveRenteComponent implements OnInit {
-  rente: Array<RentACar>;
-  sr: RentACar;
-  sc: Kola;
+  rente: Array<any>;
+  kola: Array<any>;
   currentUser: User;
   prikaz: RentPrikaz;
   danaUMesecu: number;
+  sr: any;
+  sc: any;
+  filtriranaKola: Array<any> = new Array<any>();
 
   SortForm: FormGroup;
   ocene: Array<Ocena>;
@@ -41,18 +45,19 @@ export class SveRenteComponent implements OnInit {
 
   testUrl: string = 'assets/images/RentACar/Kompanije/Car-2-Go.jpg';
 
-  constructor(private router: Router, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService) { 
+  constructor(private router: Router, private toastr: ToastrService, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService) { }
+
+  ngOnInit(): void {
     this.rente = new Array<any>();
+    this.kola = new Array<any>();
     this.currentUser = AppComponent.currentUser;
     this.prikaz = RentPrikaz.listaKompanija;
     this.ocene = new Array<Ocena>();
-  }
-  ngOnInit(): void {
+
     var resp = this.service.GetAllRents().subscribe(
       (res:any) => {
         res.forEach(element => {
           element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
-          console.debug(element.imgUrl)
           this.rente.push(element)
         });
       },
@@ -75,19 +80,46 @@ export class SveRenteComponent implements OnInit {
   prikaziListu(){
     this.prikaz = RentPrikaz.listaKompanija;
   }
-  prikaziRentu(naziv: string = ''){
+
+  async prikaziRentu(naziv: string = '') {
+    console.debug('prikaziRentu')
     if(naziv !== ''){
       this.rente.forEach(element => {
-        if(element.Naziv === naziv){
+        if(element.naziv === naziv){
           this.sr = element;
         }
       });
     }
+
+    this.kola = await this.service.GetCarsFromRent(this.sr.naziv);
+    this.filtriranaKola = this.kola;
+    this.filtriranaKola.forEach(element => element.imgURL = 'assets/images/RentACar/Kola/' + element.naziv + '.jpg');
+
     this.prikaz = RentPrikaz.kompanija;
   }
-  prikaziKola(k: Kola){
-    //console.debug(k.Naziv);
+  async prikaziKola(k){
     this.sc = k;
+    this.sc.zauzetost = await this.service.GetZauzetost(this.sc);
+    this.sc.marka = k.naziv.split('-')[0];
+    this.sc.model = k.naziv.split('-')[1];
     this.prikaz = RentPrikaz.kola;
+  }
+  NapraviRezervaciju() {
+    let d1 = KalendarComponent.s1
+    let d2 = KalendarComponent.s2
+    this.service.AddReservation(d1, d2, this.sc, this.currentUser.userName).subscribe(
+      (res: any) => {
+        this.toastr.success("Uspesno ste napravili rezervaciju!");
+        this.router.navigate(['/pocetna']);
+      },
+      err => {
+        console.debug(err);
+      }
+    )
+  }
+
+  // helpers
+  GetTip(tip) {
+    return TipVozila[tip];
   }
 }

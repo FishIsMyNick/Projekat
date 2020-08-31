@@ -12,7 +12,7 @@
                 <img [src]="renta.imgUrl" class="kompanija-slika">
                 <!--Prosecna ocena ovde-->
                 <hr>
-                <button (click)="prikaziRentu(renta.Naziv)">Otvori</button>
+                <button (click)="prikaziRentu(renta.naziv)">Otvori</button>
             </div>
         </li>
     </ul>
@@ -24,15 +24,15 @@
     <div style="position: absolute; top: 80px;">
         <!--Naziv kompanije-->
         <div class="kompanija-container" style="margin: 0 30px;">
-            <h1>{{sr.Naziv}}</h1>
+            <h1>{{sr.naziv}}</h1>
         </div>
         <!-- Podaci o kompaniji i pretraga -->
         <div class="kompanija-container" style="margin: 10px 30px;">
-            <h3>{{sr.Adresa}}</h3>
+            <h3>{{sr.adresa}}</h3>
             <hr>
-            <h3>{{sr.Opis}}</h3>
+            <h3>{{sr.opis}}</h3>
             <hr>
-            <h3>{{sr.ProsecnaOcena()}}</h3>
+            <h3>prosecna ocena PH</h3>
             <hr>
             <div style="position: relative; margin: 5px;">
                 <div class="filter-stavka">
@@ -54,15 +54,11 @@
     <div style="position: absolute; top: 80px; left: 400px;">
         <div class="kompanija-container" style="float: left;">
             <ul class="kola-container">
-                <li *ngFor="let kola of sr.filtriranaKola">
+                <li *ngFor="let kola of filtriranaKola">
                     <button class="kola-slika-blok" (click)="prikaziKola(kola)">
-                        <dynamic-image 
-                            [tip]="tip" 
-                            [naziv]="kola.Naziv" 
-                            [klasa]="klasaKolaGrid">
-                        </dynamic-image>
+                        <img [src]="kola.imgURL" class="kola-slika-blok">
                             <div class="kola-model-text">
-                                {{kola.GetModel()}}
+                                {{kola.naziv}}
                             </div>
                     </button>
                 </li>
@@ -78,33 +74,30 @@
     <div style="position: absolute; top: 50px; left: 10px;">
         <!--SLIKA-->
         <div class="kompanija-container">
-            <dynamic-image
-                [tip]="tip"
-                [naziv]="sc.Naziv"
-                [klasa]="klasaKolaSlika"></dynamic-image>
+            <img [src]="sc.imgURL" class="kola-slika">
         </div>
         <hr style="margin: 7px 5px;">
         <!--MARKA I MODEL-->
         <div class="kompanija-container">
-            <h2>{{sc.GetMarka()}}</h2>
-            <h3>{{sc.GetModel()}}</h3>
+            <h2>{{sc.marka}}</h2>
+            <h3>{{sc.model}}</h3>
         </div>
         <hr>
         <div style="display: inline; padding: 5px;">
             <button (click)="prikaziRentu('')">Nazad</button>
-            <button *ngIf="GetCurrentUserType() === 'RegisteredUser'" style="float: right;">Napravi rezervaciju</button>
+            <button *ngIf="GetCurrentUserType() === 'RegisteredUser'" style="float: right;" (click)="NapraviRezervaciju()">Napravi rezervaciju</button>
         </div>
     </div>
     <div style="position: absolute; top: 50px; left:380px">
         <!--DETALJI-->
         <div class="kompanija-container">
-            <h3>Broj mesta: {{sc.BrojMesta}}</h3>
-            <h3>Tip: {{sc.GetTip()}}</h3>
-            <h3>Godiste: {{sc.Godiste}}</h3>
-            <h3>Cena po danu: {{sc.Cena}}</h3>
+            <h3>Broj mesta: {{sc.brojMesta}}</h3>
+            <h3>Tip: {{GetTip(sc.tipVozila)}}</h3>
+            <h3>Godiste: {{sc.godiste}}</h3>
+            <h3>Cena po danu: {{sc.cena}}</h3>
             <h3></h3>
             <h3></h3>
-            <h3>Ocena: {{sc.ProsecnaOcena()}}</h3>
+            <h3>Ocena: prosecna ocena >>>PH</h3>
         </div>
         <!--KALENDAR-->
         <div *ngIf="GetCurrentUserType() !== 'User'">

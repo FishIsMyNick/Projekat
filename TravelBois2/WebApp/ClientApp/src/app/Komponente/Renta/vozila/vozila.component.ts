@@ -5,6 +5,8 @@ import { RentACarAdmin } from 'src/app/entities/users/rent-a-car-admin/rent-a-ca
 import { RentService } from 'src/app/shared/rent.service';
 import { ActivatedRoute } from '@angular/router';
 import { element } from 'protractor';
+import { Kola } from 'src/app/entities/objects/kola';
+import { TipVozila } from '../../../_enums';
 
 @Component({
   selector: 'app-vozila',
@@ -12,7 +14,7 @@ import { element } from 'protractor';
 })
 export class VozilaComponent implements OnInit {
   currentUser: RentACarAdmin;
-  kola: Array<any>;
+  kola: Array<any> = new Array<any>();
   kompanija: string;
   dodajKola: string;
 
@@ -20,23 +22,26 @@ export class VozilaComponent implements OnInit {
     
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.currentUser = AppComponent.currentUser as RentACarAdmin;
-    this.kola = new Array<any>();
     this.kompanija = this.route.snapshot.paramMap.get('naziv');
     this.dodajKola = '/dodaj-kola/' + this.kompanija;
-    this.servis.GetCars(this.currentUser.userName).subscribe(
-      (res: any) => {
-        res.forEach(element => {
-          this.kola.push(element)
-        });
-      },
-      err => {
-        console.debug(err);
-      }
-    )
+
+    var resp = await this.servis.GetCarsFromAdmin(this.currentUser.userName);
+    resp.forEach(element => {
+      let k = new Kola(element.brojMesta, element.godiste, element.naziv.split('-')[0], element.naziv.split('-')[1], element.tipVozila, element.nazivRente, element.cena, element.brzaRezervacija);
+
+      element.imgURL = 'assets/images/RentACar/Kola/' + element.naziv + '.jpg';
+      this.kola.push(element)
+    });
+    console.debug(this.kola);
   }
 
-  AddCar(){}
-  EditCar(){}
+  EditCar() { }
+
+  //helpers
+
+  GetTip(tip: number) {
+    return TipVozila[tip];
+  }
 }

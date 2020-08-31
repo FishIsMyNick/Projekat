@@ -2,8 +2,8 @@
     <form (onSubmit)="EditCar()">
         <table>
         <th>Naziv</th><th>Tip</th><th>Godiste</th><th>Broj mesta</th><th>Cena</th>
-        <tr *ngFor="let car of currentUser.Renta.filtriranaKola">
-            <td>{{car.Naziv}}</td><td>{{car.GetTip()}}</td><td>{{car.Godiste}}</td><td>{{car.BrojMesta}}</td><td>{{car.Cena}}</td><td><input type="hidden" name="ID" value="{{car.ID}}"></td><td><input type="submit" value="edit" name="editButton"></td>
+        <tr *ngFor="let car of kola">
+            <td>{{car.naziv}}</td><td>{{GetTip(car.tipVozila)}}</td><td>{{car.godiste}}</td><td>{{car.brojMesta}}</td><td>{{car.cena}}</td><td><img [src]="car.imgURL" height="100px"></td><td><input type="hidden" name="ID" value="{{car.ID}}"></td><td><input type="submit" value="edit" name="editButton"></td>
         </tr>
         </table>
     </form>

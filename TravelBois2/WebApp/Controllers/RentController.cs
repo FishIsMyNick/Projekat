@@ -56,20 +56,14 @@ namespace WebApp.Controllers
 		public ActionResult<RentACar> GetRent()
 		{
 			List<RentACar> rente = _context.Rente.ToList();
-			foreach(RentACar r in rente)
+			foreach (RentACar r in rente)
 			{
 				if (r.AdminID == HttpContext.Request.Form.Keys.First())
 					return r;
 			}
 			return null;
 		}
-		// GET: api/Rent/GetAllKolas
-		[HttpGet]
-		[Route("GetAllKolas")]
-		public async Task<ActionResult<IEnumerable<Kola>>> GetAllKolas()
-		{
-			return await _context.Kola.ToListAsync();
-		}
+
 		[HttpGet]
 		[Route("GetKola")]
 		public async Task<ActionResult<Kola>> GetKola(string naziv)
@@ -130,20 +124,48 @@ namespace WebApp.Controllers
 			return new HttpResponseMessage(HttpStatusCode.OK);
 		}
 		[HttpPost]
-		[Route("GetCars")]
-		public async Task<ActionResult<List<Kola>>> GetCars()
+		[Route("GetCarsFromAdmin")]
+		public async Task<ActionResult<List<Kola>>> GetCarsFromAdmin()
 		{
 			List<RentACar> rente = await _context.Rente.ToListAsync();
 			List<Kola> kola = await _context.Kola.ToListAsync();
+			string adminID = HttpContext.Request.Form.Keys.First();
 
 			List<Kola> ret = new List<Kola>();
-			foreach (RentACar rent in rente.Where(e => e.AdminID == HttpContext.Request.Form.Keys.First()))
+			foreach (RentACar rent in rente.Where(e => e.AdminID == adminID))
 			{
 				ret.AddRange(kola.Where(e => e.NazivRente == rent.Naziv));
 			}
 			return ret;
 		}
-			
+		[HttpPost]
+		[Route("GetCarsFromRent")]
+		public async Task<ActionResult<List<Kola>>> GetCarsFromRent()
+		{
+			List<Kola> kola = await _context.Kola.ToListAsync();
+			List<Kola> ret = new List<Kola>();
+			string rentID = HttpContext.Request.Form.Keys.First();
+
+			foreach (Kola k in kola.Where(e => e.NazivRente == rentID))
+			{
+				ret.Add(k);
+			}
+			return ret;
+		}
+		[HttpPost]
+		[Route("GetZauzetost")]
+		public async Task<ActionResult<List<Zauzetost>>> GetZauzetost(Kola kola)
+		{
+			var zauzetosti = await _context.Zauzetost.ToListAsync();
+			List<Zauzetost> ret = new List<Zauzetost>();
+			foreach (Zauzetost z in zauzetosti)
+			{
+				if (z.Kola == kola.Naziv && z.Renta == kola.NazivRente)
+					ret.Add(z);
+			}
+			return ret;
+		}
+
 		[HttpPost]
 		[Route("AddCar")]
 		public async Task<ActionResult<Kola>> AddCar(Kola kola)
@@ -185,6 +207,38 @@ namespace WebApp.Controllers
 				}
 			}
 			return NoContent();
+		}
+		[HttpPost]
+		[Route("AddReservation")]
+		public async Task<ActionResult<bool>> AddReservation()
+		{
+			var request = HttpContext.Request.Form.Keys.ToList<string>();
+			string[] odDate = request[0].Split('/');
+			string[] doDate = request[1].Split('/');
+			DateTime od = new DateTime(int.Parse(odDate[2]),
+										int.Parse(odDate[1]) + 1,
+										int.Parse(odDate[0]));
+			DateTime dok = new DateTime(int.Parse(doDate[2]),
+										int.Parse(doDate[1]) + 1,
+										int.Parse(doDate[0]));
+			if(od > dok)
+			{
+				DateTime temp = od;
+				od = dok;
+				dok = temp;
+			}
+			string kola = request[2];
+			string rent = request[3];
+			string user = request[4];
+			Zauzetost z = new Zauzetost();
+			z.Do = dok;
+			z.Od = od;
+			z.Kola = kola;
+			z.Renta = rent;
+			z.User = user;
+			_context.Zauzetost.Add(z);
+			int rez = await _context.SaveChangesAsync();
+			return rez > 0;
 		}
 		[HttpPost]
 		[Route("RentAdminExists")]

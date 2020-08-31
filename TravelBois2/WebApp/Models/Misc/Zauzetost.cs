@@ -14,6 +14,8 @@ namespace WebApp.Models.Misc
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public string ID { get; set; }
 		[Column(TypeName = "nvarchar(40)")]
+		public string User { get; set; }
+		[Column(TypeName = "nvarchar(40)")]
 		public string Kola { get; set; }
 		[Column(TypeName = "nvarchar(40)")]
 		public string Renta { get; set; }	// FOREIGN KEY

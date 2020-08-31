@@ -1,26 +1,28 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Kola } from '../../entities/objects/kola';
 import { Datum } from '../../entities/misc/datum';
+import { RentService } from '../../shared/rent.service';
 
 @Component({
   selector: 'kalendar',
   templateUrl: './kalendar.component.html'
 })
 export class KalendarComponent implements OnInit {
-  @Input() kola: Kola;
+  @Input() kola: any;
 
   datum: Datum;
-  s1: Date;
-  s2: Date;
+  static s1: Date;
+  static s2: Date;
   dateUnavailable: boolean;
+  //zauzetost: any;
 
-  constructor() { 
+  constructor(private servis: RentService) { 
     this.datum = new Datum();
-    this.s1 = null;
-    this.s2 = null;
+    KalendarComponent.s1 = null;
+    KalendarComponent.s2 = null;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.datum = new Datum(this.datum)
     this.dateUnavailable = false;
   }
@@ -31,39 +33,42 @@ export class KalendarComponent implements OnInit {
   IsAvalable(day, month, year){
     let date = new Date(year, month, day);
     let ret = true;
-    this.kola.Zauzetost.forEach(element => {
-      if(date >= element[0])
-        if(date <= element[1])
-          ret = false;
+    this.kola.zauzetost.forEach(element => {
+      element.od = new Date(element.od);
+      element.do = new Date(element.do);
+      if(date >= element.od && date <= element.do){
+        ret = false;
+      }
     });
+    //console.debug(date.getDate() + ' ' + ret);
     return ret;
   }
   IsSelected(dan, mesec, godina){
     let temp = new Date(godina, mesec, dan);
     //console.debug('provera da li je dan ' + dan + ' selektovan...')
-    if(this.s1 !== null && this.s2 !== null){
+    if(KalendarComponent.s1 !== null && KalendarComponent.s2 !== null){
       //console.debug('...u rasponu ' + this.s1.getDate() + '-' + this.s2.getDate())
-      if(this.s1 > this.s2){
+      if(KalendarComponent.s1 > KalendarComponent.s2){
         //console.debug(this.s1 >= temp && temp >= this.s2)
-        return (this.s1 >= temp && temp >= this.s2);
+        return (KalendarComponent.s1 >= temp && temp >= KalendarComponent.s2);
       }
       else{
         //console.debug(this.s2 >= temp && temp >= this.s1)
-        return (this.s2 >= temp && temp >= this.s1);
+        return (KalendarComponent.s2 >= temp && temp >= KalendarComponent.s1);
       }
     }
-    else if(this.s2 !== null){
+    else if(KalendarComponent.s2 !== null){
       //console.debug('sam dan, s2: ' + this.DateCmp(temp, this.s2))
-      return this.DateCmp(temp, this.s2);
+      return this.DateCmp(temp, KalendarComponent.s2);
     }
     else{
-      console.debug('ispalo iz provere')
+      //console.debug('ispalo iz provere')
       return false;
     }
   }
   IsOverlapping(newSelection: Date) {
     // Ako ni jedan datum jos nije selektovan nema provere preklapanja
-    if(this.s2 === null){
+    if(KalendarComponent.s2 === null){
       console.debug('nista vec selektovano')
       return false;
     }
@@ -72,20 +77,20 @@ export class KalendarComponent implements OnInit {
       console.debug('nesto vec selektovano');
       // temp je uvek pocetna vrednost iteracije a tempLimit je granica
       let limit = newSelection;
-      if(newSelection < this.s2){
-        limit = this.s2;
+      if(newSelection < KalendarComponent.s2){
+        limit = KalendarComponent.s2;
       }
       else{
-        newSelection = this.s2;
+        newSelection = KalendarComponent.s2;
       }
       // Da li postoji preklapanje sa zauzetim datumima?
       for(; newSelection < limit; newSelection.setDate(newSelection.getDate() + 1)){
         if(!this.IsAvalable(newSelection.getDate(), newSelection.getMonth(), newSelection.getFullYear())){
           // Postoji, prekini sve sto radis i odjebi
-          console.debug(newSelection.getDate(), 'pao');
+          console.debug(newSelection.getDate(), 'preklapa se');
           return true;
         }
-        console.debug(newSelection.getDate(), 'prosao');
+        console.debug(newSelection.getDate(), 'ne preklapa se');
       }
       // Ne postoji, cepaj
       return false;
@@ -106,17 +111,17 @@ export class KalendarComponent implements OnInit {
     let temp = new Date(godina, mesec, dan);
     //console.debug(this.DateCmp(temp, this.s1), this.DateCmp(temp, this.s2))
     // Da li je odabrani datum vec selektovan
-    if(!(this.DateCmp(temp, this.s1) || this.DateCmp(temp, this.s2))){
-      //console.debug('nova selekcija')
-      // if(this.IsOverlapping(temp)){
-      //   this.dateUnavailable = true;
-      //   console.debug('neuspesna')
-      // }
-      // else{
-        //console.debug('uspesna')
-        this.s1 = this.s2;
-        this.s2 = temp;
-      //}
+    if(!(this.DateCmp(temp, KalendarComponent.s1) || this.DateCmp(temp, KalendarComponent.s2))){
+      console.debug('nova selekcija')
+       if(this.IsOverlapping(temp)){
+         this.dateUnavailable = true;
+         console.debug('neuspesna')
+       }
+       else{
+        console.debug('uspesna')
+        KalendarComponent.s1 = KalendarComponent.s2;
+        KalendarComponent.s2 = temp;
+      }
     }
   }
   
@@ -128,7 +133,7 @@ export class KalendarComponent implements OnInit {
     return false;
   }
   Reset(){
-    this.s1 = null;
-    this.s2 = null;
+    KalendarComponent.s1 = null;
+    KalendarComponent.s2 = null;
   }
 }
