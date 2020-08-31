@@ -40,57 +40,52 @@ export class KalendarComponent implements OnInit {
         ret = false;
       }
     });
-    //console.debug(date.getDate() + ' ' + ret);
     return ret;
   }
   IsSelected(dan, mesec, godina){
     let temp = new Date(godina, mesec, dan);
-    //console.debug('provera da li je dan ' + dan + ' selektovan...')
-    if(KalendarComponent.s1 !== null && KalendarComponent.s2 !== null){
-      //console.debug('...u rasponu ' + this.s1.getDate() + '-' + this.s2.getDate())
-      if(KalendarComponent.s1 > KalendarComponent.s2){
-        //console.debug(this.s1 >= temp && temp >= this.s2)
-        return (KalendarComponent.s1 >= temp && temp >= KalendarComponent.s2);
+    let s1 = KalendarComponent.s1;
+    let s2 = KalendarComponent.s2;
+    var ret;
+    if(s1 !== null && s2 !== null){
+      if(s1 > s2){
+        ret = (s1 >= temp && temp >= s2);
       }
       else{
-        //console.debug(this.s2 >= temp && temp >= this.s1)
-        return (KalendarComponent.s2 >= temp && temp >= KalendarComponent.s1);
+        ret = (s2 >= temp && temp >= s1);
       }
     }
-    else if(KalendarComponent.s2 !== null){
-      //console.debug('sam dan, s2: ' + this.DateCmp(temp, this.s2))
-      return this.DateCmp(temp, KalendarComponent.s2);
+    else if(s2 !== null){
+      ret = this.DateCmp(temp, s2);
     }
     else{
-      //console.debug('ispalo iz provere')
-      return false;
+      console.debug('ispalo iz provere')
+      ret = false;
     }
+    return ret;
   }
+
   IsOverlapping(newSelection: Date) {
     // Ako ni jedan datum jos nije selektovan nema provere preklapanja
     if(KalendarComponent.s2 === null){
-      console.debug('nista vec selektovano')
       return false;
     }
     // Jedan je vec selektovan, da li ce selekcija sledeceg dati preklapanje?
     else {
-      console.debug('nesto vec selektovano');
       // temp je uvek pocetna vrednost iteracije a tempLimit je granica
-      let limit = newSelection;
+      let limit = new Date(newSelection);
       if(newSelection < KalendarComponent.s2){
-        limit = KalendarComponent.s2;
+        limit = new Date(KalendarComponent.s2);
       }
       else{
-        newSelection = KalendarComponent.s2;
+        newSelection = new Date(KalendarComponent.s2);
       }
       // Da li postoji preklapanje sa zauzetim datumima?
       for(; newSelection < limit; newSelection.setDate(newSelection.getDate() + 1)){
         if(!this.IsAvalable(newSelection.getDate(), newSelection.getMonth(), newSelection.getFullYear())){
           // Postoji, prekini sve sto radis i odjebi
-          console.debug(newSelection.getDate(), 'preklapa se');
           return true;
         }
-        console.debug(newSelection.getDate(), 'ne preklapa se');
       }
       // Ne postoji, cepaj
       return false;
@@ -106,23 +101,24 @@ export class KalendarComponent implements OnInit {
     this.ngOnInit();
   }
 
-  Select(dan, mesec, godina){
-    console.debug(dan, 'selektovan')
+  Select(dan, mesec, godina) {
+    this.dateUnavailable = false;
     let temp = new Date(godina, mesec, dan);
+    let s1 = KalendarComponent.s1;
+    let s2 = KalendarComponent.s2;
     //console.debug(this.DateCmp(temp, this.s1), this.DateCmp(temp, this.s2))
     // Da li je odabrani datum vec selektovan
-    if(!(this.DateCmp(temp, KalendarComponent.s1) || this.DateCmp(temp, KalendarComponent.s2))){
-      console.debug('nova selekcija')
+    if(!(this.DateCmp(temp, s1) || this.DateCmp(temp, s2))){
        if(this.IsOverlapping(temp)){
          this.dateUnavailable = true;
-         console.debug('neuspesna')
        }
        else{
-        console.debug('uspesna')
-        KalendarComponent.s1 = KalendarComponent.s2;
-        KalendarComponent.s2 = temp;
+        s1 = s2;
+        s2 = temp;
       }
     }
+    KalendarComponent.s1 = s1;
+    KalendarComponent.s2 = s2;
   }
   
   DateCmp(d1: Date, d2: Date){
@@ -135,5 +131,8 @@ export class KalendarComponent implements OnInit {
   Reset(){
     KalendarComponent.s1 = null;
     KalendarComponent.s2 = null;
+    this.dateUnavailable = false;
   }
+  GetS1() { return KalendarComponent.s1; }
+  GetS2() { return KalendarComponent.s2; }
 }
