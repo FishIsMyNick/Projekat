@@ -14,7 +14,9 @@ namespace WebApp.Models.Misc
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public string ID { get; set; }
-		[Column(TypeName = "decimal(1,1)")]
-		public float Value { get; set; }
+		[Column(TypeName = "smallint")]
+		public int Value { get; set; }
+		[Column(TypeName = "nvarchar(40)")]
+		public string Username { get; set; }
 	}
 }

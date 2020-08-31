@@ -23,6 +23,22 @@
 
     <!--Prikaz registrovanim korisnicima-->
 <div *ngIf="getType() === 'RegisteredUser'" class="grid-container"> 
+    <a routerLink="/avioKompanije" >
+        <div class="servis-blok" >
+            <img class="servis-image" src="assets/images/pocetna/unregistered/avio-kompanija.jpg" >
+            <div class="img-text-container" >
+                Avio kompanije
+            </div>
+        </div>
+    </a>
+    <a routerLink="/sveRente" >
+        <div class="servis-blok">
+            <img class="servis-image" src="assets/images/pocetna/unregistered/rent-a-car.jpg">
+            <div class="img-text-container">
+                Rent-A-Car
+            </div>
+        </div>
+    </a>
     <a routerLink="/istorija" >
         <div class="servis-blok">
             <img class="servis-image" src="assets/images/pocetna/registered/istorija.jpg">
@@ -44,22 +60,6 @@
             <img class="servis-image" src="assets/images/pocetna/registered/pozivnica.png">
             <div class="img-text-container">
                 Pozivnice
-            </div>
-        </div>
-    </a>
-    <a routerLink="/avioKompanije" >
-        <div class="servis-blok" >
-            <img class="servis-image" src="assets/images/pocetna/unregistered/avio-kompanija.jpg" >
-            <div class="img-text-container" >
-                Avio kompanije
-            </div>
-        </div>
-    </a>
-    <a routerLink="/sveRente" >
-        <div class="servis-blok">
-            <img class="servis-image" src="assets/images/pocetna/unregistered/rent-a-car.jpg">
-            <div class="img-text-container">
-                Rent-A-Car
             </div>
         </div>
     </a>

@@ -11,9 +11,8 @@ export class Kola {
     Godiste: number;
     ID: number;
     Naziv: string;
-    Ocene: Array<Ocena>;
     Tip: TipVozila;
-    //Zauzet: boolean;
+    //za prenos podataka
     Zauzetost: Array<[Date, Date]>
 
     constructor(brMesta:number, godiste:number, marka:string, model:string, tip:TipVozila, renta: string = null, cena: number = 0, brzaRezervacija:boolean = false){
@@ -27,7 +26,6 @@ export class Kola {
         
         //Ne radi kako treba
         //this.ID = IdHandler.GenerateKolaID();
-        this.Ocene = new Array<Ocena>();
         //this.Zauzet = false;
         this.Zauzetost = new Array<[Date, Date]>();
         this.Zauzetost.push([new Date(2020, 3, 3), new Date(2020, 3, 9)]);

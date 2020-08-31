@@ -10,6 +10,8 @@ import { element } from 'protractor';
 import { Router } from '@angular/router';
 import { LetoviService } from '../../../shared/letovi.service';
 import { ToastrService } from 'ngx-toastr';
+import { RentService } from 'src/app/shared/rent.service';
+import { Kola } from '../../../entities/objects/kola';
 
 @Component({
   selector: 'app-istorija',
@@ -22,10 +24,15 @@ export class IstorijaComponent implements OnInit {
   letDataRez: Array<Array<string>>;
   emptyIL: number;
   emptyRL: number;
-  kolaHeaders = ['Rent-A-Car', 'Marka', 'Model', 'Godiste', 'Broj mesta', 'Tip', 'Prosecna ocena'];
-  kolaData: Array<Array<string>>;
+  kolaHeaders = ['Rent-A-Car', 'Marka', 'Model', 'Godiste', 'Broj mesta', 'Tip', 'Rezervisan od', 'Rezervisan do', 'Prosecna ocena'];
+  kolaData: any;
   currentUser: RegisteredUser;
   relacija: string;
+  ocenjivanje: boolean = false;
+  ocena: any;
+  kolaZaOceniti: string;
+  rentaKolaZaOceniti: string;
+  rentaZaOceniti: string;
 
 
   avioRezervacije: Array<Let>;
@@ -36,17 +43,17 @@ export class IstorijaComponent implements OnInit {
   listaLetova: Array<number>;  //za otkazivanje
 
 
-  constructor(private router: Router, private service: LetoviService, private toastr: ToastrService) { 
+  constructor(private router: Router, private service: LetoviService, private rentService: RentService, private toastr: ToastrService) {}
+
+  async ngOnInit() {
     this.currentUser = AppComponent.currentUser as RegisteredUser;
     this.letData = new Array<Array<string>>();
     this.letDataRez = new Array<Array<string>>();
-    this.kolaData = new Array<Array<string>>();
+    this.kolaData = new Array<any>();
     this.emptyIL = 0;
-    this.emptyRL = 0; 
-    
-  }
+    this.emptyRL = 0;
+    this.ocenjivanje = false;
 
-  ngOnInit(): void {
     this.avioSediste = new Array<{ idLeta: number, idSedista: string, cenaSedista: number }>();
     this.service.getSediste().subscribe(sedista => {
       sedista.forEach(element => {
@@ -59,14 +66,89 @@ export class IstorijaComponent implements OnInit {
       })
     });
 
-
     this.avioIstorija = new Array<Let>();
     this.avioRezervacije = new Array<Let>();
     this.idLetLista = new Array<number>();
     this.listaSedista = new Array<string>();
     this.listaLetova = new Array<number>();
 
+
+    // Ucitavanje rezervacija rente
+    var rezervacije = await this.rentService.GetReservations(this.currentUser.userName);
+
+    for (let i = 0; i < rezervacije.length; i++) {
+      var element = rezervacije[i];
+      var kola = await this.rentService.GetKola(element.kola, element.renta)
+
+        let data = kola;
+      data.renta = element.renta;
+      data.marka = element.kola.split('-')[0];
+      data.model = element.kola.split('-')[1];
+      data.godiste = kola.godiste;
+      data.brojMesta = kola.brojMesta;
+      data.tip = TipVozila[kola.tipVozila];
+      data.prosecnaOcena = ">> Posecna ocena PH <<";
+      let datOd = new Date(element.od);
+      data.odDan = datOd.getDate();
+      data.odMon = datOd.getMonth() + 1;
+      data.odYr = datOd.getFullYear();
+      let datDo = new Date(element.do);
+      data.doDan = datDo.getDate();
+      data.doMon = datDo.getMonth() + 1;
+      data.doYr = datDo.getFullYear();
+      this.kolaData.push(data);
+    }
     //UCITAVANJE LETOVA
+    this.UcitajLetove();
+  }
+ 
+
+  OceniLet(i: number) {
+    this.relacija = this.avioIstorija[i].mestoPolaska + '-' + this.avioIstorija[i].mestoDolaska;
+    var id = this.idLetLista[i];
+    this.router.navigateByUrl('/oceniLet/' + id + '/' + this.relacija);
+  }
+
+  OtkaziLet(i: number) {
+    var idLeta = this.listaLetova[i];
+    var idSedista = this.listaSedista[i];
+
+    this.avioRezervacije.splice(i, 1);
+    if (this.avioRezervacije.length == 0) {
+      this.emptyRL = 0
+    }
+    this.service.deleteSediste(idLeta, idSedista).subscribe();
+    this.toastr.success("Uspesno ste otkazali let!");
+  }
+  OceniKola(event) {
+    let arg = event.srcElement.attributes[1].value.split('+');
+    this.kolaZaOceniti = arg[0];
+    this.rentaKolaZaOceniti = arg[1]
+    this.ocenjivanje = true;
+  }
+  ocenaChanged(value) {
+    this.ocena = value;
+  }
+  async PosaljiOcenu() {
+    var kola = await this.rentService.GetKola(this.kolaZaOceniti, this.rentaKolaZaOceniti);
+    var uspeo = await this.rentService.OceniKola(kola.naziv, kola.nazivRente, this.ocena.toString(), this.currentUser.userName);
+    if (uspeo) {
+      this.toastr.success('Uspesno ste ocenili kola');
+      this.router.navigate(['/pocetna']);
+    }
+    else {
+      this.toastr.error('Vec ste ocenili ova kola');
+    }
+  }
+  onBack() {
+    this.router.navigateByUrl('/pocetna');
+  }
+  Nazad() {
+    this.ocenjivanje = false;
+  }
+
+
+  UcitajLetove(){
     this.service.getLetovi().subscribe(letovi => {
       letovi.forEach(element => {
         this.avioSediste.forEach(s => {
@@ -141,27 +223,4 @@ export class IstorijaComponent implements OnInit {
       })
     });
   }
- 
-
-  OceniLet(i: number) {
-    this.relacija = this.avioIstorija[i].mestoPolaska + '-' + this.avioIstorija[i].mestoDolaska;
-    var id = this.idLetLista[i];
-    this.router.navigateByUrl('/oceniLet/' + id + '/' + this.relacija);
-  }
-
-  OtkaziLet(i: number) {
-    var idLeta = this.listaLetova[i];
-    var idSedista = this.listaSedista[i];
-
-    this.avioRezervacije.splice(i, 1);
-    if (this.avioRezervacije.length == 0) {
-      this.emptyRL = 0
-    }
-    this.service.deleteSediste(idLeta, idSedista).subscribe();
-    this.toastr.success("Uspesno ste otkazali let!");
-  }
-  OceniKola() { }
-  onBack() {
-    this.router.navigateByUrl('/pocetna');
-  }  
 }

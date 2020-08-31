@@ -50,12 +50,24 @@ export class RentService {
 
     return await this.http.post<any>(this.BaseURI + '/Rent/GetCarsFromRent', formData).toPromise();
   }
+  async GetKola(naziv: string, renta: string): Promise<any> {
+    const formData = new FormData();
+    formData.append(naziv, 'naziv');
+    formData.append(renta, 'renta');
+    return await this.http.post<any>(this.BaseURI + '/Rent/GetKola', formData).toPromise();
+  }
   AddCar(kola: Kola): Observable<Kola> {
     return this.http.post<Kola>(this.BaseURI + '/Rent/AddCar', kola);
   }
   async GetZauzetost(kola: Kola): Promise<any> {
     var ret = await this.http.post(this.BaseURI + '/Rent/GetZauzetost', kola).toPromise();
     return ret;
+  }
+  async GetReservations(userID: string) : Promise<any> {
+    const formData = new FormData();
+    formData.append(userID, 'user');
+
+    return await this.http.post<any>(this.BaseURI + '/Rent/GetReservations', formData).toPromise();
   }
   AddReservation(d1: Date, d2: Date, k: any, user): Observable<any> {
     const formData = new FormData();
@@ -69,5 +81,13 @@ export class RentService {
     formData.append(k.nazivRente, 'renta');
     formData.append(user, 'user');
     return this.http.post<any>(this.BaseURI + '/Rent/AddReservation', formData)
+  }
+  async OceniKola(naziv, renta, ocena, user): Promise<any> {
+    const formData = new FormData();
+    formData.append(naziv, 'naziv');
+    formData.append(renta, 'renta');
+    formData.append(ocena, 'ocena');
+    formData.append(user, 'user');
+    return await this.http.post<any>(this.BaseURI + '/Rent/OceniKola', formData).toPromise();
   }
 }

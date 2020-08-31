@@ -1,91 +1,136 @@
-<h2>Vase rezervacije letova</h2>
-<div class="istorija-container" [hidden]="emptyRL == 0">  
-  <table>
-    <thead>
-      <tr>
-        <th *ngFor="let column of letHeadersRezervacija">
-          {{column}}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let letic of avioRezervacije; let i = index">
-        <td> {{letic.aviokompanija}}</td>
-        <td> {{letic.mestoPolaska}}</td>
-        <td> {{letic.mestoDolaska}}</td>
-        <td> {{letic.datumPolaska}}</td>
-        <td> {{letic.datumDolaska}}</td>
-        <td> {{letic.vremePoletanja}}</td>
-        <td> {{letic.vremeSletanja}}</td>
-        <td *ngIf="letic.klasaLeta == 0">first</td>
-        <td *ngIf="letic.klasaLeta == 1">economy</td>
-        <td *ngIf="letic.klasaLeta == 2">bussiness</td>
-        <td *ngIf="letic.tipLeta == 0">one-way</td>
-        <td *ngIf="letic.tipLeta == 1">multi-city</td>
-        <td>{{letic.cenaKarte}}</td>
-        <td>
-          <button class="btn-rez" (click)="OtkaziLet(i)">Otkazi</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<div [hidden]="emptyRL !==0">
-  <h5>Tabela je trenutno prazna!</h5>
-</div>
-<br>
-
-
-<h2>Istorija letova</h2>
-  <div class="istorija-container" [hidden]="emptyIL == 0">
+<div *ngIf="!ocenjivanje">
+  <h2>Vase rezervacije letova</h2>
+  <div class="istorija-container" [hidden]="emptyRL == 0">  
     <table>
       <thead>
         <tr>
-          <th *ngFor="let column of letHeadersIstorija">
+          <th *ngFor="let column of letHeadersRezervacija">
             {{column}}
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let letic of avioIstorija; let i = index">
+        <tr *ngFor="let letic of avioRezervacije; let i = index">
           <td> {{letic.aviokompanija}}</td>
           <td> {{letic.mestoPolaska}}</td>
           <td> {{letic.mestoDolaska}}</td>
           <td> {{letic.datumPolaska}}</td>
           <td> {{letic.datumDolaska}}</td>
+          <td> {{letic.vremePoletanja}}</td>
+          <td> {{letic.vremeSletanja}}</td>
+          <td *ngIf="letic.klasaLeta == 0">first</td>
+          <td *ngIf="letic.klasaLeta == 1">economy</td>
+          <td *ngIf="letic.klasaLeta == 2">bussiness</td>
+          <td *ngIf="letic.tipLeta == 0">one-way</td>
+          <td *ngIf="letic.tipLeta == 1">multi-city</td>
+          <td>{{letic.cenaKarte}}</td>
           <td>
-            <button class="btn-rez" (click)="OceniLet(i)">Oceni</button>
+            <button class="btn-rez" (click)="OtkaziLet(i)">Otkazi</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-<div [hidden]="emptyIL !==0">
-  <h5>Tabela je trenutno prazna!</h5>
+  <div [hidden]="emptyRL !==0">
+    <h5>Tabela je trenutno prazna!</h5>
+  </div>
+  <br>
+
+
+  <h2>Istorija letova</h2>
+    <div class="istorija-container" [hidden]="emptyIL == 0">
+      <table>
+        <thead>
+          <tr>
+            <th *ngFor="let column of letHeadersIstorija">
+              {{column}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let letic of avioIstorija; let i = index">
+            <td> {{letic.aviokompanija}}</td>
+            <td> {{letic.mestoPolaska}}</td>
+            <td> {{letic.mestoDolaska}}</td>
+            <td> {{letic.datumPolaska}}</td>
+            <td> {{letic.datumDolaska}}</td>
+            <td>
+              <button class="btn-rez" (click)="OceniLet(i)">Oceni</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  <div [hidden]="emptyIL !==0">
+    <h5>Tabela je trenutno prazna!</h5>
+  </div>
+  <br>
+  <!--RENTIRANA KOLA-->
+  <div class="istorija-container">
+    <h2> Istorija rentiranih kola</h2>
+    <h3 *ngIf="kolaData.length === 0">Trenutno nemate rezervicaije za prikaz</h3>
+    <table *ngIf="kolaData.length > 0">
+      <thead>
+        <tr>
+          <th *ngFor="let column of kolaHeaders">
+            {{column}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of kolaData">
+          <td>
+            {{data.renta}}
+          </td>
+          <td>
+            {{data.marka}}
+          </td>
+          <td>
+            {{data.model}}
+          </td>
+          <td>
+            {{data.godiste}}
+          </td>
+          <td>
+            {{data.brojMesta}}
+          </td>
+          <td>
+            {{data.tip}}
+          </td>
+          <td>
+            {{data.odDan}}/{{data.odMon}}/{{data.odYr}}
+          </td>
+          <td>
+            {{data.doDan}}/{{data.doMon}}/{{data.doYr}}
+          </td>
+          <td>
+            {{data.prosecnaOcena}}
+          </td>
+          <td>
+            <button class="btn-rez" name="{{data.naziv}}+{{data.renta}}"
+            (click)="OceniKola($event)">Oceni</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-left:15px">
+    <button class="btn btn-primary" (click)="onBack()" type="button">Nazad</button>
+  </div>
 </div>
-<br>
-<!--<div class="istorija-container">
-  <h2> Istorija rentiranih kola</h2>
-  <table>
-    <thead>
-      <tr>
-        <th *ngFor="let column of kolaHeaders">
-          {{column}}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of kolaData">
-        <td *ngFor="let data of row">
-          {{data}}
-        </td>
-        <td>
-          <button class="btn-rez" (click)="OceniKola()">Oceni</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>-->
-<div style="margin-left:15px">
-  <button class="btn btn-primary" (click)="onBack()" type="button">Nazad</button>
+<div *ngIf="ocenjivanje">
+    <div style="display: inline; margin:30px 30px">
+      <label for="r1">1</label>
+      <input checked="checked" type="radio" name="ocena" id="r1" value="1" (change)="ocenaChanged($event.target.value)">
+      <label for="r2">2</label>
+      <input type="radio" name="ocena" id="r2" value="2" (change)="ocenaChanged($event.target.value)">
+      <label for="r3">3</label>
+      <input type="radio" name="ocena" id="r3" value="3" (change)="ocenaChanged($event.target.value)">
+      <label for="r4">4</label>
+      <input type="radio" name="ocena" id="r4" value="4" (change)="ocenaChanged($event.target.value)">
+      <label for="r5">5</label>
+      <input type="radio" name="ocena" id="r5" value="5" (change)="ocenaChanged($event.target.value)">
+    </div>
+    <button (click)="PosaljiOcenu()">Oceni</button>
+    <button (click)="Nazad()">Nazad</button>
 </div>

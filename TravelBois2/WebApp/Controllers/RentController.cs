@@ -50,6 +50,42 @@ namespace WebApp.Controllers
 		{
 			return await _context.Rente.ToListAsync();
 		}
+		[HttpGet]
+		[Route("GetProsecnaOcena")]
+		public float GetProsecnaOcena(string naziv)
+		{
+			Ocena ocena = GetOcenaKola(naziv);
+			return ocena != null ? ocena.Value : -1;
+		}
+		#endregion
+
+		#region POST
+		[HttpPost]
+		[Route("OceniKola")]
+		public async Task<ActionResult<bool>> OceniKola()
+		{
+			var request = HttpContext.Request.Form.Keys.ToList<string>();
+			string naziv = request[0];
+			string renta = request[1];
+			int ocena = int.Parse(request[2]);
+			string user = request[3];
+
+			List<OcenaKola> ocene = await _context.OceneKola.ToListAsync();
+			foreach(OcenaKola oc in ocene)
+			{
+				// Da li ocena vec postoji od istog korisnika
+				if (oc.Naziv == naziv && oc.Kompanija == renta && oc.Username == user)
+					return false;
+			}
+			OcenaKola o = new OcenaKola();
+			o.Username = user;
+			o.Value = ocena;
+			o.Naziv = naziv;
+			o.Kompanija = renta;
+			_context.OceneKola.Add(o);
+			await _context.SaveChangesAsync();
+			return true;
+		}
 		// GET: api/Rent/GetRent
 		[HttpPost]
 		[Route("GetRent")]
@@ -64,22 +100,21 @@ namespace WebApp.Controllers
 			return null;
 		}
 
-		[HttpGet]
+		[HttpPost]
 		[Route("GetKola")]
-		public async Task<ActionResult<Kola>> GetKola(string naziv)
+		public async Task<ActionResult<Kola>> GetKola()
 		{
-			return await _context.Kola.FindAsync(naziv);
+			var request = HttpContext.Request.Form.Keys.ToList<string>();
+			string naziv = request[0];
+			string renta = request[1];
+			var kola = await _context.Kola.ToListAsync();
+			foreach (Kola k in kola)
+			{
+				if (k.Naziv == naziv && k.NazivRente == renta)
+					return k;
+			}
+			return null;
 		}
-		[HttpGet]
-		[Route("GetProsecnaOcena")]
-		public float GetProsecnaOcena(string naziv)
-		{
-			Ocena ocena = GetOcenaKola(naziv);
-			return ocena != null ? ocena.Value : -1;
-		}
-		#endregion
-
-		#region POST
 		// POST: api/Rent/AddRent
 		[HttpPost]
 		[Route("AddRent")]
@@ -162,6 +197,24 @@ namespace WebApp.Controllers
 			{
 				if (z.Kola == kola.Naziv && z.Renta == kola.NazivRente)
 					ret.Add(z);
+			}
+			return ret;
+		}
+		[HttpPost]
+		[Route("GetReservations")]
+		public async Task<ActionResult<List<Zauzetost>>> GetReservations()
+		{
+			var request = HttpContext.Request.Form.Keys;
+			string userID = request.First();
+
+			var reservations = await _context.Zauzetost.ToListAsync();
+			List<Zauzetost> ret = new List<Zauzetost>();
+			foreach(Zauzetost z in reservations)
+			{
+				if(z.User == userID)
+				{
+					ret.Add(z);
+				}
 			}
 			return ret;
 		}
