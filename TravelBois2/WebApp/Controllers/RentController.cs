@@ -86,7 +86,24 @@ namespace WebApp.Controllers
 			await _context.SaveChangesAsync();
 			return true;
 		}
-		// GET: api/Rent/GetRent
+		[HttpPost]
+		[Route("ProsecnaOcenaKola")]
+		public async Task<ActionResult<float>> ProsecnaOcenaKola(Kola kola)
+		{
+			List<OcenaKola> ocene = await _context.OceneKola.ToListAsync();
+			float sum = 0;
+			int i = 0;
+			foreach(OcenaKola o in ocene)
+			{
+				if(o.Naziv == kola.Naziv && o.Kompanija == kola.NazivRente)
+				{
+					sum += o.Value;
+					i++;
+				}
+			}
+			return sum / i;
+		}
+		// Post: api/Rent/GetRent
 		[HttpPost]
 		[Route("GetRent")]
 		public ActionResult<RentACar> GetRent()

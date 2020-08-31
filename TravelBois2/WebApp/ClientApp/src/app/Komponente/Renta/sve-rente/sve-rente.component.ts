@@ -102,6 +102,7 @@ export class SveRenteComponent implements OnInit {
     this.sc.zauzetost = await this.service.GetZauzetost(this.sc);
     this.sc.marka = k.naziv.split('-')[0];
     this.sc.model = k.naziv.split('-')[1];
+    this.sc.prosecnaOcena = await this.service.ProsecnaOcenaKola(this.sc);
     this.prikaz = RentPrikaz.kola;
   }
   NapraviRezervaciju() {

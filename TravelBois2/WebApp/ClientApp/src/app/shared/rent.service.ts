@@ -5,6 +5,7 @@ import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Kola } from '../entities/objects/kola';
 import { basename } from 'path';
+import { promise } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
@@ -89,5 +90,8 @@ export class RentService {
     formData.append(ocena, 'ocena');
     formData.append(user, 'user');
     return await this.http.post<any>(this.BaseURI + '/Rent/OceniKola', formData).toPromise();
+  }
+  async ProsecnaOcenaKola(kola: Kola): Promise<any> {
+    return await this.http.post<any>(this.BaseURI + '/Rent/ProsecnaOcenaKola', kola).toPromise();
   }
 }
