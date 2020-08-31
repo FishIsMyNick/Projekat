@@ -24,6 +24,11 @@ export class RentService {
 
     return await this.http.post<any>(this.BaseURI + '/Rent/GetRent', formData).toPromise();
   }
+  async GetRentByName(name: string): Promise<any>{
+    const formData = new FormData();
+    formData.append(name, 'name');
+    return await this.http.post<any>(this.BaseURI + '/Rent/GetRentByName', formData).toPromise();
+  }
   addRentKompanija(rentKompanija: RentACar): Observable<RentACar> {
     return this.http.post<RentACar>(this.BaseURI + '/Rent/AddRent', rentKompanija);
   }
@@ -91,7 +96,17 @@ export class RentService {
     formData.append(user, 'user');
     return await this.http.post<any>(this.BaseURI + '/Rent/OceniKola', formData).toPromise();
   }
+  async OceniRentu(naziv, ocena, user): Promise<any> {
+    const formData = new FormData();
+    formData.append(naziv, 'naziv');
+    formData.append(ocena, 'ocena');
+    formData.append(user, 'user');
+    return await this.http.post<any>(this.BaseURI + '/Rent/OceniRentu', formData).toPromise();
+  }
   async ProsecnaOcenaKola(kola: Kola): Promise<any> {
     return await this.http.post<any>(this.BaseURI + '/Rent/ProsecnaOcenaKola', kola).toPromise();
+  }
+  async ProsecnaOcenaRente(renta: RentACar): Promise<any> {
+    return await this.http.post<any>(this.BaseURI + '/Rent/ProsecnaOcenaKola', renta).toPromise();
   }
 }

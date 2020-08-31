@@ -27,6 +27,7 @@ export class SveRenteComponent implements OnInit {
   sr: any;
   sc: any;
   filtriranaKola: Array<any> = new Array<any>();
+  ocena: any;
 
   SortForm: FormGroup;
   ocene: Array<Ocena>;
@@ -94,6 +95,7 @@ export class SveRenteComponent implements OnInit {
     this.kola = await this.service.GetCarsFromRent(this.sr.naziv);
     this.filtriranaKola = this.kola;
     this.filtriranaKola.forEach(element => element.imgURL = 'assets/images/RentACar/Kola/' + element.naziv + '.jpg');
+    this.sr.prosecnaOcena = await this.service.ProsecnaOcenaRente(this.sr);
 
     this.prikaz = RentPrikaz.kompanija;
   }
@@ -118,7 +120,26 @@ export class SveRenteComponent implements OnInit {
       }
     )
   }
-
+  Oceni(){
+    this.prikaz = RentPrikaz.ocenjivanje;
+  }
+  async PosaljiOcenu() {
+    var renta = await this.service.GetRentByName(this.sr.naziv)
+    var uspeo = await this.service.OceniRentu(renta.naziv, this.ocena.toString(), this.currentUser.userName);
+    if (uspeo) {
+      this.toastr.success('Uspesno ste ocenili servis');
+      this.router.navigate(['/pocetna']);
+    }
+    else {
+      this.toastr.error('Vec ste ocenili ovaj servis');
+    }
+  }
+  Nazad() {
+    this.prikaz = RentPrikaz.kompanija;
+  }
+  ocenaChanged(value){
+    this.ocena = value;
+  }
   // helpers
   GetTip(tip) {
     return TipVozila[tip];

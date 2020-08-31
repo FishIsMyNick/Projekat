@@ -120,6 +120,7 @@
 </div>
 <div *ngIf="ocenjivanje">
     <div style="display: inline; margin:30px 30px">
+      {{kolaZaOcenjivanje}}
       <label for="r1">1</label>
       <input checked="checked" type="radio" name="ocena" id="r1" value="1" (change)="ocenaChanged($event.target.value)">
       <label for="r2">2</label>

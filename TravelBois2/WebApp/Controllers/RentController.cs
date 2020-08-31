@@ -103,6 +103,61 @@ namespace WebApp.Controllers
 			}
 			return sum / i;
 		}
+		[HttpPost]
+		[Route("ProsecnaOcenaRente")]
+		public async Task<ActionResult<float>> ProsecnaOcenaRente(RentACar renta)
+		{
+			List<OcenaRente> ocene = await _context.OceneRente.ToListAsync();
+			float sum = 0;
+			int i = 0;
+			foreach (OcenaRente o in ocene)
+			{
+				if (o.kompanija == renta.Naziv)
+				{
+					sum += o.Value;
+					i++;
+				}
+			}
+			return sum / i;
+		}
+		[HttpPost]
+		[Route("GetRentByName")]
+		public async Task<ActionResult<RentACar>> GetRentByName()
+		{
+			string rentID = HttpContext.Request.Form.Keys.First();
+			List<RentACar> rente = await _context.Rente.ToListAsync();
+			foreach(RentACar r in rente)
+			{
+				if (r.Naziv == rentID)
+					return r;
+			}
+			return null;
+		}
+		[HttpPost]
+		[Route("OceniRentu")]
+		public async Task<ActionResult<bool>> OceniRentu()
+		{
+			var request = HttpContext.Request.Form.Keys.ToList<string>();
+			string naziv = request[0];
+			int ocena = int.Parse(request[1]);
+			string user = request[2];
+
+			List<OcenaRente> ocene = await _context.OceneRente.ToListAsync();
+			foreach (OcenaRente oc in ocene)
+			{
+				// renta vec ocenjena
+				if (oc.Username == user && oc.kompanija == naziv)
+					return false;
+			}
+			OcenaRente o = new OcenaRente();
+			o.kompanija = naziv;
+			o.Username = user;
+			o.Value = ocena;
+
+			_context.OceneRente.Add(o);
+			await _context.SaveChangesAsync();
+			return true;
+		}
 		// Post: api/Rent/GetRent
 		[HttpPost]
 		[Route("GetRent")]

@@ -32,7 +32,7 @@
             <hr>
             <h3>{{sr.opis}}</h3>
             <hr>
-            <h3>prosecna ocena PH</h3>
+            <h3>{{sr.prosecnaOcena}}</h3>
             <hr>
             <div style="position: relative; margin: 5px;">
                 <div class="filter-stavka">
@@ -64,7 +64,8 @@
                 </li>
             </ul>
         </div>
-        <h3><button (click)="prikaziListu()">Nazad</button></h3>
+        <h3><button (click)="prikaziListu()">Nazad</button>
+            <button *ngIf="GetCurrentUserType() === 'RegisteredUser'"style="float: right;" (click)="Oceni()">Oceni</button></h3>
     </div>
 </div>
 
@@ -104,4 +105,22 @@
             <kalendar [kola]="sc"></kalendar>
         </div>
     </div>
+</div>
+
+<div *ngIf="prikaz === 4">
+    <div style="display: inline; margin:30px 30px">
+      {{kolaZaOcenjivanje}}
+      <label for="r1">1</label>
+      <input checked="checked" type="radio" name="ocena" id="r1" value="1" (change)="ocenaChanged($event.target.value)">
+      <label for="r2">2</label>
+      <input type="radio" name="ocena" id="r2" value="2" (change)="ocenaChanged($event.target.value)">
+      <label for="r3">3</label>
+      <input type="radio" name="ocena" id="r3" value="3" (change)="ocenaChanged($event.target.value)">
+      <label for="r4">4</label>
+      <input type="radio" name="ocena" id="r4" value="4" (change)="ocenaChanged($event.target.value)">
+      <label for="r5">5</label>
+      <input type="radio" name="ocena" id="r5" value="5" (change)="ocenaChanged($event.target.value)">
+    </div>
+    <button (click)="PosaljiOcenu()">Oceni</button>
+    <button (click)="Nazad()">Nazad</button>
 </div>

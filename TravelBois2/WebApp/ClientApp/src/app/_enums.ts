@@ -40,7 +40,8 @@ export enum TipVozila {
 export enum RentPrikaz {
     listaKompanija = 1,
     kompanija,
-    kola
+    kola,
+    ocenjivanje
 }
 
 export enum Meseci {
