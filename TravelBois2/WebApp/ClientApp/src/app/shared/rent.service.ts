@@ -107,6 +107,6 @@ export class RentService {
     return await this.http.post<any>(this.BaseURI + '/Rent/ProsecnaOcenaKola', kola).toPromise();
   }
   async ProsecnaOcenaRente(renta: RentACar): Promise<any> {
-    return await this.http.post<any>(this.BaseURI + '/Rent/ProsecnaOcenaKola', renta).toPromise();
+    return await this.http.post<any>(this.BaseURI + '/Rent/ProsecnaOcenaRente', renta).toPromise();
   }
 }
