@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { element } from 'protractor';
 import { Kola } from 'src/app/entities/objects/kola';
 import { TipVozila, VozilaPrikaz, GetStringValues } from '../../../_enums';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-vozila',
@@ -20,9 +21,7 @@ export class VozilaComponent implements OnInit {
   editKola: any;
   prikaz: VozilaPrikaz;
 
-  constructor(private servis: RentService, private route: ActivatedRoute) { 
-    
-  }
+  constructor(private servis: RentService, private route: ActivatedRoute, private toastr: ToastrService){}
 
   async ngOnInit() {
     this.currentUser = AppComponent.currentUser as RentACarAdmin;
@@ -59,28 +58,39 @@ export class VozilaComponent implements OnInit {
     this.prikaz = VozilaPrikaz.Katalog;
   }
   async Save(marka, model) {
+    var kola; // kola odabrana za izmenu
+    let naziv = marka + '-' + model;
+    for (let k of this.kola) {
+      if (k.naziv == naziv) {
+        kola = k;
+        break;
+      }
+    }
+    kola.brojMesta = (<HTMLInputElement>document.getElementById('brojMesta')).value
+    kola.godiste = (<HTMLInputElement>document.getElementById('godiste')).value
+    kola.cena = (<HTMLInputElement>document.getElementById('cena')).value
+    kola.brzaRezervacija = (<HTMLInputElement>document.getElementById('brzaRezervacija')).checked;
+    kola.tipVozila = (<HTMLInputElement>document.getElementById('tip')).value
     let newMarka = (<HTMLInputElement>document.getElementById('marka')).value;
     let newModel = (<HTMLInputElement>document.getElementById('model')).value;
+
     // Izmenjen naziv kola, moraju da se menjaju i rezervacije
     if (marka != newMarka || model != newModel) {
-      var kola;
-      let naziv = marka + '-' + model;
-      for (let k of this.kola) {
-        if (k.naziv == naziv) {
-          kola = k;
-          break;
-        }
-      }
-      kola.brojMesta = (<HTMLInputElement>document.getElementById('brojMesta')).value
-      kola.godiste = (<HTMLInputElement>document.getElementById('godiste')).value
-      kola.cena = (<HTMLInputElement>document.getElementById('cena')).value
-      kola.brzaRezervacija = (<HTMLInputElement>document.getElementById('brzaRezervacija')).value
-      kola.tipVozila = (<HTMLInputElement>document.getElementById('tip')).value
+      
       var ret = await this.servis.ReplaceCar(kola, newMarka, newModel);
-    }
-    else {
 
+
+      // TODO:
+      // izmena slike
     }
+    // Nije izmenjen naziv, samo se kola menjaju
+    else {
+      var ret = await this.servis.UpdateCar(kola);
+    }
+
+    this.toastr.success('Uspesno ste izmenili automobil: ' + ret.naziv.split('-')[0] + ' ' + ret.naziv.split('-')[1] + '!');
+    this.kola = await this.servis.GetCarsFromAdmin(AppComponent.currentUser.userName);
+    this.prikaz = VozilaPrikaz.Katalog;
   }
   //helpers
 

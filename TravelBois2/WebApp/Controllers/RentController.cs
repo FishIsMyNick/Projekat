@@ -23,6 +23,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using WebApp.Models.Enum;
+using TipKola = WebApp.Models.Enum.Enums.TipKola;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -309,7 +311,7 @@ namespace WebApp.Controllers
 		}
 		[HttpPost]
 		[Route("UpdateCarPrice")]
-		public async Task<Kola> UpdateCar()
+		public async Task<Kola> UpdateCarPrice()
 		{
 			var request = HttpContext.Request.Form.Keys.ToList<string>();
 			string kola = request[0];
@@ -324,29 +326,98 @@ namespace WebApp.Controllers
 		}
 		[HttpPost]
 		[Route("UpdateCar")]
-		public async Task<Kola> UpdateCar(Kola kola)
+		public async Task<ActionResult<Kola>> UpdateCar()
 		{
-			return null;
+			var request = HttpContext.Request.Form.Keys.ToList<string>();
+			string naziv = request[0];
+			string renta = request[1];
+
+			Kola kola = new Kola();
+			foreach (Kola k in await _context.Kola.ToListAsync())
+			{
+				if (k.Naziv == naziv && k.NazivRente == renta)
+				{
+					kola = k;
+					break;
+				}
+			}
+
+			kola.BrojMesta = int.Parse(request[2]);
+			kola.Godiste = int.Parse(request[3]);
+			kola.Cena = int.Parse(request[4]);
+			kola.BrzaRezervacija = bool.Parse(request[5]);
+			TipKola tip;
+			Enum.TryParse(request[6], out tip);
+			kola.TipVozila = tip;
+
+			var ret = _context.Kola.Update(kola);
+			await _context.SaveChangesAsync();
+			return kola;
 		}
 		[HttpPost]
 		[Route("ReplaceCar")]
 		public async Task<ActionResult<Kola>> ReplaceCar()
 		{
 			var request = HttpContext.Request.Form.Keys.ToList<string>();
+
+			// Izmena kola
+			string naziv = request[0];
+			string renta = request[8];
+
 			Kola kola = new Kola();
-			kola.Naziv = request[0];
+			foreach(Kola k in await _context.Kola.ToListAsync())
+			{
+				if(k.Naziv == naziv && k.NazivRente == renta)
+				{
+					kola = k;
+					break;
+				}
+			} 
+
+			var remK = _context.Kola.Remove(kola);
+			await _context.SaveChangesAsync();
 			kola.BrojMesta = int.Parse(request[1]);
 			kola.Godiste = int.Parse(request[2]);
 			kola.Cena = int.Parse(request[3]);
 			kola.BrzaRezervacija = bool.Parse(request[4]);
-			string tipVozila = request[5];
+			TipKola tip;
+			Enum.TryParse(request[5], out tip);
+			kola.TipVozila = tip;
+			kola.Naziv = request[6] + "-" + request[7];
+			_context.Kola.Add(kola);
 
+			// Izmena slike
 
-			string newMarka = request[6];
-			string newModel = request[7];
+			//BlobHandler.UploadCarImage()
 
-			Console.WriteLine("test");
-			return null;
+			// Izmena ocena
+
+			var ocene = await _context.OceneKola.ToListAsync();
+			foreach(OcenaKola o in ocene)
+			{
+				if (o.Kompanija == kola.NazivRente && o.Naziv == naziv)
+				{
+					o.Naziv = kola.Naziv;
+					_context.OceneKola.Update(o);
+				}
+					
+			}
+
+			// Izmena rezervacija
+
+			var rezervacije = await _context.Zauzetost.ToListAsync();
+			foreach(Zauzetost z in rezervacije)
+			{
+				if (z.Kola == naziv && z.Renta == kola.NazivRente)
+				{
+					z.Kola = kola.Naziv;
+					_context.Zauzetost.Update(z);
+				}
+			}
+
+			await _context.SaveChangesAsync();
+
+			return kola;
 		}
 		[HttpPut]
 		[Route("AddOcena")]

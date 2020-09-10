@@ -115,7 +115,15 @@ export class RentService {
     return await this.http.post<any>(this.BaseURI + '/Rent/UpdateCarPrice', formData).toPromise();
   }
   async UpdateCar(kola: any): Promise<any> {
-    return await this.http.post<any>(this.BaseURI + '/Rent/UpdateCar', kola).toPromise();
+    const fd = new FormData();
+    fd.append(kola.naziv, '');
+    fd.append(kola.nazivRente, '');
+    fd.append(kola.brojMesta, '');
+    fd.append(kola.godiste, '');
+    fd.append(kola.cena, '');
+    fd.append(kola.brzaRezervacija, '');
+    fd.append(kola.tipVozila, '');
+    return await this.http.post<any>(this.BaseURI + '/Rent/UpdateCar', fd).toPromise();
   }
   async ReplaceCar(kola: any, newMarka, newModel): Promise<any> {
     const formData = new FormData();
@@ -127,6 +135,7 @@ export class RentService {
     formData.append(kola.tipVozila, '');
     formData.append(newMarka, '');
     formData.append(newModel, '');
+    formData.append(kola.nazivRente, '');
     return await this.http.post<any>(this.BaseURI + '/Rent/ReplaceCar', formData).toPromise();
   }
   async GetZauzetost(kola: Kola): Promise<any> {
