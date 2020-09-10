@@ -101,7 +101,7 @@ namespace WebApp.Controllers
 					i++;
 				}
 			}
-			return sum / i;
+			return i == 0? 0 : sum / i;
 		}
 		[HttpPost]
 		[Route("ProsecnaOcenaRente")]
@@ -118,7 +118,7 @@ namespace WebApp.Controllers
 					i++;
 				}
 			}
-			return sum / i;
+			return i == 0 ? 0 : sum / i;
 		}
 		[HttpPost]
 		[Route("GetRentByName")]
@@ -306,6 +306,47 @@ namespace WebApp.Controllers
 			{
 				return BadRequest();
 			}
+		}
+		[HttpPost]
+		[Route("UpdateCarPrice")]
+		public async Task<Kola> UpdateCar()
+		{
+			var request = HttpContext.Request.Form.Keys.ToList<string>();
+			string kola = request[0];
+			string renta = request[1];
+			int novaCena = int.Parse(request[2]);
+
+			Kola car = await _context.Kola.FindAsync(kola);
+			car.Cena = novaCena;
+			_context.Kola.Update(car);
+			await _context.SaveChangesAsync();
+			return car;
+		}
+		[HttpPost]
+		[Route("UpdateCar")]
+		public async Task<Kola> UpdateCar(Kola kola)
+		{
+			return null;
+		}
+		[HttpPost]
+		[Route("ReplaceCar")]
+		public async Task<ActionResult<Kola>> ReplaceCar()
+		{
+			var request = HttpContext.Request.Form.Keys.ToList<string>();
+			Kola kola = new Kola();
+			kola.Naziv = request[0];
+			kola.BrojMesta = int.Parse(request[1]);
+			kola.Godiste = int.Parse(request[2]);
+			kola.Cena = int.Parse(request[3]);
+			kola.BrzaRezervacija = bool.Parse(request[4]);
+			string tipVozila = request[5];
+
+
+			string newMarka = request[6];
+			string newModel = request[7];
+
+			Console.WriteLine("test");
+			return null;
 		}
 		[HttpPut]
 		[Route("AddOcena")]

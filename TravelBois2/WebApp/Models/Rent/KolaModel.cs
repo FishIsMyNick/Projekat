@@ -19,6 +19,8 @@ namespace WebApp.Models
 		// Van tabele BP
 		public int Ocena { get; set; }
 		public string User { get; set; }
+		public string NovaMarka { get; set; }
+		public string NovModel { get; set; }
 		public List<Tuple<DateTime, DateTime>> Zauzetost { get; set; }
 	}
 }

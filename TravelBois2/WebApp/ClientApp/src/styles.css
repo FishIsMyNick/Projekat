@@ -289,6 +289,8 @@ body {
 .katalog-kola
 {
     margin: 30px 10px;
+    display: list-item;
+    list-style: none;
 }
 .katalog-kola table
 {

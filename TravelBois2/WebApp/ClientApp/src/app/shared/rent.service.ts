@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { RentACar } from '../entities/objects/rent-a-car';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Kola } from '../entities/objects/kola';
 import { basename } from 'path';
 import { promise } from 'protractor';
+import { TipVozila } from '../_enums';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,48 @@ import { promise } from 'protractor';
 export class RentService {
   readonly BaseURI = 'https://localhost:44343/api';
 
-  constructor(private http: HttpClient, private formBuilder: FormBuilder) { }
+
+  constructor(private http: HttpClient, private fb: FormBuilder) { }
+
+  editCarForm = this.fb.group({
+    brojMesta: ['', [Validators.required]],
+    brzaRezervacija: ['', [Validators.required]],
+    cena: ['', [Validators.required]],
+    godiste: ['', Validators.required],
+    model: ['', Validators.required],
+    marka: ['', Validators.required],
+    nazivRente: ['', Validators.required],
+    tipVozila: ['', Validators.required]
+  });
+
+  InitEditCarForm(kola: any) {
+    let naziv = kola.naziv.split('-');
+    let marka = naziv[0];
+    let model = naziv[1];
+    let tip = TipVozila[kola.tipVozila];
+    //this.editCarForm.controls.marka.setValue(marka);
+    this.editCarForm.controls.marka.patchValue(marka);
+    this.editCarForm.controls.marka.markAsTouched();
+    this.editCarForm.controls.model.patchValue(model);
+    this.editCarForm.controls.model.markAsTouched();
+
+    this.editCarForm.controls.godiste.patchValue(kola.godiste);
+    this.editCarForm.controls.godiste.markAsTouched();
+
+    
+    this.editCarForm.controls.cena.patchValue(kola.cena);
+    this.editCarForm.controls.cena.markAsTouched();
+
+    this.editCarForm.controls.brojMesta.patchValue(kola.brojMesta);
+    this.editCarForm.controls.brojMesta.markAsTouched();
+
+    this.editCarForm.controls.brzaRezervacija.patchValue(kola.brzaRezervacija);
+    this.editCarForm.controls.brzaRezervacija.markAsTouched();
+
+    this.editCarForm.controls.tipVozila.patchValue(tip);
+    this.editCarForm.controls.tipVozila.markAsTouched();
+
+  }
 
   GetAllRents(){
     return this.http.get(this.BaseURI + '/Rent/GetAllRents');
@@ -64,6 +106,28 @@ export class RentService {
   }
   AddCar(kola: Kola): Observable<Kola> {
     return this.http.post<Kola>(this.BaseURI + '/Rent/AddCar', kola);
+  }
+  async UpdateCarPrice(kola, renta, novaCena): Promise<any> {
+    const formData = new FormData();
+    formData.append(kola, 'kola');
+    formData.append(renta, 'kola');
+    formData.append(novaCena, novaCena);
+    return await this.http.post<any>(this.BaseURI + '/Rent/UpdateCarPrice', formData).toPromise();
+  }
+  async UpdateCar(kola: any): Promise<any> {
+    return await this.http.post<any>(this.BaseURI + '/Rent/UpdateCar', kola).toPromise();
+  }
+  async ReplaceCar(kola: any, newMarka, newModel): Promise<any> {
+    const formData = new FormData();
+    formData.append(kola.naziv, '');
+    formData.append(kola.brojMesta, '');
+    formData.append(kola.godiste, '');
+    formData.append(kola.cena, '');
+    formData.append(kola.brzaRezervacija, '');
+    formData.append(kola.tipVozila, '');
+    formData.append(newMarka, '');
+    formData.append(newModel, '');
+    return await this.http.post<any>(this.BaseURI + '/Rent/ReplaceCar', formData).toPromise();
   }
   async GetZauzetost(kola: Kola): Promise<any> {
     var ret = await this.http.post(this.BaseURI + '/Rent/GetZauzetost', kola).toPromise();

@@ -1,68 +1,22 @@
-<div *ngIf="prikaz === 2">
-    <div style="position: absolute; top: 80px;">
-        <!--Naziv kompanije-->
-        <div class="kompanija-container" style="margin: 0 30px;">
-            <h1>{{cu.Renta.Naziv}}</h1>
-        </div>
-        <!-- Podaci o kompaniji i pretraga -->
-        <div class="kompanija-container" style="margin: 10px 30px;">
-            <h3>{{cu.Renta.Adresa}}</h3>
-            <hr>
-            <h3>{{cu.Renta.Opis}}</h3>
-            <hr>
-            <h3>{{cu.Renta.ProsecnaOcena()}}</h3>
-        </div>
-    </div>
-    <div style="position: absolute; top: 80px; left: 400px;">
-        <div class="kompanija-container" style="float: left;">
-            <ul class="kola-container">
-                <li *ngFor="let kola of cu.Renta.GetAllCars()">
-                    <button class="kola-slika-blok" (click)="prikaziKola(kola)">
-                        <dynamic-image 
-                            [tip]="tip" 
-                            [naziv]="kola.Naziv" 
-                            [klasa]="klasa">
-                        </dynamic-image>
-                            <div class="kola-model-text">
-                                {{kola.GetModel()}}
-                            </div>
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </div>
+<div class="container" *ngIf="prikaz === 1">
+    <table class="katalog-kola">
+        <th>Marka</th><th>Model</th><th>Slika</th><th>Od</th><th>Do</th><th>User</th><th></th>
+        <tr *ngFor="let z of zauzetost">
+            <td>{{z.kola.split('-')[0]}}</td>
+            <td>{{z.kola.split('-')[1]}}</td>
+            <td><img [src]="z.imgURL" class="kola-ikonica"></td>
+            <td>
+                {{z.od.getDate()}}/{{z.od.getMonth() + 1}}/{{z.od.getFullYear()}}
+            </td>
+            <td>
+                {{z.do.getDate()}}/{{z.do.getMonth() + 1}}/{{z.do.getFullYear()}}
+            </td>
+            <td>{{z.user}</td> 
+            <td><button name="{{z.kola}} + {{z.renta}}" (click)="Obrisi($event.target.name)">Obrisi</button></td>
+        </tr>
+    </table>
 </div>
-<div *ngIf="prikaz === 3">
-    <div style="position: absolute; top: 50px; left: 10px;">
-        <!--SLIKA-->
-        <div class="kompanija-container">
-            <dynamic-image
-                [tip]="tip"
-                [naziv]="sc.Naziv"
-                [klasa]="klasaKolaSlika"></dynamic-image>
-        </div>
-        <hr style="margin: 7px 5px;">
-        <!--MARKA I MODEL-->
-        <div class="kompanija-container">
-            <h2>{{sc.GetMarka()}}</h2>
-            <h3>{{sc.GetModel()}}</h3>
-        </div>
-        <hr>
-        <button (click)="back()">Nazad</button>
-        
-    </div>
-    <div style="position: absolute; top: 50px; left:380px">
-        <!--DETALJI-->
-        <div class="kompanija-container">
-            <h3>Broj mesta: {{sc.BrojMesta}}</h3>
-            <h3>Tip: {{sc.GetTip()}}</h3>
-            <h3>Godiste: {{sc.Godiste}}</h3>
-            <h3>Cena po danu: {{sc.Cena}}</h3>
-            <h3></h3>
-            <h3></h3>
-            <h3>Ocena: {{sc.ProsecnaOcena()}}</h3>
-        </div>
-        <!--KALENDAR-->
-            <kalendar [kola]="sc"></kalendar>
-    </div>
+<!-- POTVRDA BRISANJA -->
+<div *ngIf="prikaz === 2">
+
 </div>

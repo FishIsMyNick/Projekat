@@ -6,7 +6,7 @@ import { RentService } from 'src/app/shared/rent.service';
 import { ActivatedRoute } from '@angular/router';
 import { element } from 'protractor';
 import { Kola } from 'src/app/entities/objects/kola';
-import { TipVozila } from '../../../_enums';
+import { TipVozila, VozilaPrikaz, GetStringValues } from '../../../_enums';
 
 @Component({
   selector: 'app-vozila',
@@ -17,6 +17,8 @@ export class VozilaComponent implements OnInit {
   kola: Array<any> = new Array<any>();
   kompanija: string;
   dodajKola: string;
+  editKola: any;
+  prikaz: VozilaPrikaz;
 
   constructor(private servis: RentService, private route: ActivatedRoute) { 
     
@@ -26,6 +28,7 @@ export class VozilaComponent implements OnInit {
     this.currentUser = AppComponent.currentUser as RentACarAdmin;
     this.kompanija = this.route.snapshot.paramMap.get('naziv');
     this.dodajKola = '/dodaj-kola/' + this.kompanija;
+    this.prikaz = VozilaPrikaz.Katalog;
 
     var resp = await this.servis.GetCarsFromAdmin(this.currentUser.userName);
     resp.forEach(element => {
@@ -37,11 +40,54 @@ export class VozilaComponent implements OnInit {
     console.debug(this.kola);
   }
 
-  EditCar() { }
+  EditCar(eventName) { 
+    this.prikaz = VozilaPrikaz.Kola;
+    this.editKola = this.GetCar(eventName);
+    let naziv = this.editKola.naziv.split('-');
+    this.editKola.marka = naziv[0];
+    this.editKola.model = naziv[1];
+    this.servis.InitEditCarForm(this.editKola);
+  }
+  GetCar(name){
+    var id = name.split('+');
+    for (let i of this.kola) {
+      if (i.naziv == id[0] && i.nazivRente == id[1])
+        return i;
+    }
+  }
+  Nazad(){
+    this.prikaz = VozilaPrikaz.Katalog;
+  }
+  async Save(marka, model) {
+    let newMarka = (<HTMLInputElement>document.getElementById('marka')).value;
+    let newModel = (<HTMLInputElement>document.getElementById('model')).value;
+    // Izmenjen naziv kola, moraju da se menjaju i rezervacije
+    if (marka != newMarka || model != newModel) {
+      var kola;
+      let naziv = marka + '-' + model;
+      for (let k of this.kola) {
+        if (k.naziv == naziv) {
+          kola = k;
+          break;
+        }
+      }
+      kola.brojMesta = (<HTMLInputElement>document.getElementById('brojMesta')).value
+      kola.godiste = (<HTMLInputElement>document.getElementById('godiste')).value
+      kola.cena = (<HTMLInputElement>document.getElementById('cena')).value
+      kola.brzaRezervacija = (<HTMLInputElement>document.getElementById('brzaRezervacija')).value
+      kola.tipVozila = (<HTMLInputElement>document.getElementById('tip')).value
+      var ret = await this.servis.ReplaceCar(kola, newMarka, newModel);
+    }
+    else {
 
+    }
+  }
   //helpers
 
   GetTip(tip: number) {
     return TipVozila[tip];
+  }
+  GetTipovi() : Array<string> {
+    return GetStringValues(TipVozila);
   }
 }

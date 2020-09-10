@@ -1,14 +1,76 @@
-<div class="katalog-kola">
+<div *ngIf="prikaz === 1" class="container">
     <form (onSubmit)="EditCar()">
-        <table>
-        <th>Naziv</th><th>Tip</th><th>Godiste</th><th>Broj mesta</th><th>Cena</th>
+        <table class="katalog-kola">
+            <th>Naziv</th><th>Tip</th><th>Godiste</th><th>Broj mesta</th><th>Cena</th>
         <tr *ngFor="let car of kola">
-            <td>{{car.naziv}}</td><td>{{GetTip(car.tipVozila)}}</td><td>{{car.godiste}}</td><td>{{car.brojMesta}}</td><td>{{car.cena}}</td><td><img [src]="car.imgURL" height="100px"></td><td><input type="hidden" name="ID" value="{{car.ID}}"></td><td><input type="submit" value="edit" name="editButton"></td>
+            <td>{{car.naziv}}</td>
+            <td>{{GetTip(car.tipVozila)}}</td>
+            <td>{{car.godiste}}</td>
+            <td>{{car.brojMesta}}</td>
+            <td>{{car.cena}}</td>
+            <td><img [src]="car.imgURL" height="100px"></td>
+            <td><button name="{{car.naziv}}+{{car.nazivRente}}" (click)="EditCar($event.target.name)">Izmeni</button></td>
+            <td><button name="{{car.naziv}}+{{car.nazivRente}}" (click)="DeleteCar($event.target.name)">Obrisi</button></td>
         </tr>
         </table>
     </form>
+    <div class="container">
+    <a routerLink="/dodaj-kola" >Dodaj nova kola</a>
+    </div>
 </div>
-<div class="container">
-<a routerLink="/dodaj-kola" >Dodaj nova kola</a>
-
+<!--EDIT FORM-->
+<div *ngIf="prikaz === 2">
+    <form [formGroup]="servis.editCarFrom" style="width: 320px;">
+        <div class="form">
+            <div class="form">
+                <div>
+                    <label for="marka">Marka:</label>
+                    <input  id="marka" formControlName="marka" class="form-control"  value="{{servis.editCarForm.get('marka').value}}">
+                </div>
+            </div>
+            <div class="form">
+                <div>
+                    <label for="model">Model:</label>
+                    <input  id="model" formControlName="model" class="form-control" value="{{servis.editCarForm.get('model').value}}">
+                </div>
+            </div>
+            <div class="form">
+                <div>
+                    <label for="brojMesta">Broj mesta:</label>
+                    <input type="number" id="brojMesta" formControlName="brojMesta" value="{{servis.editCarForm.get('brojMesta').value}}" class="form-control">
+                </div>
+            </div>
+            <div class="form">
+                <div>
+                    <label for="godiste">Godiste:</label>
+                    <input type="number" id="godiste" formControlName="godiste" class="form-control" value="{{servis.editCarForm.get('godiste').value}}">
+                </div>
+            </div>
+            <div class="form">
+                <div>
+                    <label for="cena">Cena:</label>
+                    <input type="number" id="cena" formControlName="cena" class="form-control" value="{{servis.editCarForm.get('cena').value}}">
+                </div>
+            </div>
+            <div class="form">
+                <div>
+                    <label for="brzaRezervacija">Brza rezervacija:</label>
+                    <input type="checkbox" id="brzaRezervacija" formControlName="brzaRezervacija" class="form-control" value="{{servis.editCarForm.get('brzaRezervacija').value}}">
+                </div>
+            </div>
+            <div>
+                <label for="tip">Tip vozila:</label>
+                <select id="tip" formControlName="tipVozila" class="form-control">
+                    <option selected value>{{servis.editCarForm.get('tipVozila').value}}</option>
+                    <option *ngFor="let t of GetTipovi()">
+                        {{t}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div style="display: inline;">
+            <button (click)="Save(servis.editCarForm.get('marka').value, servis.editCarForm.get('model').value)">Sacuvaj</button>
+            <button style="float: right;" (click)="Nazad()">Nazad</button>
+        </div>
+    </form>
 </div>

@@ -43,7 +43,14 @@ export enum RentPrikaz {
     kola,
     ocenjivanje
 }
-
+export enum RezervacijePrikaz {
+    Rezervacije = 1,
+    Potvrda
+}
+export enum VozilaPrikaz {
+    Katalog = 1,
+    Kola = 2
+}
 export enum Meseci {
     January,
     February,
