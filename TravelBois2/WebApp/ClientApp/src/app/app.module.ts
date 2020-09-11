@@ -54,6 +54,8 @@ import { AuthInterceptor } from './shared/auth.interceptor';
 import { BrzeRezervacijeAdminComponent } from './Komponente/Avio/brze-rezervacije-admin/brze-rezervacije-admin.component';
 import { LetBrzaRezervacijaComponent } from './Komponente/Avio/let-brza-rezervacija/let-brza-rezervacija.component';
 
+import { FileUploadModule } from 'ng2-file-upload';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -107,7 +109,8 @@ import { LetBrzaRezervacijaComponent } from './Komponente/Avio/let-brza-rezervac
     GoogleMapsModule,
     BrowserAnimationsModule,
     TooltipModule.forRoot(),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    FileUploadModule
   ],
   providers: [AppComponent, UserService,
     {
