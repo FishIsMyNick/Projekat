@@ -13,6 +13,12 @@ namespace WebApp.Helpers
 		{
 
 		}
+        public static async Task Refresh()
+        {
+            ClearImageDirs();
+            await BlobHandler.DownloadCarImages();
+            await BlobHandler.DownloadConpanyImages();
+        }
 		public static void ClearImageDirs()
 		{
             DirectoryInfo di = new DirectoryInfo(BlobHandler.downloadFileDirKola);
