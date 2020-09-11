@@ -233,19 +233,6 @@ namespace WebApp.Controllers
 			return new HttpResponseMessage(HttpStatusCode.OK);
 		}
 		[HttpPost]
-		[Route("UpdateCarImage")]
-		public async Task<HttpResponseMessage> UpdateCarImage()
-		{
-			IFormFile postedFile;
-			string filename;
-			GetImageFromHttpContext(out postedFile, out filename);
-			string oldname = postedFile.FileName;
-			await BlobHandler.DeleteCarImage(oldname);
-			await BlobHandler.UploadCarImage(postedFile, filename);
-			await FileHandler.Refresh();
-			return new HttpResponseMessage(HttpStatusCode.OK);
-		}
-		[HttpPost]
 		[Route("GetCarsFromAdmin")]
 		public async Task<ActionResult<List<Kola>>> GetCarsFromAdmin()
 		{

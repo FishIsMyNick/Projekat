@@ -80,13 +80,6 @@ export class RentService {
   addCarImage(image: FormData): Observable<Object> {
     return this.http.post(this.BaseURI + '/Rent/AddCarImage', image);
   }
-
-  async UpdateCarImage(image: any, newName: string): Promise<any> {
-    const fd = new FormData();
-    fd.append(image.name, image, newName);
-
-    return this.http.post<any>(this.BaseURI + '/Rent/UpdateCarImage', fd);
-  }
   checkForRentAdmin(adminID: string): Observable<string> {
     const formData = new FormData();
     formData.append(adminID, "adminID");

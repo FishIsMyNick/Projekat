@@ -76,11 +76,6 @@ namespace WebApp.Helpers
             //Save locally
             await FileHandler.SaveImage(img, filePath);
         }
-        public static async Task DeleteCarImage(string imageName)
-		{
-            _blobClient = _kolaContainerClient.GetBlobClient(imageName);
-            await _blobClient.DeleteAsync();
-		}
         public static async Task UploadCompanyImage(IFormFile img, string filename)
         {
 			//Make name
