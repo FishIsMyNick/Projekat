@@ -83,15 +83,6 @@ export class VozilaComponent implements OnInit {
 
       // TODO:
       // izmena slike
-      let imgURI = 'assets/images/RentACar/Kola/' + naziv + '.jpg';
-      var base64Image;
-      this.getBase64ImageFromURL(imgURI).subscribe(base64data => {
-        console.log(base64data);
-        base64Image = 'data:image/jpg;base64,' + base64data;
-        // Posalji sliku
-        this.servis.UpdateCarImage(base64Image, newMarka + '-' + newModel);
-      });
-      this.getBase64ImageFromURL(imgURI).unsubscribe();
     }
     // Nije izmenjen naziv, samo se kola menjaju
     else {

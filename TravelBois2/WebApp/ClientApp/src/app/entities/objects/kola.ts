@@ -28,8 +28,6 @@ export class Kola {
         //this.ID = IdHandler.GenerateKolaID();
         //this.Zauzet = false;
         this.Zauzetost = new Array<[Date, Date]>();
-        this.Zauzetost.push([new Date(2020, 3, 3), new Date(2020, 3, 9)]);
-        this.Zauzetost.push([new Date(2020, 3, 28), new Date(2020, 4, 5)]);
     }
 
     private NazivParser(){

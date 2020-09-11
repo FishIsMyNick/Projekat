@@ -4,6 +4,8 @@ import { RentACarAdmin } from 'src/app/entities/users/rent-a-car-admin/rent-a-ca
 import { Kola } from 'src/app/entities/objects/kola';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { DodajKolaComponent } from '../dodaj-kola/dodaj-kola.component';
+import { RentService } from 'src/app/shared/rent.service';
+import { TipVozila } from 'src/app/_enums';
 
 @Component({
   selector: 'app-izvestaj-o-poslovanju-renta',
@@ -14,12 +16,27 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
   CarSelectForm: FormGroup;
   DateForm: FormGroup;
   ocenaKola: number;
+  ocenaServisa: number;
+  carNames: Array<string>;
   date: Date = new Date();
+  renta: any;
+  kalendarKola: any;
+  ucitaj: boolean = false;
 
-  constructor(public fb: FormBuilder) { 
-    this.CarSelectForm = this.fb.group({
-      selectedCar:['']
-    });
+  constructor(public fb: FormBuilder, private servis: RentService) {}
+
+  async ngOnInit() {
+    this.currentUser = AppComponent.currentUser as RentACarAdmin;
+    this.renta = await this.servis.GetRent(this.currentUser.userName);
+
+    this.ocenaKola = 0;
+    this.ocenaServisa = await this.GetOcena();
+    this.carNames = await this.GetCarNames();
+
+    this.kalendarKola = new Kola(0, 0, '', '', TipVozila.Hecbek);
+    this.kalendarKola.Zauzetost.push([new Date(1970, 3, 3), new Date(1970, 3, 9)]);
+    this.ucitaj = true;
+
     this.DateForm = new FormGroup({
       'odDan': new FormControl(this.date.getDate(), [Validators.required, Validators.min(1), Validators.max(31)]),
       'doDan':new FormControl(this.date.getDate(), [Validators.required, Validators.min(1), Validators.max(31)]),
@@ -30,10 +47,9 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
       'suma': new FormControl(0, [])
     })
     this.currentUser = AppComponent.currentUser as RentACarAdmin;
-    
   }
 
-  IzracunajPrihode(){
+  async IzracunajPrihode(){
     let odDan = this.DateForm.get('odDan').value;
     let odMon = this.DateForm.get('odMon').value;
     let odGod = this.DateForm.get('odGod').value;
@@ -45,14 +61,14 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     end.setTime(end.getTime() + 100);
     var suma = 0;
 
-    this.GetCars().forEach(kola =>{
+    for(let kola of await this.GetCars()){
       kola.Zauzetost.forEach(termin =>{
         //console.debug(kola.Naziv, termin[0], termin[1])
         if(this.IsOverlapping(start, end, termin[0], termin[1])){
-          suma += this.GetOverlappingInDays(start, end, termin[0], termin[1]) * kola.Cena;          
+          suma += this.GetOverlappingInDays(start, end, termin[0], termin[1]) * kola.cena;          
         }
       })
-    })
+    }
     this.DateForm.get('suma').setValue(suma);
     console.debug(odDan, odMon, odGod, doDan, doMon, doGod)
   }
@@ -90,41 +106,23 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     else
       return false;
   }
-  ngOnInit(): void {
+  async GetOcena(){
+    return await this.servis.ProsecnaOcenaRente(this.renta)
   }
-  GetOcena(){
-    //return this.currentUser.Renta.ProsecnaOcena();
-  }
-  GetCarNames(){
-    let kola = this.GetCars();
+  async GetCarNames(){
+    let kola = await this.servis.GetCarsFromAdmin(this.currentUser.userName);
     let nazivi = new Array<string>();
-    kola.forEach(element => {
-      nazivi.push(element.Naziv);
-    });
+    for(let k of kola){
+      nazivi.push(k.naziv)
+    }
     return nazivi;
   }
-  GetCars(){
-    let filijale = this.currentUser.Renta.Filijale;
-    let kola = new Array<Kola>();
-    filijale.forEach(element => {
-      element.ListaKola.forEach(element => {
-        kola.push(element);
-      });
-    });
-    return kola;
+  async GetCars(){
+    return await this.servis.GetCarsFromAdmin(this.currentUser.userName);
   }
-  CarChanged(e){
-    //this.ocenaKola = this.GetCarByName(this.CarSelectForm.get('selectedCar').value).ProsecnaOcena();
-  }
-  GetCarByName(name): Kola{
-    let kola = this.GetCars();
-    let ret = null;
-    kola.forEach(element => {
-      if(element.Naziv == name){
-        ret = element;
-      }
-    });
-    return ret;
+  async CarChanged(selection) {
+    let kola = await this.servis.GetKola(selection, this.renta.naziv);
+    this.ocenaKola = await this.servis.ProsecnaOcenaKola(kola);
   }
   SelectCar(){}
 }

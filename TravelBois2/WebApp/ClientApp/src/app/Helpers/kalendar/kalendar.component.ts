@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Kola } from '../../entities/objects/kola';
 import { Datum } from '../../entities/misc/datum';
 import { RentService } from '../../shared/rent.service';
+import { TipVozila } from '../../_enums';
 
 @Component({
   selector: 'kalendar',
@@ -14,17 +15,18 @@ export class KalendarComponent implements OnInit {
   static s1: Date;
   static s2: Date;
   dateUnavailable: boolean;
+  test = '';
   //zauzetost: any;
 
   constructor(private servis: RentService) { 
-    this.datum = new Datum();
-    KalendarComponent.s1 = null;
-    KalendarComponent.s2 = null;
   }
 
   ngOnInit() {
+    this.test = 'test'
     this.datum = new Datum(this.datum)
     this.dateUnavailable = false;
+    KalendarComponent.s1 = null;
+    KalendarComponent.s2 = null;
   }
 
   IsToday(dan, mesec, godina){

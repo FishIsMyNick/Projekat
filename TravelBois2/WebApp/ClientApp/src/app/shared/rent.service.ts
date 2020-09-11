@@ -87,6 +87,7 @@ export class RentService {
 
     return this.http.post<any>(this.BaseURI + '/Rent/UpdateCarImage', fd);
   }
+  
   checkForRentAdmin(adminID: string): Observable<string> {
     const formData = new FormData();
     formData.append(adminID, "adminID");

@@ -1,27 +1,26 @@
-<div class="izvestaj-container">
+<div class="izvestaj-container" *ngIf="ucitaj">
     <ul>
-        <li>Ocena servisa: {{GetOcena()}}</li>
+        <li><h3>Ocena servisa:</h3> <h4>{{ocenaServisa}}</h4></li>
         <hr>
-        <li>Ocena vozila: 
-            <form [formGroup]="CarSelectForm">
-                <select formControlName="selectedCar" (change)="CarChanged($event)">
-                    <option></option>
-                    <option *ngFor="let car of GetCarNames()">{{car}}</option>
-                </select> 
-                : {{ocenaKola}}
-            </form> 
+        <li><h3>Ocena vozila: </h3>
+            <select style="display: inline;" (change)="CarChanged($event.target.selectedOptions[0].innerText)">
+                <option></option>
+                <option *ngFor="let car of carNames">{{car}}</option>
+            </select> 
+            <h5 style="display: inline; margin-left: 7px;" *ngIf="ocenaKola !== 0">: {{ocenaKola}}</h5>
         </li>
         <hr>
-        <li>Rezervacije vozila:<br>
+        <li><h3>Rezervacije vozila:</h3><br>
             <div style="display: inline;">
-                <input type="radio" id="dan" name="rezervacije" checked><label for="dan">Dan</label>
-                <input type="radio" id="mesec" name="rezervacije"><label for="mesec">Mesec</label>
-                <input type="radio" id="god" name="rezervacije"><label for="god">Godina</label>
+                <input type="radio" id="dan" name="rezervacije" checked><label style="margin-right: 8px;" for="dan">Nedelja</label>
+                <input type="radio" id="mesec" name="rezervacije"><label style="margin-right: 8px;" for="mesec">Mesec</label><nbsp></nbsp>
+                <input type="radio" id="god" name="rezervacije"><label style="margin-right: 8px;" for="god">Godina</label>
             </div>
         </li>
         <hr>
-        <li>Prihodi:
-            <form [formGroup]="DateForm" (ngSubmit)="IzracunajPrihode()">
+        <li><h3>Prihodi:</h3>
+            <kalendar [kola]="kalendarKola"></kalendar>
+            <!-- <form [formGroup]="DateForm" (ngSubmit)="IzracunajPrihode()">
                 Od: <input type="number" name="odDan" formControlName="odDan" id="day">
                 <input type="number" name="odMon" formControlName="odMon" id="month">
                 <input type="number" name="odGod" formControlName="odGod" id="year">
@@ -30,7 +29,7 @@
                 <input type="number" name="doGod" formControlName="doGod" id="year">
                 |<input type="submit" value="Izracunaj">
                 <div><input disabled name="suma" formControlName="suma" style="width: 80px;">din.</div>
-            </form>
+            </form> -->
         </li>
     </ul>
 </div>
