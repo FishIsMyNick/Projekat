@@ -11,15 +11,15 @@ export class Kola {
     Godiste: number;
     ID: number;
     Naziv: string;
-    Tip: TipVozila;
+    TipVozila: string;
     //za prenos podataka
-    Zauzetost: Array<[Date, Date]>
+    zauzetost: Array<[Date, Date]>
 
-    constructor(brMesta:number, godiste:number, marka:string, model:string, tip:TipVozila, renta: string = null, cena: number = 0, brzaRezervacija:boolean = false){
+    constructor(brMesta:number, godiste:number, marka:string, model:string, tip: string, renta: string = null, cena: number = 0, brzaRezervacija:boolean = false){
         this.BrojMesta = brMesta;
         this.Godiste = godiste;
         this.Naziv = marka + '-' + model;
-        this.Tip = tip;
+        this.TipVozila = tip;
         this.BrzaRezervacija = brzaRezervacija;
         this.Cena = cena;
         this.NazivRente = renta;
@@ -27,7 +27,7 @@ export class Kola {
         //Ne radi kako treba
         //this.ID = IdHandler.GenerateKolaID();
         //this.Zauzet = false;
-        this.Zauzetost = new Array<[Date, Date]>();
+        this.zauzetost = new Array<[Date, Date]>();
     }
 
     private NazivParser(){
@@ -46,7 +46,7 @@ export class Kola {
         this.Naziv = this.GetMarka() + '-' + model;
     }
     GetTip(){
-        return TipVozila[this.Tip];
+        return TipVozila[this.TipVozila];
     }
     //ProsecnaOcena(){
     //    let sum = 0;

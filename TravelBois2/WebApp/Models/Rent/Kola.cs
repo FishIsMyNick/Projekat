@@ -21,8 +21,8 @@ namespace WebApp.Models
 		public int BrojMesta { get; set; }
 		[Column(TypeName = "smallint")]
 		public int Godiste { get; set; }
-		[Column(TypeName = "tinyint")]
-		public Enums.TipKola TipVozila { get; set; }
+		[Column(TypeName = "nvarchar(15)")]
+		public string TipVozila { get; set; }
 		[Column(TypeName = "smallint")]
 		public int Cena { get; set; }
 		[Column(TypeName = "bit"), DefaultValue(null)]

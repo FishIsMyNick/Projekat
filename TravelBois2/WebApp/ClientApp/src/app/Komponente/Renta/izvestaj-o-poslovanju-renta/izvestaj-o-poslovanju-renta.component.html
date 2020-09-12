@@ -20,16 +20,7 @@
         <hr>
         <li><h3>Prihodi:</h3>
             <kalendar [kola]="kalendarKola"></kalendar>
-            <!-- <form [formGroup]="DateForm" (ngSubmit)="IzracunajPrihode()">
-                Od: <input type="number" name="odDan" formControlName="odDan" id="day">
-                <input type="number" name="odMon" formControlName="odMon" id="month">
-                <input type="number" name="odGod" formControlName="odGod" id="year">
-                Do: <input type="number" name="doDan" formControlName="doDan" id="day">
-                <input type="number" name="doMon" formControlName="doMon" id="month">
-                <input type="number" name="doGod" formControlName="doGod" id="year">
-                |<input type="submit" value="Izracunaj">
-                <div><input disabled name="suma" formControlName="suma" style="width: 80px;">din.</div>
-            </form> -->
+            <button (click)="IzracunajPrihode()" style="display: inline">Izracunaj</button>;<input disabled id="prihodi" style="display: inline;">
         </li>
     </ul>
 </div>

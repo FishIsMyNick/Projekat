@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { DodajKolaComponent } from '../dodaj-kola/dodaj-kola.component';
 import { RentService } from 'src/app/shared/rent.service';
 import { TipVozila } from 'src/app/_enums';
+import { Zauzetost } from 'src/app/entities/misc/zauzetost';
 
 @Component({
   selector: 'app-izvestaj-o-poslovanju-renta',
@@ -33,8 +34,8 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     this.ocenaServisa = await this.GetOcena();
     this.carNames = await this.GetCarNames();
 
-    this.kalendarKola = new Kola(0, 0, '', '', TipVozila.Hecbek);
-    this.kalendarKola.Zauzetost.push([new Date(1970, 3, 3), new Date(1970, 3, 9)]);
+    this.kalendarKola = new Kola(0, 0, '', '', 'Hecbek');
+    this.kalendarKola.zauzetost.push(new Zauzetost(new Date(1970, 1, 1), new Date(1970, 1, 1), '', '', ''));
     this.ucitaj = true;
 
     this.DateForm = new FormGroup({
@@ -46,7 +47,6 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
       'doGod':new FormControl(this.date.getFullYear(), [Validators.required, Validators.min(1970), Validators.max(this.date.getFullYear())]),
       'suma': new FormControl(0, [])
     })
-    this.currentUser = AppComponent.currentUser as RentACarAdmin;
   }
 
   async IzracunajPrihode(){
@@ -62,7 +62,7 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     var suma = 0;
 
     for(let kola of await this.GetCars()){
-      kola.Zauzetost.forEach(termin =>{
+      kola.zauzetost.forEach(termin =>{
         //console.debug(kola.Naziv, termin[0], termin[1])
         if(this.IsOverlapping(start, end, termin[0], termin[1])){
           suma += this.GetOverlappingInDays(start, end, termin[0], termin[1]) * kola.cena;          

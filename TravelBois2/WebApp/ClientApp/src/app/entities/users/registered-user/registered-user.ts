@@ -30,9 +30,6 @@ export class RegisteredUser extends User implements OnInit{
             this.RezervacijaLetova = new Array<Let>();
             this.Prijatelji = new Array<RegisteredUser>();
             this.ZahteviZaPrijateljstvo = new Array<RegisteredUser>();
-            
-            this.IstorijaKola.push(new Kola(5, 2000, 'Toyota', 'Yaris', TipVozila.Hecbek, 'Car2Go'));
-            this.IstorijaKola.push(new Kola(5, 2000, 'Renault', 'Clio', TipVozila.Hecbek, 'Car2Go'));
         }
     ngOnInit(): void {
     }

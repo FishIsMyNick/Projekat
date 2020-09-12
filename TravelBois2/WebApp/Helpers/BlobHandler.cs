@@ -66,7 +66,7 @@ namespace WebApp.Helpers
         public static async Task UploadCarImage(IFormFile img, string filename)
         {
             //Make name
-            string imageName = filename.Replace(" ", "-").Split('.')[0] + ".jpg";
+            string imageName = filename.Split('.')[0] + ".jpg";
             //Make path
             string filePath = Path.Combine(downloadFileDirKola, imageName);
             //Get blob client
@@ -79,7 +79,7 @@ namespace WebApp.Helpers
         public static async Task DeleteCarImage(string imageName)
 		{
             _blobClient = _kolaContainerClient.GetBlobClient(imageName);
-            await _blobClient.DeleteAsync();
+            await _blobClient.DeleteAsync(DeleteSnapshotsOption.IncludeSnapshots);
 		}
         public static async Task UploadCompanyImage(IFormFile img, string filename)
         {

@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RentService } from 'src/app/shared/rent.service';
 import { AppComponent } from 'src/app/app.component';
 import { RentACar } from 'src/app/entities/objects/rent-a-car';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-dodaj-kola',
@@ -25,7 +26,7 @@ export class DodajKolaComponent implements OnInit {
   base64Data: any;
   convertedImage: string;
 
-  constructor(private route: ActivatedRoute, private servis: RentService, private router: Router) {
+  constructor(private route: ActivatedRoute, private servis: RentService, private router: Router, private toastr: ToastrService) {
    }
 
   ngOnInit(): void {
@@ -44,7 +45,7 @@ export class DodajKolaComponent implements OnInit {
   async onSubmit() {
     console.debug('submit')
     var rent = await this.servis.GetRent(AppComponent.currentUser.userName);
-    console.debug(rent.naziv);
+    //console.debug(rent.naziv);
 
     var kola: Kola = new Kola(
       this.carForm.get('brojMesta').value,
@@ -64,8 +65,9 @@ export class DodajKolaComponent implements OnInit {
         uploadData.append(kola.Naziv, 'filename')
 
         this.servis.addCarImage(uploadData).subscribe(
-          (res) => {
-            console.debug(res);
+          async (res) => {
+            await this.servis.Refresh();
+            this.toastr.success('Uspesno ste dodali kola!');
             this.recievedImageData = res;
             this.base64Data = this.recievedImageData.pic;
             this.convertedImage = 'data:image/jpeg;base64,' + this.base64Data;
@@ -86,7 +88,6 @@ export class DodajKolaComponent implements OnInit {
     return GetStringValues(TipVozila);
   }
   onFileChanged(file: FileList){
-    console.debug(event);
     this.selectedFile = file.item(0);
 
     // img preview

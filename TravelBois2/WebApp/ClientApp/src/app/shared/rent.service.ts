@@ -146,6 +146,9 @@ export class RentService {
     formData.append(kola.nazivRente, '');
     return await this.http.post<any>(this.BaseURI + '/Rent/ReplaceCar', formData).toPromise();
   }
+  async DeleteCar(kola: Kola): Promise<any> {
+    return await this.http.post(this.BaseURI + '/Rent/DeleteCar', kola).toPromise();
+  }
   async GetZauzetost(kola: Kola): Promise<any> {
     var ret = await this.http.post(this.BaseURI + '/Rent/GetZauzetost', kola).toPromise();
     return ret;
@@ -189,5 +192,8 @@ export class RentService {
   }
   async ProsecnaOcenaRente(renta: RentACar): Promise<any> {
     return await this.http.post<any>(this.BaseURI + '/Rent/ProsecnaOcenaRente', renta).toPromise();
+  }
+  async Refresh(): Promise<any> {
+    return await this.http.get(this.BaseURI + '/Rent/Refresh');
   }
 }

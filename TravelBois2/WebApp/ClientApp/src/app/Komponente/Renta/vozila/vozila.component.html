@@ -4,7 +4,7 @@
             <th>Naziv</th><th>Tip</th><th>Godiste</th><th>Broj mesta</th><th>Cena</th>
         <tr *ngFor="let car of kola">
             <td>{{car.naziv}}</td>
-            <td>{{GetTip(car.tipVozila)}}</td>
+            <td>{{car.tipVozila}}</td>
             <td>{{car.godiste}}</td>
             <td>{{car.brojMesta}}</td>
             <td>{{car.cena}}</td>
@@ -20,57 +20,55 @@
 </div>
 <!--EDIT FORM-->
 <div *ngIf="prikaz === 2">
-    <form [formGroup]="servis.editCarFrom" style="width: 320px;">
-        <div class="form">
-            <div class="form">
-                <div>
-                    <label for="marka">Marka:</label>
-                    <input  id="marka" formControlName="marka" class="form-control"  value="{{servis.editCarForm.get('marka').value}}">
-                </div>
-            </div>
-            <div class="form">
-                <div>
-                    <label for="model">Model:</label>
-                    <input  id="model" formControlName="model" class="form-control" value="{{servis.editCarForm.get('model').value}}">
-                </div>
-            </div>
-            <div class="form">
-                <div>
-                    <label for="brojMesta">Broj mesta:</label>
-                    <input type="number" id="brojMesta" formControlName="brojMesta" value="{{servis.editCarForm.get('brojMesta').value}}" class="form-control">
-                </div>
-            </div>
-            <div class="form">
-                <div>
-                    <label for="godiste">Godiste:</label>
-                    <input type="number" id="godiste" formControlName="godiste" class="form-control" value="{{servis.editCarForm.get('godiste').value}}">
-                </div>
-            </div>
-            <div class="form">
-                <div>
-                    <label for="cena">Cena:</label>
-                    <input type="number" id="cena" formControlName="cena" class="form-control" value="{{servis.editCarForm.get('cena').value}}">
-                </div>
-            </div>
-            <div class="form">
-                <div>
-                    <label for="brzaRezervacija">Brza rezervacija:</label>
-                    <input type="checkbox" id="brzaRezervacija" formControlName="brzaRezervacija" class="form-control" checked="{{servis.editCarForm.get('brzaRezervacija').checked}}">
-                </div>
-            </div>
+      <div class="form">
+          <div class="form">
+              <div>
+                  <label for="marka">Marka:</label>
+                  <input disabled id="marka" class="form-control"  value="{{editKola.naziv.split('-')[0]}}">
+              </div>
+          </div>
+          <div class="form">
+              <div>
+                  <label for="model">Model:</label>
+                  <input disabled id="model" class="form-control" value="{{editKola.naziv.split('-')[1]}}">
+              </div>
+          </div>
+          <div class="form">
+              <div>
+                  <label for="brojMesta">Broj mesta:</label>
+                  <input type="number" id="brojMesta" value="{{editKola.brojMesta}}" class="form-control">
+              </div>
+          </div>
+          <div class="form">
+              <div>
+                  <label for="godiste">Godiste:</label>
+                  <input type="number" id="godiste" class="form-control" value="{{editKola.godiste}}">
+              </div>
+          </div>
+          <div class="form">
+              <div>
+                  <label for="cena">Cena:</label>
+                  <input type="number" id="cena" class="form-control" value="{{editKola.cena}}">
+              </div>
+          </div>
+          <div class="form">
             <div>
-                <label for="tip">Tip vozila:</label>
-                <select id="tip" formControlName="tipVozila" class="form-control">
-                    <option selected value>{{servis.editCarForm.get('tipVozila').value}}</option>
-                    <option *ngFor="let t of GetTipovi()">
-                        {{t}}
-                    </option>
-                </select>
+              <label for="brzaRezervacija">Brza rezervacija:</label>
+              <input type="checkbox" id="brzaRezervacija" class="form-control" [(ngModel)]="editKola.brzaRezervacija">
             </div>
-        </div>
-        <div style="display: inline;">
-            <button (click)="Save(servis.editCarForm.get('marka').value, servis.editCarForm.get('model').value)">Sacuvaj</button>
-            <button style="float: right;" (click)="Nazad()">Nazad</button>
-        </div>
-    </form>
+          </div>
+          <div>
+              <label for="tip">Tip vozila:</label>
+              <select id="tip" class="form-control">
+                <option selected disabled>{{editKola.tipVozila}}</option>
+                  <option *ngFor="let t of GetTipovi()">
+                      {{t}}
+                  </option>
+              </select>
+          </div>
+      </div>
+      <div style="display: inline;">
+          <button (click)="Save(editKola.naziv)">Sacuvaj</button>
+          <button style="margin-left: 200px;" (click)="Nazad()">Nazad</button>
+      </div>
 </div>

@@ -73,7 +73,7 @@ namespace WebApp.Controllers
 			string user = request[3];
 
 			List<OcenaKola> ocene = await _context.OceneKola.ToListAsync();
-			foreach(OcenaKola oc in ocene)
+			foreach (OcenaKola oc in ocene)
 			{
 				// Da li ocena vec postoji od istog korisnika
 				if (oc.Naziv == naziv && oc.Kompanija == renta && oc.Username == user)
@@ -95,15 +95,15 @@ namespace WebApp.Controllers
 			List<OcenaKola> ocene = await _context.OceneKola.ToListAsync();
 			float sum = 0;
 			int i = 0;
-			foreach(OcenaKola o in ocene)
+			foreach (OcenaKola o in ocene)
 			{
-				if(o.Naziv == kola.Naziv && o.Kompanija == kola.NazivRente)
+				if (o.Naziv == kola.Naziv && o.Kompanija == kola.NazivRente)
 				{
 					sum += o.Value;
 					i++;
 				}
 			}
-			return i == 0? 0 : sum / i;
+			return i == 0 ? 0 : sum / i;
 		}
 		[HttpPost]
 		[Route("ProsecnaOcenaRente")]
@@ -128,7 +128,7 @@ namespace WebApp.Controllers
 		{
 			string rentID = HttpContext.Request.Form.Keys.First();
 			List<RentACar> rente = await _context.Rente.ToListAsync();
-			foreach(RentACar r in rente)
+			foreach (RentACar r in rente)
 			{
 				if (r.Naziv == rentID)
 					return r;
@@ -296,9 +296,9 @@ namespace WebApp.Controllers
 
 			var reservations = await _context.Zauzetost.ToListAsync();
 			List<Zauzetost> ret = new List<Zauzetost>();
-			foreach(Zauzetost z in reservations)
+			foreach (Zauzetost z in reservations)
 			{
-				if(z.User == userID)
+				if (z.User == userID)
 				{
 					ret.Add(z);
 				}
@@ -359,9 +359,7 @@ namespace WebApp.Controllers
 			kola.Godiste = int.Parse(request[3]);
 			kola.Cena = int.Parse(request[4]);
 			kola.BrzaRezervacija = bool.Parse(request[5]);
-			TipKola tip;
-			Enum.TryParse(request[6], out tip);
-			kola.TipVozila = tip;
+			kola.TipVozila = request[6];
 
 			var ret = _context.Kola.Update(kola);
 			await _context.SaveChangesAsync();
@@ -378,14 +376,14 @@ namespace WebApp.Controllers
 			string renta = request[8];
 
 			Kola kola = new Kola();
-			foreach(Kola k in await _context.Kola.ToListAsync())
+			foreach (Kola k in await _context.Kola.ToListAsync())
 			{
-				if(k.Naziv == naziv && k.NazivRente == renta)
+				if (k.Naziv == naziv && k.NazivRente == renta)
 				{
 					kola = k;
 					break;
 				}
-			} 
+			}
 
 			var remK = _context.Kola.Remove(kola);
 			await _context.SaveChangesAsync();
@@ -393,9 +391,7 @@ namespace WebApp.Controllers
 			kola.Godiste = int.Parse(request[2]);
 			kola.Cena = int.Parse(request[3]);
 			kola.BrzaRezervacija = bool.Parse(request[4]);
-			TipKola tip;
-			Enum.TryParse(request[5], out tip);
-			kola.TipVozila = tip;
+			kola.TipVozila = request[5];
 			kola.Naziv = request[6] + "-" + request[7];
 			_context.Kola.Add(kola);
 
@@ -406,20 +402,20 @@ namespace WebApp.Controllers
 			// Izmena ocena
 
 			var ocene = await _context.OceneKola.ToListAsync();
-			foreach(OcenaKola o in ocene)
+			foreach (OcenaKola o in ocene)
 			{
 				if (o.Kompanija == kola.NazivRente && o.Naziv == naziv)
 				{
 					o.Naziv = kola.Naziv;
 					_context.OceneKola.Update(o);
 				}
-					
+
 			}
 
 			// Izmena rezervacija
 
 			var rezervacije = await _context.Zauzetost.ToListAsync();
-			foreach(Zauzetost z in rezervacije)
+			foreach (Zauzetost z in rezervacije)
 			{
 				if (z.Kola == naziv && z.Renta == kola.NazivRente)
 				{
@@ -431,6 +427,45 @@ namespace WebApp.Controllers
 			await _context.SaveChangesAsync();
 
 			return kola;
+		}
+		[HttpPost]
+		[Route("DeleteCar")]
+		public async Task<bool> DeleteCar(Kola kola)
+		{
+			var rezervacije = await _context.Zauzetost.ToListAsync();
+			// Da li su kola zauzeta? Ne mogu se obrisati
+			foreach (Zauzetost z in rezervacije)
+			{
+				if (z.Kola == kola.Naziv && z.Renta == kola.NazivRente)
+				{
+					if(z.Do > DateTime.Now)
+						return false;
+				}
+			}
+			// else
+			_context.Kola.Remove(kola);
+
+			// Brisanje ocena
+			var ocene = await _context.OceneKola.ToListAsync();
+			foreach(OcenaKola o in ocene)
+			{
+				if(o.Naziv == kola.Naziv && o.Kompanija == kola.NazivRente)
+				{
+					_context.OceneKola.Remove(o);
+					await _context.SaveChangesAsync();
+				}
+			}
+
+			try
+			{
+				await BlobHandler.DeleteCarImage(kola.Naziv);
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine(e.Message);
+			}
+			await _context.SaveChangesAsync();
+			return true;
 		}
 		[HttpPut]
 		[Route("AddOcena")]
@@ -471,7 +506,7 @@ namespace WebApp.Controllers
 			DateTime dok = new DateTime(int.Parse(doDate[2]),
 										int.Parse(doDate[1]) + 1,
 										int.Parse(doDate[0]));
-			if(od > dok)
+			if (od > dok)
 			{
 				DateTime temp = od;
 				od = dok;
@@ -529,6 +564,12 @@ namespace WebApp.Controllers
 			//Get image from request
 			pic = httpRequest.Form.Files[0];
 			filename = httpRequest.Form.Keys.First();
+		}
+		[HttpGet]
+		[Route("Refresh")]
+		public async void Refresh()
+		{
+			await FileHandler.Refresh();
 		}
 		#endregion
 	}

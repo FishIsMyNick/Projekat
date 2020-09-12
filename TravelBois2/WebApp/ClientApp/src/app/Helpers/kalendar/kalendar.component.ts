@@ -15,6 +15,7 @@ export class KalendarComponent implements OnInit {
   static s1: Date;
   static s2: Date;
   dateUnavailable: boolean;
+  nistaSelektovano: boolean;
   test = '';
   //zauzetost: any;
 
@@ -22,7 +23,6 @@ export class KalendarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.test = 'test'
     this.datum = new Datum(this.datum)
     this.dateUnavailable = false;
     KalendarComponent.s1 = null;
@@ -35,13 +35,13 @@ export class KalendarComponent implements OnInit {
   IsAvalable(day, month, year){
     let date = new Date(year, month, day);
     let ret = true;
-    this.kola.zauzetost.forEach(element => {
+    for(let element of this.kola.zauzetost) {
       element.od = new Date(element.od);
       element.do = new Date(element.do);
       if(date >= element.od && date <= element.do){
         ret = false;
       }
-    });
+    }
     return ret;
   }
   IsSelected(dan, mesec, godina){
@@ -137,4 +137,5 @@ export class KalendarComponent implements OnInit {
   }
   GetS1() { return KalendarComponent.s1; }
   GetS2() { return KalendarComponent.s2; }
+  public SelectOn(){}
 }

@@ -78,8 +78,6 @@ export class AppComponent {
     
     AppComponent.rente = new Array<RentACar>();
 
-    AppComponent.rente.push(new RentACar('Car2Go', 'adresa 3'))
-    
   } 
   getType() {
     return AppComponent.currentUser.tipKorisnika;

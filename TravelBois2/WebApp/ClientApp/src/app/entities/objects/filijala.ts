@@ -19,12 +19,6 @@ export class Filijala {
         this.renta = renta;
         this.ListaKola = new Array<Kola>();
         this.Rezervacije = new Array<[Kola, Date, Date]>();
-
-        this.ListaKola.push(new Kola(5, 2006, 'Volks Wagen', 'Golf', TipVozila.Karavan, this.renta, 300));
-        this.ListaKola.push(new Kola(5, 2007, 'Ford', 'Focus', TipVozila.Hecbek, this.renta, 300));
-        this.ListaKola.push(new Kola(2, 2000, 'Mercedes', 'Smart', TipVozila.Hecbek, this.renta, 200));
-        this.ListaKola.push(new Kola(5, 2007, 'Volks Wagen', 'Passat', TipVozila.Sedan, this.renta, 400));
-    
     }
 
     DodajKola(k:Kola){
