@@ -7,6 +7,7 @@ import { DodajKolaComponent } from '../dodaj-kola/dodaj-kola.component';
 import { RentService } from 'src/app/shared/rent.service';
 import { TipVozila } from 'src/app/_enums';
 import { Zauzetost } from 'src/app/entities/misc/zauzetost';
+import { KalendarComponent } from '../../../Helpers/kalendar/kalendar.component';
 
 @Component({
   selector: 'app-izvestaj-o-poslovanju-renta',
@@ -23,10 +24,14 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
   renta: any;
   kalendarKola: any;
   ucitaj: boolean = false;
+  prihodi: number;
+  nistaSelektovano: boolean;
 
   constructor(public fb: FormBuilder, private servis: RentService) {}
 
   async ngOnInit() {
+    this.prihodi = 0;
+    this.nistaSelektovano = false;
     this.currentUser = AppComponent.currentUser as RentACarAdmin;
     this.renta = await this.servis.GetRent(this.currentUser.userName);
 
@@ -37,40 +42,35 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     this.kalendarKola = new Kola(0, 0, '', '', 'Hecbek');
     this.kalendarKola.zauzetost.push(new Zauzetost(new Date(1970, 1, 1), new Date(1970, 1, 1), '', '', ''));
     this.ucitaj = true;
-
-    this.DateForm = new FormGroup({
-      'odDan': new FormControl(this.date.getDate(), [Validators.required, Validators.min(1), Validators.max(31)]),
-      'doDan':new FormControl(this.date.getDate(), [Validators.required, Validators.min(1), Validators.max(31)]),
-      'odMon':new FormControl(this.date.getMonth() + 1, [Validators.required, Validators.min(1), Validators.max(12)]),
-      'doMon':new FormControl(this.date.getMonth() + 1, [Validators.required, Validators.min(1), Validators.max(12)]),
-      'odGod':new FormControl(this.date.getFullYear(), [Validators.required, Validators.min(1970), Validators.max(this.date.getFullYear())]),
-      'doGod':new FormControl(this.date.getFullYear(), [Validators.required, Validators.min(1970), Validators.max(this.date.getFullYear())]),
-      'suma': new FormControl(0, [])
-    })
   }
 
-  async IzracunajPrihode(){
-    let odDan = this.DateForm.get('odDan').value;
-    let odMon = this.DateForm.get('odMon').value;
-    let odGod = this.DateForm.get('odGod').value;
-    let doDan = this.DateForm.get('doDan').value;
-    let doMon = this.DateForm.get('doMon').value;
-    let doGod = this.DateForm.get('doGod').value;
-    let start = new Date(odGod, odMon - 1, odDan);
-    let end = new Date(doGod, doMon - 1, doDan);
-    end.setTime(end.getTime() + 100);
-    var suma = 0;
-
-    for(let kola of await this.GetCars()){
-      kola.zauzetost.forEach(termin =>{
-        //console.debug(kola.Naziv, termin[0], termin[1])
-        if(this.IsOverlapping(start, end, termin[0], termin[1])){
-          suma += this.GetOverlappingInDays(start, end, termin[0], termin[1]) * kola.cena;          
-        }
-      })
+  async IzracunajPrihode() {
+    if (KalendarComponent.s1 == null && KalendarComponent.s2 == null) {
+      this.nistaSelektovano = true;
+      return;
     }
-    this.DateForm.get('suma').setValue(suma);
-    console.debug(odDan, odMon, odGod, doDan, doMon, doGod)
+    else {
+      this.nistaSelektovano = false;
+      let start = new Date(KalendarComponent.s1);
+      let end = new Date(KalendarComponent.s2);
+      if (KalendarComponent.s1 == null) {
+        start = new Date(KalendarComponent.s2);
+      }
+      if (start == null)
+        start = end;
+      end.setTime(end.getTime() + 100);
+      var suma = 0;
+      for (let kola of await this.GetCars()) {
+        for (let termin of await this.servis.GetZauzetost(kola)) {
+          termin.od = new Date(termin.od);
+          termin.do = new Date(termin.do);
+          if (this.IsOverlapping(start, end, termin.od, termin.do)) {
+            suma += this.GetOverlappingInDays(start, end, termin.od, termin.do) * kola.cena;
+          }
+        }
+      }
+      this.prihodi = suma;
+    }
   }
   GetOverlappingInDays(range1Start: Date, range1End: Date, range2Start: Date, range2End: Date): number{
     var start: Date;

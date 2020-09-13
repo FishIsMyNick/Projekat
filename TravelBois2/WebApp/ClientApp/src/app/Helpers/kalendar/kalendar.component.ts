@@ -67,7 +67,7 @@ export class KalendarComponent implements OnInit {
     return ret;
   }
 
-  IsOverlapping(newSelection: Date) {
+  IsOverlapping(temp: Date) {
     // Ako ni jedan datum jos nije selektovan nema provere preklapanja
     if(KalendarComponent.s2 === null){
       return false;
@@ -75,7 +75,8 @@ export class KalendarComponent implements OnInit {
     // Jedan je vec selektovan, da li ce selekcija sledeceg dati preklapanje?
     else {
       // temp je uvek pocetna vrednost iteracije a tempLimit je granica
-      let limit = new Date(newSelection);
+      let newSelection = new Date(temp)
+      let limit = new Date(temp);
       if(newSelection < KalendarComponent.s2){
         limit = new Date(KalendarComponent.s2);
       }
@@ -108,7 +109,7 @@ export class KalendarComponent implements OnInit {
     let temp = new Date(godina, mesec, dan);
     let s1 = KalendarComponent.s1;
     let s2 = KalendarComponent.s2;
-    //console.debug(this.DateCmp(temp, this.s1), this.DateCmp(temp, this.s2))
+
     // Da li je odabrani datum vec selektovan
     if(!(this.DateCmp(temp, s1) || this.DateCmp(temp, s2))){
        if(this.IsOverlapping(temp)){
