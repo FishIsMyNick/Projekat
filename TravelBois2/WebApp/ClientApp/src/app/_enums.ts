@@ -43,6 +43,10 @@ export enum RentPrikaz {
     kola,
     ocenjivanje
 }
+export enum RentAdminPrikaz {
+    Profil = 1,
+    Password
+}
 export enum RezervacijePrikaz {
     Rezervacije = 1,
     Potvrda

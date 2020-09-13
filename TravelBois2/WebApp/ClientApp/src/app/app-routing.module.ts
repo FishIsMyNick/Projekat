@@ -37,10 +37,12 @@ import { AuthGuard } from './shared/auth.guard';
 import { BrzeRezervacijeAdminComponent } from './Komponente/Avio/brze-rezervacije-admin/brze-rezervacije-admin.component';
 import { LetBrzaRezervacijaComponent } from './Komponente/Avio/let-brza-rezervacija/let-brza-rezervacija.component';
 import { InfoStranicaComponent } from './Komponente/Renta/info-stranica/info-stranica.component';
+import { ProfilRentaComponent } from './Komponente/Renta/profil-renta/profil-renta.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: 'pocetna', pathMatch: 'full' },
+  { path: 'profilRenta', component: ProfilRentaComponent },
   { path: 'pocetna', component: PocetnaStranaComponent },
   { path: 'registration', component: RegistracijaComponent },
   { path: 'login', component: LoginComponent },

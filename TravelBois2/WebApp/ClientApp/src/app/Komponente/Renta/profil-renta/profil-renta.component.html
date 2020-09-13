@@ -1,0 +1,57 @@
+<div *ngIf="prikaz === 1">
+    <h1>Profil</h1>
+    <div style="margin-left: 100px; margin-top: 65px;">
+        <div>
+            <div style="display: inline;">Username: </div>
+            <input style="display: inline; position: relative; left: 70px;" id="username" value="{{user.userName}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Email: </div>
+            <input style="display: inline; position: relative; left: 103px;" id="email" value="{{user.email}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Ime: </div>
+            <input style="display: inline; position: relative; left: 115px;" id="ime" value="{{user.name}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Prezime: </div>
+            <input style="display: inline; position: relative; left: 85px;" id="prezime" value="{{user.lastname}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Broj telefona: </div>
+            <input style="display: inline; position: relative; left: 52px;" id="brTel" value="{{user.brojTelefona}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Broj pasosa: </div>
+            <input style="display: inline; position: relative; left: 62px;" id="brPas" value="{{user.brojPasosa}}">
+        </div>
+        <div style="margin-left: 100px; margin-top: 30px;">
+            <button style="display: inline;" (click)="ChangePassword()">Promeni password</button>
+            <button style="display: inline; margin-left: 120px;" (click)="Save()">Sacuvaj</button>
+        </div>
+    </div>
+</div>
+<!-- PROMENA SIFRE-->
+<div *ngIf="prikaz === 2">
+    <h1>Promena sifre</h1>
+    <div style="margin-left: 100px; margin-top: 65px;">
+        <div>
+            <div style="display: inline;">Novi   password: </div>
+            <input type="password" style="display: inline; position: relative; left: 62px;" id="noviPass">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Potvrdi  password: </div>
+            <input type="password" style="display: inline; position: relative; left: 60px;" id="confirm">
+        </div>
+    </div>
+    <div style="margin-left: 100px; margin-top: 30px;">
+        <button style="display: inline;" (click)="SavePassword()">Sacuvaj</button>
+        <button style="display: inline; margin-left: 120px;" (click)="Profil()">Nazad</button>
+    </div>
+</div>
