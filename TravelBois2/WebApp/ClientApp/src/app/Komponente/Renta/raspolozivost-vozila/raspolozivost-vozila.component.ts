@@ -4,6 +4,7 @@ import { Kola } from 'src/app/entities/objects/kola';
 import { AppComponent } from 'src/app/app.component';
 import { RezervacijePrikaz } from 'src/app/_enums';
 import { RentService } from 'src/app/shared/rent.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-raspolozivost-vozila',
@@ -16,7 +17,7 @@ export class RaspolozivostVozilaComponent implements OnInit {
   sc: Kola;
   prikaz: RezervacijePrikaz;
 
-  constructor(private servis: RentService) { }
+  constructor(private servis: RentService, private toastr: ToastrService) { }
 
   async ngOnInit() {
     this.prikaz = RezervacijePrikaz.Rezervacije;
@@ -33,7 +34,12 @@ export class RaspolozivostVozilaComponent implements OnInit {
     console.debug(this.zauzetost);
   }
 
-  Obrisi(id){
-    
+  async Obrisi(id){
+    let z = await this.servis.DeleteReservation(id);
+    let od = new Date(z.od);
+    let dok = new Date(z.do);
+    let naziv = z.kola.split('-');
+    this.toastr.success('Obrisana rezervacija za ' + od.getDate() + '/' + (od.getMonth() + 1) + '/' + od.getFullYear() + '-' + dok.getDate() + '/' + (dok.getMonth() + 1) + '/' + dok.getFullYear() + ' za ' + naziv[0] + ' ' + naziv[1]);
+    this.ngOnInit();
   }
 }

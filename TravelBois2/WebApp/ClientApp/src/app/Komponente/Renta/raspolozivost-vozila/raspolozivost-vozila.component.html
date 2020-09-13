@@ -1,5 +1,5 @@
 <div class="container" *ngIf="prikaz === 1">
-    <table class="katalog-kola">
+    <table *ngIf="zauzetost.length !== 0" class="katalog-kola">
         <th>Marka</th><th>Model</th><th>Slika</th><th>Od</th><th>Do</th><th>User</th><th></th>
         <tr *ngFor="let z of zauzetost">
             <td>{{z.kola.split('-')[0]}}</td>
@@ -12,9 +12,10 @@
                 {{z.do.getDate()}}/{{z.do.getMonth() + 1}}/{{z.do.getFullYear()}}
             </td>
             <td>{{z.user}}</td> 
-            <td><button name="{{z.kola}} + {{z.renta}}" (click)="Obrisi($event.target.name)">Obrisi</button></td>
+            <td><button name="{{z.id}}" (click)="Obrisi($event.target.name)">Obrisi</button></td>
         </tr>
     </table>
+    <h3 *ngIf="zauzetost.length === 0">Trenutno nema rezervacija ni na jednom vozilu</h3>
 </div>
 <!-- POTVRDA BRISANJA -->
 <div *ngIf="prikaz === 2">

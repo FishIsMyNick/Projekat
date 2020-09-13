@@ -6,8 +6,10 @@ import { AppComponent } from '../../app.component';
 export class RentACar {
     Naziv: string;
     Adresa: string;
-  Opis: string;
-  AdminID: string;
+    Grad: string;
+    Drzava: string;
+    Opis: string;
+    AdminID: string;
     Filijale: Array<Filijala>;
     Ocene: Array<Ocena>;
     filtriranaKola: Array<Kola>;

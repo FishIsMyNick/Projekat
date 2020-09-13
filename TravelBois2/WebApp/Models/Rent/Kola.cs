@@ -25,6 +25,8 @@ namespace WebApp.Models
 		public string TipVozila { get; set; }
 		[Column(TypeName = "smallint")]
 		public int Cena { get; set; }
+		[Column(TypeName = "smallint")]
+		public int CenaBrzeRezervacije { get; set; }
 		[Column(TypeName = "bit"), DefaultValue(null)]
 		public bool BrzaRezervacija { get; set; }
 	}

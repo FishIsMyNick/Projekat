@@ -25,11 +25,15 @@
                 </ul>
             </div>
         </li>
-        <hr>
-        <li><h3>Prihodi:</h3>
-            <kalendar [kola]="kalendarKola"></kalendar>
+    </ul>
+</div>
+<div style="position: absolute; top: 50px; left:460px">
+    <div class="kompanija-container">
+        <h3>Prihodi:</h3>
+    </div>
+        <kalendar [kola]="kalendarKola"></kalendar>
+        <div style="margin-top: 7px">
             <button (click)="IzracunajPrihode()" style="display: inline">Izracunaj</button><input disabled id="prihodi" style="display: inline; margin-left: 8px;" value="{{prihodi}}">
             <div *ngIf="nistaSelektovano" style="color: red;">Ni jedan datum nije selektovan!</div>
-        </li>
-    </ul>
+        </div>
 </div>

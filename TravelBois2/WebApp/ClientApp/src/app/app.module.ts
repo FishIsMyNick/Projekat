@@ -55,6 +55,7 @@ import { BrzeRezervacijeAdminComponent } from './Komponente/Avio/brze-rezervacij
 import { LetBrzaRezervacijaComponent } from './Komponente/Avio/let-brza-rezervacija/let-brza-rezervacija.component';
 
 import { FileUploadModule } from 'ng2-file-upload';
+import { InfoStranicaComponent } from './Komponente/Renta/info-stranica/info-stranica.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +97,8 @@ import { FileUploadModule } from 'ng2-file-upload';
     PozivniceComponent,
     RezervacijaLetaComponent,
     BrzeRezervacijeAdminComponent,
-    LetBrzaRezervacijaComponent
+    LetBrzaRezervacijaComponent,
+    InfoStranicaComponent
   ],
   imports: [
     BrowserModule,

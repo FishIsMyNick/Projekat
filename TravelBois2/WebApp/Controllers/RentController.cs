@@ -52,6 +52,7 @@ namespace WebApp.Controllers
 		{
 			return await _context.Rente.ToListAsync();
 		}
+
 		[HttpGet]
 		[Route("GetProsecnaOcena")]
 		public float GetProsecnaOcena(string naziv)
@@ -88,6 +89,7 @@ namespace WebApp.Controllers
 			await _context.SaveChangesAsync();
 			return true;
 		}
+
 		[HttpPost]
 		[Route("ProsecnaOcenaKola")]
 		public async Task<ActionResult<float>> ProsecnaOcenaKola(Kola kola)
@@ -105,6 +107,7 @@ namespace WebApp.Controllers
 			}
 			return i == 0 ? 0 : sum / i;
 		}
+
 		[HttpPost]
 		[Route("ProsecnaOcenaRente")]
 		public async Task<ActionResult<float>> ProsecnaOcenaRente(RentACar renta)
@@ -122,6 +125,7 @@ namespace WebApp.Controllers
 			}
 			return i == 0 ? 0 : sum / i;
 		}
+
 		[HttpPost]
 		[Route("GetRentByName")]
 		public async Task<ActionResult<RentACar>> GetRentByName()
@@ -135,6 +139,7 @@ namespace WebApp.Controllers
 			}
 			return null;
 		}
+
 		[HttpPost]
 		[Route("OceniRentu")]
 		public async Task<ActionResult<bool>> OceniRentu()
@@ -160,6 +165,7 @@ namespace WebApp.Controllers
 			await _context.SaveChangesAsync();
 			return true;
 		}
+
 		// Post: api/Rent/GetRent
 		[HttpPost]
 		[Route("GetRent")]
@@ -189,6 +195,7 @@ namespace WebApp.Controllers
 			}
 			return null;
 		}
+
 		// POST: api/Rent/AddRent
 		[HttpPost]
 		[Route("AddRent")]
@@ -206,6 +213,20 @@ namespace WebApp.Controllers
 				return new StatusCodeResult((int)HttpStatusCode.BadRequest);
 			}
 		}
+		[HttpPost]
+		[Route("UpdateRent")]
+		public async Task<ActionResult<RentACar>> UpdateRent(RentACar renta)
+		{
+			RentACar r = await _context.Rente.FindAsync(renta.Naziv);
+			r.Grad = renta.Grad;
+			r.Drzava = renta.Drzava;
+			r.Adresa = renta.Adresa;
+			r.Opis = renta.Opis;
+			_context.Rente.Update(r);
+			await _context.SaveChangesAsync();
+			return r;
+		}
+			
 		// POST: api/Rent/AddCompanyImage
 		[HttpPost]
 		[Route("AddCompanyImage")]
@@ -220,6 +241,7 @@ namespace WebApp.Controllers
 
 			return new HttpResponseMessage(HttpStatusCode.OK);
 		}
+
 		// POST: api/Rent/AddCarImage
 		[HttpPost]
 		[Route("AddCarImage")]
@@ -232,6 +254,7 @@ namespace WebApp.Controllers
 			await BlobHandler.UploadCarImage(postedFile, filename);
 			return new HttpResponseMessage(HttpStatusCode.OK);
 		}
+
 		[HttpPost]
 		[Route("UpdateCarImage")]
 		public async Task<HttpResponseMessage> UpdateCarImage()
@@ -245,6 +268,7 @@ namespace WebApp.Controllers
 			await FileHandler.Refresh();
 			return new HttpResponseMessage(HttpStatusCode.OK);
 		}
+
 		[HttpPost]
 		[Route("GetCarsFromAdmin")]
 		public async Task<ActionResult<List<Kola>>> GetCarsFromAdmin()
@@ -260,6 +284,7 @@ namespace WebApp.Controllers
 			}
 			return ret;
 		}
+
 		[HttpPost]
 		[Route("GetCarsFromRent")]
 		public async Task<ActionResult<List<Kola>>> GetCarsFromRent()
@@ -274,6 +299,7 @@ namespace WebApp.Controllers
 			}
 			return ret;
 		}
+
 		[HttpPost]
 		[Route("GetZauzetost")]
 		public async Task<ActionResult<List<Zauzetost>>> GetZauzetost(Kola kola)
@@ -287,6 +313,7 @@ namespace WebApp.Controllers
 			}
 			return ret;
 		}
+
 		[HttpPost]
 		[Route("GetReservations")]
 		public async Task<ActionResult<List<Zauzetost>>> GetReservations()
@@ -307,6 +334,17 @@ namespace WebApp.Controllers
 		}
 
 		[HttpPost]
+		[Route("DeleteReservation")]
+		public async Task<ActionResult<Zauzetost>> DeleteReservation()
+		{
+			string id = HttpContext.Request.Form.Keys.First();
+			var z = await _context.Zauzetost.FindAsync(id);
+			_context.Remove(z);
+			await _context.SaveChangesAsync();
+			return z;
+		}
+
+		[HttpPost]
 		[Route("AddCar")]
 		public async Task<ActionResult<Kola>> AddCar(Kola kola)
 		{
@@ -322,6 +360,7 @@ namespace WebApp.Controllers
 				return BadRequest();
 			}
 		}
+
 		[HttpPost]
 		[Route("UpdateCarPrice")]
 		public async Task<Kola> UpdateCarPrice()
@@ -330,13 +369,16 @@ namespace WebApp.Controllers
 			string kola = request[0];
 			string renta = request[1];
 			int novaCena = int.Parse(request[2]);
+			int novaCenaBR = int.Parse(request[3]);
 
 			Kola car = await _context.Kola.FindAsync(kola);
 			car.Cena = novaCena;
+			car.CenaBrzeRezervacije = novaCenaBR;
 			_context.Kola.Update(car);
 			await _context.SaveChangesAsync();
 			return car;
 		}
+
 		[HttpPost]
 		[Route("UpdateCar")]
 		public async Task<ActionResult<Kola>> UpdateCar()
@@ -365,6 +407,7 @@ namespace WebApp.Controllers
 			await _context.SaveChangesAsync();
 			return kola;
 		}
+
 		[HttpPost]
 		[Route("ReplaceCar")]
 		public async Task<ActionResult<Kola>> ReplaceCar()
@@ -428,6 +471,7 @@ namespace WebApp.Controllers
 
 			return kola;
 		}
+
 		[HttpPost]
 		[Route("DeleteCar")]
 		public async Task<bool> DeleteCar(Kola kola)
@@ -467,6 +511,7 @@ namespace WebApp.Controllers
 			await _context.SaveChangesAsync();
 			return true;
 		}
+
 		[HttpPut]
 		[Route("AddOcena")]
 		public async Task<ActionResult<float>> AddOcena(string naziv, short val)
@@ -493,6 +538,7 @@ namespace WebApp.Controllers
 			}
 			return NoContent();
 		}
+
 		[HttpPost]
 		[Route("AddReservation")]
 		public async Task<ActionResult<bool>> AddReservation()
@@ -525,6 +571,7 @@ namespace WebApp.Controllers
 			int rez = await _context.SaveChangesAsync();
 			return rez > 0;
 		}
+
 		[HttpPost]
 		[Route("RentAdminExists")]
 		public async Task<HttpResponseMessage> RentAdminExists()
@@ -565,6 +612,7 @@ namespace WebApp.Controllers
 			pic = httpRequest.Form.Files[0];
 			filename = httpRequest.Form.Keys.First();
 		}
+
 		[HttpGet]
 		[Route("Refresh")]
 		public async void Refresh()

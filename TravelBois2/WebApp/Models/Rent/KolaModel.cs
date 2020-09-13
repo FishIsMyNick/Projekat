@@ -15,6 +15,7 @@ namespace WebApp.Models
 		public int Godiste { get; set; }
 		public string TipVozila { get; set; }
 		public int Cena { get; set; }
+		public int CenaBrzeRezervacije { get; set; }
 		public bool BrzaRezervacija { get; set; }
 		// Van tabele BP
 		public int Ocena { get; set; }

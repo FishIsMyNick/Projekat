@@ -21,10 +21,11 @@ export class CenovnikComponent implements OnInit {
     }
   }
   async Sacuvaj(name){
-    let cena = (<HTMLInputElement>document.getElementById(name)).value;
+    let cena = (<HTMLInputElement>document.getElementById(name + 'R')).value;
+    let cenaBR = (<HTMLInputElement>document.getElementById(name + 'B')).value;
     let naziv = name.split('+');
 
-    await this.servis.UpdateCarPrice(naziv[0], naziv[1], cena);
+    await this.servis.UpdateCarPrice(naziv[0], naziv[1], cena, cenaBR);
 
     var kola = naziv[0].split('-');
     let marka = kola[0];

@@ -1,11 +1,12 @@
-<div class="container">
+<div class="container" style="margin-left: 150px;">
     <table class="katalog-kola">
-        <th>Marka</th><th>Model</th><th>Slika</th><th>Cena</th><th></th>
+        <th>Marka</th><th>Model</th><th>Slika</th><th>Regularna cena</th><th style="width: 130px;">Cena brze rezervacije</th><th></th>
         <tr *ngFor="let k of kola">
             <td>{{k.naziv.split('-')[0]}}</td>
             <td>{{k.naziv.split('-')[1]}}</td>
             <td><img [src]="k.imgURL" class="kola-ikonica"></td>
-            <td><input type="number" id="{{k.naziv}}+{{k.nazivRente}}" value="{{k.cena}}"></td>
+            <td><input type="number" id="{{k.naziv}}+{{k.nazivRente}}R" value="{{k.cena}}" style="width: 130px;"></td>
+            <td><input type="number" id="{{k.naziv}}+{{k.nazivRente}}B" value="{{k.cenaBrzeRezervacije}}" style="width: 130px;"></td>
             <td><button name="{{k.naziv}}+{{k.nazivRente}}" (click)="Sacuvaj($event.target.name)">Sacuvaj</button></td>
         </tr>
     </table>

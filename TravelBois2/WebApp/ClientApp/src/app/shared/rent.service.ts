@@ -71,6 +71,10 @@ export class RentService {
     formData.append(name, 'name');
     return await this.http.post<any>(this.BaseURI + '/Rent/GetRentByName', formData).toPromise();
   }
+  async UpdateRent(renta: RentACar): Promise<any> {
+    console.debug(renta);
+    return await this.http.post(this.BaseURI + '/Rent/UpdateRent', renta).toPromise();
+  }
   addRentKompanija(rentKompanija: RentACar): Observable<RentACar> {
     return this.http.post<RentACar>(this.BaseURI + '/Rent/AddRent', rentKompanija);
   }
@@ -80,14 +84,12 @@ export class RentService {
   addCarImage(image: FormData): Observable<Object> {
     return this.http.post(this.BaseURI + '/Rent/AddCarImage', image);
   }
-
   async UpdateCarImage(image: any, newName: string): Promise<any> {
     const fd = new FormData();
     fd.append(image.name, image, newName);
 
     return this.http.post<any>(this.BaseURI + '/Rent/UpdateCarImage', fd);
   }
-  
   checkForRentAdmin(adminID: string): Observable<string> {
     const formData = new FormData();
     formData.append(adminID, "adminID");
@@ -115,11 +117,12 @@ export class RentService {
   AddCar(kola: Kola): Observable<Kola> {
     return this.http.post<Kola>(this.BaseURI + '/Rent/AddCar', kola);
   }
-  async UpdateCarPrice(kola, renta, novaCena): Promise<any> {
+  async UpdateCarPrice(kola, renta, novaCena, novaCenaBR): Promise<any> {
     const formData = new FormData();
     formData.append(kola, 'kola');
     formData.append(renta, 'kola');
     formData.append(novaCena, novaCena);
+    formData.append(novaCenaBR, '');
     return await this.http.post<any>(this.BaseURI + '/Rent/UpdateCarPrice', formData).toPromise();
   }
   async UpdateCar(kola: any): Promise<any> {
@@ -171,6 +174,11 @@ export class RentService {
     formData.append(k.nazivRente, 'renta');
     formData.append(user, 'user');
     return this.http.post<any>(this.BaseURI + '/Rent/AddReservation', formData)
+  }
+  async DeleteReservation(id): Promise<any> {
+    const fd = new FormData();
+    fd.append(id, '');
+    return await this.http.post(this.BaseURI + '/Rent/DeleteReservation', fd).toPromise()
   }
   async OceniKola(naziv, renta, ocena, user): Promise<any> {
     const formData = new FormData();

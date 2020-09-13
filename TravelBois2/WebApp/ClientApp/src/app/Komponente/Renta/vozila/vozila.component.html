@@ -27,42 +27,42 @@
           <div class="form">
               <div>
                   <label for="marka">Marka:</label>
-                  <input disabled id="marka" class="form-control"  value="{{editKola.naziv.split('-')[0]}}">
+                  <input disabled id="marka" class="form-control"  value="{{editKola.naziv.split('-')[0]}}" style="position: relative; left: 80px;">
               </div>
           </div>
           <div class="form">
               <div>
                   <label for="model">Model:</label>
-                  <input disabled id="model" class="form-control" value="{{editKola.naziv.split('-')[1]}}">
+                  <input disabled id="model" class="form-control" value="{{editKola.naziv.split('-')[1]}}" style="position: relative; left: 80px;">
               </div>
           </div>
           <div class="form">
               <div>
                   <label for="brojMesta">Broj mesta:</label>
-                  <input type="number" id="brojMesta" value="{{editKola.brojMesta}}" class="form-control">
+                  <input type="number" id="brojMesta" value="{{editKola.brojMesta}}" class="form-control" style="position: relative; left: 52px;">
               </div>
           </div>
           <div class="form">
               <div>
                   <label for="godiste">Godiste:</label>
-                  <input type="number" id="godiste" class="form-control" value="{{editKola.godiste}}">
+                  <input type="number" id="godiste" class="form-control" value="{{editKola.godiste}}" style="position: relative; left: 73px;">
               </div>
           </div>
           <div class="form">
               <div>
                   <label for="cena">Cena:</label>
-                  <input type="number" id="cena" class="form-control" value="{{editKola.cena}}">
+                  <input type="number" id="cena" class="form-control" value="{{editKola.cena}}" style="position: relative; left: 93px;">
               </div>
           </div>
           <div class="form">
             <div>
               <label for="brzaRezervacija">Brza rezervacija:</label>
-              <input type="checkbox" id="brzaRezervacija" class="form-control" [(ngModel)]="editKola.brzaRezervacija">
+              <input type="checkbox" id="brzaRezervacija" class="form-control" [(ngModel)]="editKola.brzaRezervacija" style="position: relative; left: 19px;">
             </div>
           </div>
           <div>
               <label for="tip">Tip vozila:</label>
-              <select id="tip" class="form-control">
+              <select id="tip" class="form-control" style="position: relative; left: 63px;">
                 <option selected disabled>{{editKola.tipVozila}}</option>
                   <option *ngFor="let t of GetTipovi()">
                       {{t}}
