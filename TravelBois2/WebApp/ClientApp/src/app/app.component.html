@@ -4,7 +4,7 @@
     <ul>
         <li routerLink="/pocetna"><img class="ikonica" src="assets/images/TB-ikonica.png"></li>
     </ul>
-    <ul style="float: left;" *ngIf="getType() !=='Admin' && getType() !=='AvioAdmin'">        
+    <ul style="float: left;" *ngIf="getType() !=='Admin' && getType() !=='AvioAdmin' && getType() !== 'RentAdmin'">        
         <li routerLink="/kontakt">O nama</li>
         <li *ngIf="getType() !== 'User'" routerLink="/brzeRezervacije">Brze rezervacije</li>
     </ul>

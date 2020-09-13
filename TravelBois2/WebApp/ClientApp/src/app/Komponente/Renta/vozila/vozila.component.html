@@ -1,13 +1,16 @@
-<div *ngIf="prikaz === 1" class="container">
+<div *ngIf="prikaz === 1" class="container" style="margin-left: 100px;">
     <form (onSubmit)="EditCar()">
         <table class="katalog-kola">
-            <th>Naziv</th><th>Tip</th><th>Godiste</th><th>Broj mesta</th><th>Cena</th>
+            <th>Marka</th><th>Model</th><th>Tip</th><th>Godiste</th><th>Broj mesta</th><th>Cena</th><th style="width: 50px;">Brza rezervacija</th>
         <tr *ngFor="let car of kola">
-            <td>{{car.naziv}}</td>
+            <td>{{car.naziv.split('-')[0]}}</td>
+            <td>{{car.naziv.split('-')[1]}}</td>
             <td>{{car.tipVozila}}</td>
             <td>{{car.godiste}}</td>
             <td>{{car.brojMesta}}</td>
             <td>{{car.cena}}</td>
+            <td *ngIf="car.brzaRezervacija">Da</td>
+            <td *ngIf="!car.brzaRezervacija">Ne</td>
             <td><img [src]="car.imgURL" height="100px"></td>
             <td><button name="{{car.naziv}}+{{car.nazivRente}}" (click)="EditCar($event.target.name)">Izmeni</button></td>
             <td><button name="{{car.naziv}}+{{car.nazivRente}}" (click)="DeleteCar($event.target.name)">Obrisi</button></td>

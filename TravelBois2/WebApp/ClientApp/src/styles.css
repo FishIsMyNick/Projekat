@@ -296,16 +296,19 @@ body {
 {
     border-collapse: collapse;
     border-radius: 5px;
+    text-align: center;
 }
 .katalog-kola td
 {
     background-color: #99f5a5;
     border-left: 1px dashed gray;
     border-right: 1px dashed gray;
+    text-align: center;
 }
 .katalog-kola th
 {
     background-color: #99f5a5;
+    text-align: center;
 }
 
 /*=================================REGISTRACIJE================================= */

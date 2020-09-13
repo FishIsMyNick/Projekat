@@ -12,15 +12,24 @@
         <hr>
         <li><h3>Rezervacije vozila:</h3><br>
             <div style="display: inline;">
-                <input type="radio" id="dan" name="rezervacije" checked><label style="margin-right: 8px;" for="dan">Nedelja</label>
-                <input type="radio" id="mesec" name="rezervacije"><label style="margin-right: 8px;" for="mesec">Mesec</label><nbsp></nbsp>
-                <input type="radio" id="god" name="rezervacije"><label style="margin-right: 8px;" for="god">Godina</label>
+                <input type="radio" id="nedelja" name="rezervacije" checked (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="dan">Nedelja</label>
+                <input type="radio" id="mesec" name="rezervacije" (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="mesec">Mesec</label><nbsp></nbsp>
+                <input type="radio" id="god" name="rezervacije" (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="god">Godina</label>
+            </div>
+            <div>Imate {{brojRezervacija}} rezervacija {{periodRezervacije}}.</div>
+            <div>Rezervisana vozila:
+                <ul>
+                    <li *ngFor="let kola of rezervisanaKola" style="display: list-item;">
+                        {{kola}}
+                    </li>
+                </ul>
             </div>
         </li>
         <hr>
         <li><h3>Prihodi:</h3>
             <kalendar [kola]="kalendarKola"></kalendar>
             <button (click)="IzracunajPrihode()" style="display: inline">Izracunaj</button><input disabled id="prihodi" style="display: inline; margin-left: 8px;" value="{{prihodi}}">
+            <div *ngIf="nistaSelektovano" style="color: red;">Ni jedan datum nije selektovan!</div>
         </li>
     </ul>
 </div>
