@@ -17,7 +17,7 @@
         <li routerLink="/registration">Registracija</li>
         <li routerLink="/login">Log in</li>
     </ul>
-    <ul *ngIf="getType() === 'RegisteredUser'" style="float: right;">
+    <ul *ngIf="getType() === 'RegularUser'" style="float: right;">
         <li routerLink="/profilKorisnika">Profil</li>
         <li (click)="onLogOut()">LogOut</li>
     </ul>

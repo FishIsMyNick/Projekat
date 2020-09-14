@@ -42,12 +42,12 @@ export class PocetnaStranaComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = AppComponent.currentUser;
-    if(this.currentUser.tipKorisnika != 'RegularUser' && this.currentUser.tipKorisnika != 'User'){
+    if (this.currentUser.tipKorisnika != 'RegularUser' && this.currentUser.tipKorisnika != 'User'){
       if(!this.currentUser.promenioPassword){
         this.router.navigate(['promena-lozinke']);
       }
     }
-    this.provera();
+    //this.provera();
     this.ucitajAviokompaniju();
     this.ucitajOcene();
   }
@@ -68,7 +68,7 @@ export class PocetnaStranaComponent implements OnInit {
           this.tipKorisnika = this.userDetails.tipKorisnika;
           this.grad = this.userDetails.grad;
           if (this.tipKorisnika == 'RegularUser') {
-            AppComponent.tipKorisnika = "RegisteredUser";
+            AppComponent.tipKorisnika = "RegularUser";
             AppComponent.currentUser = new RegisteredUser(this.brojTelefona, this.grad, this.name, this.lastname, this.userName, this.brojPasosa);            
           }
           else if (this.tipKorisnika == 'AvioAdmin') {

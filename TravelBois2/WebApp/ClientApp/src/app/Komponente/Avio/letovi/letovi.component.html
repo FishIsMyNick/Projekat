@@ -65,7 +65,7 @@
         <td *ngIf="letic.tipLeta == 0">one-way</td>
         <td *ngIf="letic.tipLeta == 1">multi-city</td>
         <td>{{letic.cenaKarte}}</td>
-        <td [hidden]="currentUser!= 'RegisteredUser'">
+        <td [hidden]="currentUser!= 'RegularUser'">
           <button (click)="RezervisiLet(i)" class="btn-rez">Rezervisi</button>
         </td>
       </tr>
@@ -97,7 +97,7 @@
         <td *ngIf="letic.tipLeta == 0">one-way</td>
         <td *ngIf="letic.tipLeta == 1">multi-city</td>
         <td>{{letic.cenaKarte}}</td>
-        <td [hidden]="currentUser!= 'RegisteredUser'">
+        <td [hidden]="currentUser!= 'RegularUser'">
           <button (click)="RezervisiLet(i)" class="btn-rez">Rezervisi</button>
         </td>
       </tr>

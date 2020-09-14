@@ -74,7 +74,7 @@
             </ul>
         </div>
         <h3><button (click)="prikaziListu()">Nazad</button>
-            <button *ngIf="GetCurrentUserType() === 'RegisteredUser'"style="float: right;" (click)="Oceni()">Oceni</button></h3>
+            <button *ngIf="GetCurrentUserType() === 'RegularUser'"style="float: right;" (click)="Oceni()">Oceni</button></h3>
     </div>
 </div>
 
@@ -95,7 +95,7 @@
         <hr>
         <div style="display: inline; padding: 5px;">
             <button (click)="prikaziRentu('')">Nazad</button>
-            <button *ngIf="GetCurrentUserType() === 'RegisteredUser'" style="float: right;" (click)="NapraviRezervaciju()">Napravi rezervaciju</button>
+            <button *ngIf="GetCurrentUserType() === 'RegularUser'" style="float: right;" (click)="NapraviRezervaciju()">Napravi rezervaciju</button>
         </div>
     </div>
     <div style="position: absolute; top: 50px; left:380px">

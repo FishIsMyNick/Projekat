@@ -28,7 +28,7 @@
       <div>
         <button (click)="letoviUrl(kompanija.naziv)" class="letovi-btn"> Prikazi letove</button>
       </div>
-      <div *ngIf="getType() === 'RegisteredUser'">
+      <div *ngIf="getType() === 'RegularUser'">
         <button (click)="oceni(kompanija.naziv)" class="letovi-btn"> Oceni aviokompaniju</button>
       </div>
     </div>
