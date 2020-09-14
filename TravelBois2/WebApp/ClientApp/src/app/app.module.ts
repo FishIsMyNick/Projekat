@@ -57,6 +57,7 @@ import { LetBrzaRezervacijaComponent } from './Komponente/Avio/let-brza-rezervac
 import { FileUploadModule } from 'ng2-file-upload';
 import { InfoStranicaComponent } from './Komponente/Renta/info-stranica/info-stranica.component';
 import { ProfilRentaComponent } from './Komponente/Renta/profil-renta/profil-renta.component';
+import { DashboardComponent } from './Komponente/Korisnicki/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -100,7 +101,8 @@ import { ProfilRentaComponent } from './Komponente/Renta/profil-renta/profil-ren
     BrzeRezervacijeAdminComponent,
     LetBrzaRezervacijaComponent,
     InfoStranicaComponent,
-    ProfilRentaComponent
+    ProfilRentaComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
