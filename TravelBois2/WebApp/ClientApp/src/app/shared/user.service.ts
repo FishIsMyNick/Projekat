@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { RegisteredUser } from '../entities/users/registered-user/registered-user';
@@ -6,13 +6,23 @@ import { Observable } from 'rxjs';
 import { User } from '../entities/users/user/user';
 import { Prijatelj } from '../entities/objects/prijatelj';
 import { PrihvacenPrijatelj } from '../entities/objects/prihvacen-prijatelj';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { auth } from 'firebase';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  user: User;
   readonly BaseURI = 'https://localhost:44343/api';
-  constructor(private fb:FormBuilder, private http: HttpClient) { }
+  constructor(
+    private fb:FormBuilder, 
+    private http: HttpClient, 
+    private angularFireAuth: AngularFireAuth, 
+    public afAuth: AngularFireAuth, 
+    public ngZone: NgZone, 
+    private router: Router) { }
 
   userFormModel = this.fb.group({
     Email :['', [Validators.required, Validators.email]],
@@ -54,6 +64,29 @@ export class UserService {
       ConfirmPassword :['', [Validators.required]]
     }, {validator: this.comparePasswords})
   });
+
+  OAuthProvider(provider){
+    return this.afAuth.signInWithPopup(provider).then ((res) => {
+      this.ngZone.run(() => {
+        this.router.navigate(['dashboard']);
+      })
+    }).catch((error) => {
+      window.alert(error);
+    })
+  }
+  SigninWithGoogle() {
+    return this.OAuthProvider(new auth.GoogleAuthProvider())
+        .then(res => {
+            console.log('Successfully logged in!')
+        }).catch(error => {
+            console.log(error)
+        });
+}
+SignOut() {
+  return this.afAuth.signOut().then(() => {
+      this.router.navigate(['login']);
+  })
+}
 
   comparePasswords(fb: FormGroup){
     let confirmPswrdCtrl = fb.get('ConfirmPassword');
