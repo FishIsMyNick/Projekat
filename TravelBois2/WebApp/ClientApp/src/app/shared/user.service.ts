@@ -167,6 +167,8 @@ export class UserService {
   deletePrijatelj(id: number): Observable<any> {
     return this.http.delete(this.BaseURI + '/ApplicationUser/DeletePrijatelj/' + id);
   }
-  
-
+  async UpdateRentAdminPassword(newPass: string): Promise<any> {
+    const fd = new FormData()
+    fd.append(newPass, '');
+  }
 }

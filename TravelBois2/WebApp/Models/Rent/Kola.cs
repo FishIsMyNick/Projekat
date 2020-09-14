@@ -29,5 +29,9 @@ namespace WebApp.Models
 		public int CenaBrzeRezervacije { get; set; }
 		[Column(TypeName = "bit"), DefaultValue(null)]
 		public bool BrzaRezervacija { get; set; }
+		[Column(TypeName = "date")]
+		public DateTime BrzaRezervacijaOd { get; set; }
+		[Column(TypeName = "date")]
+		public DateTime BrzaRezervacijaDo { get; set; }
 	}
 }

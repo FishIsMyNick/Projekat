@@ -52,6 +52,12 @@ namespace WebApp.Controllers
 		{
 			return await _context.Rente.ToListAsync();
 		}
+		[HttpGet]
+		[Route("GetAllCars")]
+		public async Task<ActionResult<List<Kola>>> GetAllCars()
+		{
+			return await _context.Kola.ToListAsync();
+		}
 
 		[HttpGet]
 		[Route("GetProsecnaOcena")]
@@ -402,6 +408,8 @@ namespace WebApp.Controllers
 			kola.Cena = int.Parse(request[4]);
 			kola.BrzaRezervacija = bool.Parse(request[5]);
 			kola.TipVozila = request[6];
+			kola.BrzaRezervacijaOd = DateTime.Parse(request[7].Split('+')[0]);
+			kola.BrzaRezervacijaDo = DateTime.Parse(request[7].Split('+')[1]);
 
 			var ret = _context.Kola.Update(kola);
 			await _context.SaveChangesAsync();

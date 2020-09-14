@@ -60,6 +60,20 @@
               <input type="checkbox" id="brzaRezervacija" class="form-control" [(ngModel)]="editKola.brzaRezervacija" style="position: relative; left: 19px;">
             </div>
           </div>
+          <br>
+          <div class="form">
+            <div>
+              <label for="brzaRezervacija">Od:</label>
+              <label for="brzaRezervacijaOd" style="position: absolute; left: 145px; top: 455px;">MM/DD/YYYY</label>
+              <input id="brzaRezervacijaOd" [disabled]="!editKola.brzaRezervacija" class="form-control" value="{{editKola.brzaRezervacijaOd.split('-')[1]}}/{{editKola.brzaRezervacijaOd.split('-')[2].split('T')[0]}}/{{editKola.brzaRezervacijaOd.split('-')[0]}}" style="position: relative; left: 108px;">
+            </div>
+          </div>
+          <div class="form">
+            <div>
+              <label for="brzaRezervacija">Do:</label>
+              <input id="brzaRezervacijaDo" [disabled]="!editKola.brzaRezervacija" class="form-control" value="{{editKola.brzaRezervacijaDo.split('-')[1]}}/{{editKola.brzaRezervacijaDo.split('-')[2].split('T')[0]}}/{{editKola.brzaRezervacijaDo.split('-')[0]}}" style="position: relative; left: 108px;">
+            </div>
+          </div>
           <div>
               <label for="tip">Tip vozila:</label>
               <select id="tip" class="form-control" style="position: relative; left: 63px;">

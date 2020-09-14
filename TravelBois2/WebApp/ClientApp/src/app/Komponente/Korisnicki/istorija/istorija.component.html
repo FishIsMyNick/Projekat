@@ -107,8 +107,12 @@
             {{data.prosecnaOcena}}
           </td>
           <td>
-            <button class="btn-rez" name="{{data.naziv}}+{{data.renta}}"
+            <button class="btn-rez" name="{{data.naziv}}+{{data.renta}}+{{data.do}}"
             (click)="OceniKola($event)">Oceni</button>
+          </td>
+          <td>
+            <button class="btn-rez" name="{{data.rezID}}+{{data.od}}"
+            (click)="OtkaziRezervaciju($event.target.name)">Otkazi</button>
           </td>
         </tr>
       </tbody>

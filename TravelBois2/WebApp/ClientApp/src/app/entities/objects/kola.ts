@@ -7,6 +7,8 @@ export class Kola {
     NazivRente: string;
     BrojMesta: number;
     BrzaRezervacija: boolean;
+    BrzaRezervacijaOd: string;
+    BrzaRezervacijaDo: string;
     Cena: number;
     CenaBrzeRezervacije: number;
     Godiste: number;

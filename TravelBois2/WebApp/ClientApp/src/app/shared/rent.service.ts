@@ -108,6 +108,9 @@ export class RentService {
 
     return await this.http.post<any>(this.BaseURI + '/Rent/GetCarsFromRent', formData).toPromise();
   }
+  async GetAllCars(): Promise<any> {
+    return await this.http.get(this.BaseURI + '/Rent/GetAllCars').toPromise();
+  }
   async GetKola(naziv: string, renta: string): Promise<any> {
     const formData = new FormData();
     formData.append(naziv, 'naziv');
@@ -134,6 +137,7 @@ export class RentService {
     fd.append(kola.cena, '');
     fd.append(kola.brzaRezervacija, '');
     fd.append(kola.tipVozila, '');
+    fd.append(kola.brzaRezervacijaOd + '+' + kola.brzaRezervacijaDo, '');
     return await this.http.post<any>(this.BaseURI + '/Rent/UpdateCar', fd).toPromise();
   }
   async ReplaceCar(kola: any, newMarka, newModel): Promise<any> {

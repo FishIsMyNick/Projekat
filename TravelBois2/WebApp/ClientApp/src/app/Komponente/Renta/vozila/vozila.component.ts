@@ -35,6 +35,8 @@ export class VozilaComponent implements OnInit {
     var resp = await this.servis.GetCarsFromAdmin(this.currentUser.userName);
     for(let element of resp) {
       let k = new Kola(element.brojMesta, element.godiste, element.naziv.split('-')[0], element.naziv.split('-')[1], element.tipVozila, element.nazivRente, element.cena, element.brzaRezervacija);
+      k.BrzaRezervacijaOd = element.brzaRezervacijaOd;
+      k.BrzaRezervacijaDo = element.brzaRezervacijaDo;
 
       element.imgURL = 'assets/images/RentACar/Kola/' + element.naziv + '.jpg';
       this.kola.push(element)
@@ -63,6 +65,20 @@ export class VozilaComponent implements OnInit {
     kola.godiste = (<HTMLInputElement>document.getElementById('godiste')).value
     kola.cena = (<HTMLInputElement>document.getElementById('cena')).value
     kola.brzaRezervacija = (<HTMLInputElement>document.getElementById('brzaRezervacija')).checked;
+
+    let rezOd = (<HTMLInputElement>document.getElementById('brzaRezervacijaOd')).value
+    if (rezOd == ''){
+      rezOd = '1/1/2020'
+    }
+    kola.brzaRezervacijaOd = rezOd;
+
+    let rezDo = (<HTMLInputElement>document.getElementById('brzaRezervacijaDo')).value
+    if (rezDo == ''){
+      rezDo = '1/1/2020'
+    }
+
+    kola.brzaRezervacijaDo = rezDo;
+
     kola.tipVozila =(<HTMLInputElement>document.getElementById('tip')).value
 
     
@@ -94,6 +110,7 @@ export class VozilaComponent implements OnInit {
   }
 
   Nazad(){
+    this.ngOnInit();
     this.prikaz = VozilaPrikaz.Katalog;
   }
 

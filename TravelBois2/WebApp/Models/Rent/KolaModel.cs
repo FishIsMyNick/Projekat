@@ -17,6 +17,8 @@ namespace WebApp.Models
 		public int Cena { get; set; }
 		public int CenaBrzeRezervacije { get; set; }
 		public bool BrzaRezervacija { get; set; }
+		public DateTime BrzaRezervacijaOd { get; set; }
+		public DateTime BrzaRezervacijaDo { get; set; }
 		// Van tabele BP
 		public int Ocena { get; set; }
 		public string User { get; set; }

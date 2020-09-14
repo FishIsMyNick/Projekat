@@ -36,6 +36,26 @@
 </div>
 <br>
 
+<h2>Brze rezervacije kola</h2>
+<div>
+  <table class="katalog-kola">
+    <th *ngFor="let h of kolaHeaders">{{h}}</th>
+    <tr *ngFor="let k of kola">
+      <td>{{k.nazivRente}}</td>
+      <td>{{k.naziv.split('-')[0]}}</td>
+      <td>{{k.naziv.split('-')[1]}}</td>
+      <td>{{k.godiste}}</td>
+      <td>{{k.brojMesta}}</td>
+      <td>{{k.tipVozila}}</td>
+      <td>{{k.cenaBrzeRezervacije}}</td>
+      <td>{{k.brzaRezervacijaOd.split('-')[2].split('T')[0]}}/{{k.brzaRezervacijaOd.split('-')[1]}}/{{k.brzaRezervacijaOd.split('-')[0]}}</td>
+      <td>{{k.brzaRezervacijaDo.split('-')[2].split('T')[0]}}/{{k.brzaRezervacijaDo.split('-')[1]}}/{{k.brzaRezervacijaDo.split('-')[0]}}</td>
+      <td style="width: 80px;">{{k.prosecnaOcena}}</td>
+      <td><button name="{{k.naziv}}+{{k.nazivRente}}" (click)="Reserve($event.target.name)">Rezervisi</button></td>
+    </tr>
+  </table>
+</div>
+
 <div>
   <button class="btn btn-primary" style="float: left; margin-left: 0.2%;" (click)="onBack()" type="button">Nazad</button>
 </div>

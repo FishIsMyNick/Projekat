@@ -48,24 +48,55 @@ export class SveRenteComponent implements OnInit {
 
   constructor(private router: Router, private toastr: ToastrService, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.rente = new Array<any>();
     this.kola = new Array<any>();
     this.currentUser = AppComponent.currentUser;
     this.prikaz = RentPrikaz.listaKompanija;
     this.ocene = new Array<Ocena>();
+    this.filtriranaKola = new Array<any>();
 
     var resp = this.service.GetAllRents().subscribe(
-      (res:any) => {
-        res.forEach(element => {
+      async (res:any) => {
+        for(let element of res) {
           element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
+          element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
           this.rente.push(element)
-        });
+        }
       },
       (err) =>{
         console.log(err)
       }
     )
+  }
+  async PrimeniFilter() {
+    let marka = (<HTMLInputElement>document.getElementById('fMarka')).value;
+    let minGod = (<HTMLInputElement>document.getElementById('minGod')).value;
+    let maxGod = (<HTMLInputElement>document.getElementById('maxGod')).value;
+    let minCena = (<HTMLInputElement>document.getElementById('minCena')).value;
+    let maxCena = (<HTMLInputElement>document.getElementById('maxCena')).value;
+    let chkMarka = (<HTMLInputElement>document.getElementById('chkMarka')).checked;
+    let chkMinGod = (<HTMLInputElement>document.getElementById('chkMinGod')).checked;
+    let chkMaxGod = (<HTMLInputElement>document.getElementById('chkMaxGod')).checked;
+    let chkMinCena = (<HTMLInputElement>document.getElementById('chkMinCena')).checked;
+    let chkMaxCena = (<HTMLInputElement>document.getElementById('chkMaxCena')).checked;
+
+    this.filtriranaKola = this.kola;
+
+    if (chkMarka) {
+      this.filtriranaKola = this.filtriranaKola.filter(e => e.naziv.split('-')[0] == marka);
+    }
+    if (chkMinGod) {
+      this.filtriranaKola = this.filtriranaKola.filter(e => e.godiste >= minGod);
+    }
+    if (chkMaxGod) {
+      this.filtriranaKola = this.filtriranaKola.filter(e => e.godiste <= maxGod);
+    }
+    if (chkMinCena) {
+      this.filtriranaKola = this.filtriranaKola.filter(e => e.cena >= minCena);
+    } if (chkMaxCena) {
+      this.filtriranaKola = this.filtriranaKola.filter(e => e.cena <= maxCena);
+    }
   }
   GetCurrentUserType(){
     return this.currentUser.constructor.name;
@@ -93,7 +124,12 @@ export class SveRenteComponent implements OnInit {
     }
 
     this.kola = await this.service.GetCarsFromRent(this.sr.naziv);
-    this.filtriranaKola = this.kola;
+    this.filtriranaKola = new Array<any>();
+    for(let k of this.kola){
+      if(!k.brzaRezervacija){
+        this.filtriranaKola.push(k);
+      }
+    }
     this.filtriranaKola.forEach(element => element.imgURL = 'assets/images/RentACar/Kola/' + element.naziv + '.jpg');
     this.sr.prosecnaOcena = await this.service.ProsecnaOcenaRente(this.sr);
 
@@ -110,15 +146,21 @@ export class SveRenteComponent implements OnInit {
   NapraviRezervaciju() {
     let d1 = KalendarComponent.s1
     let d2 = KalendarComponent.s2
-    this.service.AddReservation(d1, d2, this.sc, this.currentUser.userName).subscribe(
-      (res: any) => {
-        this.toastr.success("Uspesno ste napravili rezervaciju!");
-        this.router.navigate(['/pocetna']);
-      },
-      err => {
-        console.debug(err);
-      }
-    )
+    let today = new Date();
+    if(d1 > today && d2 > today){
+      this.service.AddReservation(d1, d2, this.sc, this.currentUser.userName).subscribe(
+        (res: any) => {
+          this.toastr.success("Uspesno ste napravili rezervaciju!");
+          this.router.navigate(['/pocetna']);
+        },
+        err => {
+          console.debug(err);
+        }
+      )
+    }
+    else{
+      this.toastr.error('Ne mozete praviti rezervacije za protekle dane!');
+    }
   }
   Oceni(){
     this.prikaz = RentPrikaz.ocenjivanje;

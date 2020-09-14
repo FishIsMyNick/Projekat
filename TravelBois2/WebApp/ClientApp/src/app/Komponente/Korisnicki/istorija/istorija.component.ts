@@ -76,8 +76,7 @@ export class IstorijaComponent implements OnInit {
     // Ucitavanje rezervacija rente
     var rezervacije = await this.rentService.GetReservations(this.currentUser.userName);
 
-    for (let i = 0; i < rezervacije.length; i++) {
-      var element = rezervacije[i];
+    for (let element of rezervacije) {
       var kola = await this.rentService.GetKola(element.kola, element.renta)
 
         let data = kola;
@@ -86,17 +85,20 @@ export class IstorijaComponent implements OnInit {
       data.model = element.kola.split('-')[1];
       data.godiste = kola.godiste;
       data.brojMesta = kola.brojMesta;
-      data.tip = TipVozila[kola.tipVozila];
-      data.prosecnaOcena = ">> Posecna ocena PH <<";
+      data.tip = kola.tipVozila;
+      data.prosecnaOcena = await this.rentService.ProsecnaOcenaKola(kola);
       let datOd = new Date(element.od);
+      data.od = datOd;
       data.odDan = datOd.getDate();
       data.odMon = datOd.getMonth() + 1;
       data.odYr = datOd.getFullYear();
       let datDo = new Date(element.do);
+      data.do = datDo;
       data.doDan = datDo.getDate();
       data.doMon = datDo.getMonth() + 1;
       data.doYr = datDo.getFullYear();
       this.kolaData.push(data);
+      data.rezID = element.id;
     }
     //UCITAVANJE LETOVA
     this.UcitajLetove();
@@ -108,7 +110,20 @@ export class IstorijaComponent implements OnInit {
     var id = this.idLetLista[i];
     this.router.navigateByUrl('/oceniLet/' + id + '/' + this.relacija);
   }
-
+  async OtkaziRezervaciju(id){
+    let today = new Date();
+    today.setDate(today.getDate() + 2);
+    let data = id.split('+');
+    let d = new Date(data[1]);
+    if(today > d){
+      this.toastr.error('Ne mozete otkazati rezervaciju manje od 2 dana do rezervacije!');
+    }
+    else{
+      await this.rentService.DeleteReservation(data[0]);
+      this.toastr.success('Uspesno ste otkazali rezervaciju!');
+      this.ngOnInit();
+    }
+  }
   OtkaziLet(i: number) {
     var idLeta = this.listaLetova[i];
     var idSedista = this.listaSedista[i];
@@ -124,7 +139,15 @@ export class IstorijaComponent implements OnInit {
     let arg = event.srcElement.attributes[1].value.split('+');
     this.kolaZaOceniti = arg[0];
     this.rentaKolaZaOceniti = arg[1]
-    this.ocenjivanje = true;
+    let dat = new Date(arg[2]);
+    let today = new Date();
+    if(dat<today){
+      this.ocenjivanje = true;
+    }
+    else{
+      this.toastr.error('Rezervacija jos nije ispunjena. Ne mozete jos oceniti!')
+    }
+
   }
   ocenaChanged(value) {
     this.ocena = value;
@@ -144,6 +167,7 @@ export class IstorijaComponent implements OnInit {
     this.router.navigateByUrl('/pocetna');
   }
   Nazad() {
+    this.ngOnInit();
     this.ocenjivanje = false;
   }
 

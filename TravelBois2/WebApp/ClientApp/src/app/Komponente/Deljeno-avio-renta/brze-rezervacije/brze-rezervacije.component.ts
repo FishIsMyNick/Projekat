@@ -9,6 +9,7 @@ import { Let } from '../../../entities/objects/let';
 import { BrzaRezervacija } from '../../../entities/objects/brza-rezervacija';
 import { Sediste } from '../../../entities/objects/sediste';
 import { ToastrService } from 'ngx-toastr';
+import { RentService } from '../../../shared/rent.service';
 
 @Component({
   selector: 'app-brze-rezervacije',
@@ -23,22 +24,41 @@ export class BrzeRezervacijeComponent implements OnInit {
   idBrzihRezervacija: Array<number>;
   brzeRezervacije: Array<BrzaRezervacija>;
   empty: number;
+  kola: Array<any>;
 
-  kolaHeaders = ['Rent-A-Car', 'Marka', 'Model', 'Godiste', 'Broj mesta', 'Tip', 'Cena po danu', 'Prosecna ocena'];
+  kolaHeaders = ['Rent-A-Car', 'Marka', 'Model', 'Godiste', 'Broj mesta', 'Tip', 'Cena po danu', 'Od', 'Do', 'Prosecna ocena'];
   kolaData: Array<Array<string>>;
 
 
-  constructor(private router: Router, private service: LetoviService, private toastr: ToastrService) { 
-    this.currentUser = <RegisteredUser>AppComponent.currentUser ;
+  constructor(private router: Router, private service: LetoviService, private rentServis: RentService, private toastr: ToastrService) { }
+
+  async ngOnInit() {
+    this.currentUser = <RegisteredUser>AppComponent.currentUser;
     this.letData = new Array<Array<string>>();
     this.kolaData = new Array<Array<string>>();
     this.empty = 0;
+    this.kola = new Array<any>();
 
     this.ucitajLetove();
     this.ucitajBrzeRezervacije();
-    
+
+    let svaKola = await this.rentServis.GetAllCars();
+    for (let k of svaKola) {
+      if (k.brzaRezervacija) {
+        k.prosecnaOcena = await this.GetProsecnaOcena(k);
+        this.kola.push(k);
+      }
+    }
   }
-  ngOnInit(): void {}
+
+  async GetProsecnaOcena(kola) {
+    return await this.rentServis.ProsecnaOcenaKola(kola);
+  }
+  async Reserve(id) {
+    let naziv = id.split('+');
+    let kola = await this.rentServis.GetKola(naziv[0], naziv[1]);
+    let res = await this.rentServis.AddReservation(new Date(kola.brzaRezervacijaOd), new Date(kola.brzaRezervacijaDo), kola, this.currentUser.userName);
+  }
 
   prikazi() {
     this.brzeRezervacije.forEach(element => {
