@@ -18,7 +18,7 @@ export class ProfilRentaComponent implements OnInit {
     this.user = AppComponent.currentUser as RentACarAdmin;
   }
 
-  SavePassword(){
+  Save(){
     
   }
 

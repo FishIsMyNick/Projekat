@@ -61,7 +61,7 @@ export class ProfilRegistrovanogComponent implements OnInit {
         BrojTelefona: this.podaciForm.get('brojTelefona').value,
         BrojPasosa: this.brojP.toString(),
       }
-      this.service.updateRegisteredUser(body).subscribe();
+      this.service.updateUser(body).subscribe();
 
       this.toastr.success('Uspesno ste izmenili podatke!');
       //this.router.navigate(['/pocetna'])

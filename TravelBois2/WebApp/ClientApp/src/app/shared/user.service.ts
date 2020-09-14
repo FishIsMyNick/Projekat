@@ -169,8 +169,8 @@ SignOut() {
     return this.http.get(this.BaseURI + '/AvioAdmin/GetAvioAdminProfile');
   }
 
-  updateRegisteredUser(body) {
-    return this.http.post(this.BaseURI + '/ApplicationUser/UpdateRegisteredUser', body);
+  updateUser(body) {
+    return this.http.post(this.BaseURI + '/ApplicationUser/UpdateUser', body);
   }
 
   getUsers(): Observable<User[]> {

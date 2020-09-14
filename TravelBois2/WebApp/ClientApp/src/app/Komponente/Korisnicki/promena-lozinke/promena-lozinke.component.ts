@@ -22,6 +22,9 @@ export class PromenaLozinkeComponent implements OnInit {
     if (newPass != confirm) {
       this.toastr.error('Nova sifra i potvrda moraju da se poklapaju');
     }
+    else if(oldPass == newPass){
+      this.toastr.error('Nova sifra ne moze biti ista kao stara!')
+    }
     else {
       if (await this.servis.ChangePassword(AppComponent.currentUser.userName, oldPass, newPass)) {
         this.toastr.success('Uspesno ste promenili sifru!');

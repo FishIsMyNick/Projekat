@@ -192,8 +192,8 @@ namespace WebApp.Controllers
 
 
         [HttpPost]
-        [Route("UpdateRegisteredUser")]
-        public async Task<IActionResult> UpdateRegisteredUser(ApplicationUserModel body)
+        [Route("UpdateUser")]
+        public async Task<IActionResult> UpdateUser(ApplicationUserModel body)
         {
             if (!UserExists(body.UserName))
             {
@@ -201,21 +201,14 @@ namespace WebApp.Controllers
             }
 
             var user = await _userManager.FindByNameAsync(body.UserName);
-            await _userManager.DeleteAsync(user);
-
             user.BrojPasosa = body.BrojPasosa;
             user.BrojTelefona = body.BrojTelefona;
             user.Grad = body.Grad;
             user.Name = body.Name;
             user.Lastname = body.Lastname;
-            try
-            {
-                await _userManager.CreateAsync(user);
-            }
-            catch(Exception e)
-			{
-				Console.WriteLine(e);
-			}
+
+            await _userManager.UpdateAsync(user);
+
             return NoContent();
         }
 

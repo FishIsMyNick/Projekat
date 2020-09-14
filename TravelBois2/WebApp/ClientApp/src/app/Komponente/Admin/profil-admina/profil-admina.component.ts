@@ -5,6 +5,8 @@ import { AppComponent } from '../../../app.component';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { Admin } from 'src/app/entities/users/admin/admin';
+import { UserService } from 'src/app/shared/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profil-admina',
@@ -13,7 +15,7 @@ import { Admin } from 'src/app/entities/users/admin/admin';
 export class ProfilAdminaComponent implements OnInit {
   podaciForm: FormGroup;
   user: any;
-  constructor(private location: Location, private router: Router) { }
+  constructor(private location: Location, private router: Router, private servis: UserService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.user = AppComponent.currentUser as Admin;
@@ -26,13 +28,25 @@ export class ProfilAdminaComponent implements OnInit {
       'password': new FormControl(currentUser.userName, Validators.required)
     });
   }
-  onSubmit(){
-    console.log(this.podaciForm.value);
-    console.log(this.podaciForm);
-  }
-  onBack()
-  {
-    this.location.back();
+  Save(){
+    let username = (<HTMLInputElement>document.getElementById('username')).value;
+    let email = (<HTMLInputElement>document.getElementById('email')).value;
+    let ime = (<HTMLInputElement>document.getElementById('ime')).value;
+    let prezime = (<HTMLInputElement>document.getElementById('prezime')).value;
+    let brTel = (<HTMLInputElement>document.getElementById('brTel')).value;
+    let brPas = (<HTMLInputElement>document.getElementById('brPas')).value;
+
+    var body = {
+      UserName: username, 
+      Name: ime,
+      Lastname: prezime,
+      Grad: this.user.grad,
+      BrojTelefona: brTel,
+      BrojPasosa: brPas
+    }
+
+    this.servis.updateUser(body).subscribe();
+    this.toastr.success('Uspesno ste izmenili podatke!');
   }
   ChangePassword(){
     this.router.navigate(['promena-lozinke'])
