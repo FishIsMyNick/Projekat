@@ -193,23 +193,24 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [Route("UpdateUser")]
-        public async Task<IActionResult> UpdateUser(ApplicationUserModel body)
+        public async Task<ActionResult<ApplicationUser>> UpdateUser(ApplicationUserModel body)
         {
             if (!UserExists(body.UserName))
             {
-                return NotFound();
+                return null;
             }
 
             var user = await _userManager.FindByNameAsync(body.UserName);
             user.BrojPasosa = body.BrojPasosa;
             user.BrojTelefona = body.BrojTelefona;
             user.Grad = body.Grad;
+            user.Drzava = body.Drzava;
             user.Name = body.Name;
             user.Lastname = body.Lastname;
 
             await _userManager.UpdateAsync(user);
 
-            return NoContent();
+            return user;
         }
 
         [HttpGet]

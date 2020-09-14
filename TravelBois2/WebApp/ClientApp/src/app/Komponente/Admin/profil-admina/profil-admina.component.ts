@@ -28,11 +28,13 @@ export class ProfilAdminaComponent implements OnInit {
       'password': new FormControl(currentUser.userName, Validators.required)
     });
   }
-  Save(){
+  async Save(){
     let username = (<HTMLInputElement>document.getElementById('username')).value;
     let email = (<HTMLInputElement>document.getElementById('email')).value;
     let ime = (<HTMLInputElement>document.getElementById('ime')).value;
     let prezime = (<HTMLInputElement>document.getElementById('prezime')).value;
+    let grad = (<HTMLInputElement>document.getElementById('grad')).value;
+    let drzava = (<HTMLInputElement>document.getElementById('drzava')).value;
     let brTel = (<HTMLInputElement>document.getElementById('brTel')).value;
     let brPas = (<HTMLInputElement>document.getElementById('brPas')).value;
 
@@ -40,12 +42,13 @@ export class ProfilAdminaComponent implements OnInit {
       UserName: username, 
       Name: ime,
       Lastname: prezime,
-      Grad: this.user.grad,
+      Grad: grad,
+      Drzava: drzava,
       BrojTelefona: brTel,
       BrojPasosa: brPas
     }
 
-    this.servis.updateUser(body).subscribe();
+    AppComponent.currentUser = await this.servis.UpdateUser(body);
     this.toastr.success('Uspesno ste izmenili podatke!');
   }
   ChangePassword(){

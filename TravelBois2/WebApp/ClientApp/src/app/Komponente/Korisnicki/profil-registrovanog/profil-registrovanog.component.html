@@ -1,69 +1,48 @@
 <div class="container">
-    <h1>Podaci</h1>
-    <form [formGroup]="podaciForm" (ngSubmit)="onSubmit()">
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="ime">Ime:</label>
-                <input type="text" id="ime" class="form-control" formControlName="ime"> 
-                <div *ngIf="podaciForm.controls.ime.invalid">
-                    Unesite ime
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="prezime">Prezime:</label>
-                <input type="text" id="prezime" class="form-control" formControlName="prezime">
-                <div *ngIf="podaciForm.controls.prezime.invalid">
-                    Unesite prezime
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="grad">Grad:</label>
-                <input type="text" id="grad" class="form-control" formControlName="grad">
-                <div *ngIf="podaciForm.controls.grad.invalid">
-                    Unesite grad
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="brojTelefona">Broj telefona:</label>
-                <input type="text" id="brojTelefona" class="form-control" formControlName="brojTelefona">
-                <div *ngIf="podaciForm.controls.brojTelefona.invalid">
-                    Unesite broj telefona
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="brojPasosa">Broj pasosa:</label>
-                <input type="number" id="brojPasosa" class="form-control" formControlName="brojPasosa">
-                <div *ngIf="podaciForm.controls.brojPasosa.invalid">
-                    Unesite broj pasosa
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="username">Username:</label>
-                <input readonly type="text" id="username" class="form-control" formControlName="username">
-                <div *ngIf="podaciForm.controls.username.invalid">
-                    Unesite username
-                </div>
-            </div>
-        </div>
+    <h1>Profil</h1>
+    <div style="margin-left: 100px; margin-top: 65px;">
         <div>
-            <div>
-                <button [disabled]="!podaciForm.valid" class="btn btn-success" type="submit">Izmeni</button>
-            </div>
-            <div>
-                <button class="btn btn-primary" (click)="onBack()" type="button">Nazad</button>
-            </div>
+            <div style="display: inline;">Username: </div>
+            <input disabled style="display: inline; position: relative; left: 70px;" id="username" value="{{user.userName}}">
         </div>
-
-    </form>
+        <br>
+        <div>
+            <div style="display: inline;">Email: </div>
+            <input disabled style="display: inline; position: relative; left: 103px;" id="email" value="{{user.email}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Ime: </div>
+            <input style="display: inline; position: relative; left: 115px;" id="ime" value="{{user.name}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Prezime: </div>
+            <input style="display: inline; position: relative; left: 85px;" id="prezime" value="{{user.lastname}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Grad: </div>
+            <input style="display: inline; position: relative; left: 108px;" id="grad" value="{{user.grad}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Drzava: </div>
+            <input style="display: inline; position: relative; left: 94px;" id="drzava" value="{{user.drzava}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Broj telefona: </div>
+            <input style="display: inline; position: relative; left: 52px;" id="brTel" value="{{user.brojTelefona}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Broj pasosa: </div>
+            <input style="display: inline; position: relative; left: 62px;" id="brPas" value="{{user.brojPasosa}}">
+        </div>
+        <div style="margin-left: 100px; margin-top: 30px;">
+            <button style="display: inline;" (click)="ChangePassword()">Promeni password</button>
+            <button style="display: inline; margin-left: 120px;" (click)="Save()">Sacuvaj</button>
+        </div>
+    </div>
 </div>
-

@@ -17,6 +17,8 @@ namespace WebApp.Models
 		public string Lastname { get; set; }
 		[Column(TypeName = "nvarchar(30)")]
 		public string Grad { get; set; }
+		[Column(TypeName = "nvarchar(30)")]
+		public string Drzava { get; set; }
 		[Column(TypeName = "nvarchar(20)")]
 		public string BrojPasosa { get; set; }
 		[Column(TypeName = "nvarchar(20)")]

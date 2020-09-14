@@ -13,69 +13,44 @@ import { UserService } from '../../../shared/user.service';
 })
 export class ProfilRegistrovanogComponent implements OnInit {
   podaciForm: FormGroup;
-  currentUser: RegisteredUser;
+  user: RegisteredUser;
   brojP: string;
   constructor(private router: Router, private toastr: ToastrService, private service: UserService) { }
 
   ngOnInit(): void {
     this.service.getUserProfileByName(AppComponent.currentUser.userName).subscribe(
       (res: any) => {
-        this.currentUser = res as RegisteredUser;
-        this.initForm();
+        this.user = res as RegisteredUser;
       },
       (err) => {
         console.log(err);
       });
-    this.initForm();
   }
 
-  private initForm()
-  {
-    var ime = this.currentUser.name;
-    var prezime = this.currentUser.lastname;
-    var grad = this.currentUser.grad;
-    var brTel = this.currentUser.brojTelefona;
-    var brPas = this.currentUser.brojPasosa;
-    var username = this.currentUser.userName;
-    this.podaciForm = new FormGroup({
-      'ime': new FormControl(ime, [Validators.required, Validators.maxLength(15), Validators.minLength(3)]),
-      'prezime': new FormControl(prezime, [Validators.required, Validators.maxLength(20), Validators.minLength(3)]),
-      'grad': new FormControl(grad, [Validators.required, Validators.maxLength(20), Validators.minLength(3)]),
-      'brojTelefona': new FormControl(brTel, Validators.required),
-      'brojPasosa': new FormControl(brPas, Validators.required),
-      'username': new FormControl(username, Validators.required),
-    });
-  }
+  async Save(){
+    let username = (<HTMLInputElement>document.getElementById('username')).value;
+    let email = (<HTMLInputElement>document.getElementById('email')).value;
+    let ime = (<HTMLInputElement>document.getElementById('ime')).value;
+    let prezime = (<HTMLInputElement>document.getElementById('prezime')).value;
+    let grad = (<HTMLInputElement>document.getElementById('grad')).value;
+    let drzava = (<HTMLInputElement>document.getElementById('drzava')).value;
+    let brTel = (<HTMLInputElement>document.getElementById('brTel')).value;
+    let brPas = (<HTMLInputElement>document.getElementById('brPas')).value;
 
-  onSubmit() {
-    if ((this.podaciForm.get('brojTelefona').value != this.currentUser.brojTelefona) || (this.podaciForm.get('grad').value != this.currentUser.grad) ||
-      (this.podaciForm.get('ime').value != this.currentUser.name) || (this.podaciForm.get('prezime').value != this.currentUser.lastname) || (this.podaciForm.get('brojPasosa').value != this.currentUser.brojPasosa))
-    {
-      this.brojP = this.podaciForm.get('brojPasosa').value;
-
-      var body = {
-        UserName: this.currentUser.userName,
-        Name: this.podaciForm.get('ime').value,
-        Lastname: this.podaciForm.get('prezime').value,
-        Grad: this.podaciForm.get('grad').value,
-        BrojTelefona: this.podaciForm.get('brojTelefona').value,
-        BrojPasosa: this.brojP.toString(),
-      }
-      this.service.updateUser(body).subscribe();
-
-      this.toastr.success('Uspesno ste izmenili podatke!');
-      //this.router.navigate(['/pocetna'])
+    var body = {
+      UserName: username, 
+      Name: ime,
+      Lastname: prezime,
+      Grad: grad,
+      Drzava: drzava,
+      BrojTelefona: brTel,
+      BrojPasosa: brPas
     }
-    else {
-      this.toastr.error('Morate izmeniti vrednosti polja!');
-    }
+
+    AppComponent.currentUser = await this.service.UpdateUser(body);
+    this.toastr.success('Uspesno ste izmenili podatke!');
   }
-
-  onBack()
-  {
-    this.router.navigateByUrl('/pocetna');
+  ChangePassword(){
+    this.router.navigate(['promena-lozinke'])
   }
-
-  
-
 }

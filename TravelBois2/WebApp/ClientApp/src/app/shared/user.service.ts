@@ -169,8 +169,8 @@ SignOut() {
     return this.http.get(this.BaseURI + '/AvioAdmin/GetAvioAdminProfile');
   }
 
-  updateUser(body) {
-    return this.http.post(this.BaseURI + '/ApplicationUser/UpdateUser', body);
+  async UpdateUser(body): Promise<any> {
+    return await this.http.post(this.BaseURI + '/ApplicationUser/UpdateUser', body).toPromise();
   }
 
   getUsers(): Observable<User[]> {
