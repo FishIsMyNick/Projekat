@@ -27,9 +27,6 @@ export class LoginComponent implements OnInit {
     }
   }
   
-  SigninWithGoogle(){
-    this.service.SigninWithGoogle();
-  }
 
   onSubmit(form: NgForm) {
     this.service.login(form.value).subscribe(

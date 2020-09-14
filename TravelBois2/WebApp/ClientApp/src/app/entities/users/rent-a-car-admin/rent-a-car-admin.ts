@@ -9,6 +9,7 @@ export class RentACarAdmin extends User {
     constructor(brTel: string, grad: string, ime: string, 
         prezime: string, username: string, password: string){
             super(brTel, grad, ime, prezime, username, password);
+            super.register();
             this.tipKorisnika = 'RentAdmin'
             this.PromenioSifru = false;
             this.Renta = new RentACar("SuperRenta", "Bozidara Djelica 4");

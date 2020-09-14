@@ -8,7 +8,8 @@ export class AvioAdmin extends User{
   constructor(brTel: string, grad: string, ime: string, prezime: string, username: string, avioKompanija: string,)
     {
         super(brTel, grad, ime, prezime, username);
-        this.tipKorisnika = 'AvioAdmin';
+        this.tipKorisnika = 'AvioAdmin'
+        super.register();
         this.promenioSifru = false;
         this.avioKompanija = avioKompanija;
     }

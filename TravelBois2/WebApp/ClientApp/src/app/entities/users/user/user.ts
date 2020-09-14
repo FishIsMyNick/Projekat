@@ -1,6 +1,8 @@
 import { RegisteredUser } from '../registered-user/registered-user';
 
 export class User {
+    registered: boolean = false;
+    loggedIn: boolean;
     brojTelefona: string;
     grad: string;
     name: string;
@@ -9,14 +11,9 @@ export class User {
     password: string;
     tipKorisnika: string;
 
-    uid: string;
-    email: string;
-    displayName: string;
-    photoURL: string;
-    emailVerified: boolean;
-
     constructor(brTel: string='', grad: string='', ime: string='', 
         prezime: string='', username: string='', password: string=''){
+            this.loggedIn = false;
             this.brojTelefona = brTel;
             this.grad = grad;
             this.name = ime;
@@ -26,4 +23,7 @@ export class User {
             this.tipKorisnika = 'User';
         }
     
+    register(){
+        this.registered = true;
+    }
 }
