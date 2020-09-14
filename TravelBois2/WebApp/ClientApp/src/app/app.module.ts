@@ -58,6 +58,12 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { InfoStranicaComponent } from './Komponente/Renta/info-stranica/info-stranica.component';
 import { ProfilRentaComponent } from './Komponente/Renta/profil-renta/profil-renta.component';
 
+import { AngularFireModule } from "@angular/fire";
+import { AngularFireAuthModule } from "@angular/fire/auth";
+import { environment } from '../environments/environment';
+import { DashboardComponent } from './Komponente/Korisnicki/dashboard/dashboard.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -100,9 +106,11 @@ import { ProfilRentaComponent } from './Komponente/Renta/profil-renta/profil-ren
     BrzeRezervacijeAdminComponent,
     LetBrzaRezervacijaComponent,
     InfoStranicaComponent,
-    ProfilRentaComponent
+    ProfilRentaComponent,
+    DashboardComponent
   ],
   imports: [
+    AngularFireAuthModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
