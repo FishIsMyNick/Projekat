@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from '../../../entities/users/user/user';
 import { AppComponent } from '../../../app.component';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { Admin } from 'src/app/entities/users/admin/admin';
 
 @Component({
   selector: 'app-profil-admina',
@@ -10,12 +12,12 @@ import { Location } from '@angular/common';
 })
 export class ProfilAdminaComponent implements OnInit {
   podaciForm: FormGroup;
-  currentUser: User;
-  constructor(private location: Location) { }
+  user: any;
+  constructor(private location: Location, private router: Router) { }
 
   ngOnInit(): void {
-    this.currentUser = AppComponent.currentUser;
-    this.initForm(this.currentUser);
+    this.user = AppComponent.currentUser as Admin;
+    this.initForm(this.user);
   }
 
   private initForm(currentUser: User){
@@ -31,5 +33,8 @@ export class ProfilAdminaComponent implements OnInit {
   onBack()
   {
     this.location.back();
+  }
+  ChangePassword(){
+    this.router.navigate(['promena-lozinke'])
   }
 }

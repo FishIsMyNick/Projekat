@@ -1,31 +1,38 @@
 <div class="container">
-    <h1>Podaci</h1>
-    <form [formGroup]="podaciForm" (ngSubmit)="onSubmit()">
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" class="form-control" formControlName="username"> 
-                <div *ngIf="podaciForm.controls.username.invalid">
-                    Unesite username
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6 form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" class="form-control" formControlName="password">
-                <div *ngIf="podaciForm.controls.password.invalid">
-                    Unesite password
-                </div>
-            </div>
-        </div>
+    <h1>Profil</h1>
+    <div style="margin-left: 100px; margin-top: 65px;">
         <div>
-            <div>
-                <button [disabled]="!podaciForm.valid" class="btn btn-success" type="submit">Sacuvaj</button>
-            </div>
-            <div>
-                <button class="btn btn-primary" (click)="onBack()" type="button">Nazad</button>
-            </div>
+            <div style="display: inline;">Username: </div>
+            <input style="display: inline; position: relative; left: 70px;" id="username" value="{{user.userName}}">
         </div>
-    </form>
+        <br>
+        <div>
+            <div style="display: inline;">Email: </div>
+            <input style="display: inline; position: relative; left: 103px;" id="email" value="{{user.email}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Ime: </div>
+            <input style="display: inline; position: relative; left: 115px;" id="ime" value="{{user.name}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Prezime: </div>
+            <input style="display: inline; position: relative; left: 85px;" id="prezime" value="{{user.lastname}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Broj telefona: </div>
+            <input style="display: inline; position: relative; left: 52px;" id="brTel" value="{{user.brojTelefona}}">
+        </div>
+        <br>
+        <div>
+            <div style="display: inline;">Broj pasosa: </div>
+            <input style="display: inline; position: relative; left: 62px;" id="brPas" value="{{user.brojPasosa}}">
+        </div>
+        <div style="margin-left: 100px; margin-top: 30px;">
+            <button style="display: inline;" (click)="ChangePassword()">Promeni password</button>
+            <button style="display: inline; margin-left: 120px;" (click)="Save()">Sacuvaj</button>
+        </div>
+    </div>
 </div>

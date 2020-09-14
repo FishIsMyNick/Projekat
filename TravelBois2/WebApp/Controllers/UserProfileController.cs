@@ -30,17 +30,12 @@ namespace WebApp.Controllers
         [HttpPost]
         [Route("GetUserProfileByName")]
         public async Task<ApplicationUser> GetUserByName()
-		{
+        {
             var request = HttpContext.Request;
 
             return await _userManager.FindByNameAsync(request.Form.Keys.First());
-		}
-        /// /////////////////////////////////////////////////////////////////////////
-        /// OVA METODA RADI
-        /// /////////////////////////////////////////////////////////////////////////
-        /// /////////////////////////////////////////////////////////////////////////
-        /// /////////////////////////////////////////////////////////////////////////
-        /// /////////////////////////////////////////////////////////////////////////
+        }
+
         [HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         //[Authorize]
@@ -95,5 +90,25 @@ namespace WebApp.Controllers
                 return "";
             }
         }
+        [HttpPost]
+        [Route("ChangePassword")]
+        public async Task<ActionResult<bool>> ChangePassword()
+		{
+            var request = HttpContext.Request.Form.Keys.ToList<string>();
+            var username = request[0];
+            var oldPass = request[1];
+            var newPass = request[2];
+
+            var user = await _userManager.FindByNameAsync(username);
+            if( await _userManager.CheckPasswordAsync(user, oldPass))
+			{
+               var res = await _userManager.ChangePasswordAsync(user, oldPass, newPass);
+                return true;
+			}
+			else
+			{
+                return false;
+			}
+		}
     }
 }

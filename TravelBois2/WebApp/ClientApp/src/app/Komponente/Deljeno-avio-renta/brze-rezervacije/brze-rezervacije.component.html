@@ -37,7 +37,7 @@
 <br>
 
 <h2>Brze rezervacije kola</h2>
-<div>
+<div *ngIf="kola.length !== 0">
   <table class="katalog-kola">
     <th *ngFor="let h of kolaHeaders">{{h}}</th>
     <tr *ngFor="let k of kola">
@@ -54,6 +54,9 @@
       <td><button name="{{k.naziv}}+{{k.nazivRente}}" (click)="Reserve($event.target.name)">Rezervisi</button></td>
     </tr>
   </table>
+</div>
+<div *ngIf="kola.length === 0">
+  <h3>Trenutno nema kola na brzoj rezervaciji</h3>
 </div>
 
 <div>

@@ -19,7 +19,7 @@ import { element } from 'protractor';
   templateUrl: './pocetna-strana.component.html'
 })
 export class PocetnaStranaComponent implements OnInit {
-  currentUser: User;
+  currentUser: any;
   userDetails;
   userName: string;
   grad: string;
@@ -38,10 +38,15 @@ export class PocetnaStranaComponent implements OnInit {
 
   testUrl = 'assets/images/pocetna/unregistered/avio-kompanija.jpg';
 
-  constructor(private service: UserService, private serviceAvio: AvioAdminService, private serviceO: OcenaService) { }
+  constructor(private service: UserService, private serviceAvio: AvioAdminService, private serviceO: OcenaService, private router: Router) { }
 
   ngOnInit(): void {
     this.currentUser = AppComponent.currentUser;
+    if(this.currentUser.tipKorisnika != 'RegularUser' && this.currentUser.tipKorisnika != 'User'){
+      if(!this.currentUser.promenioPassword){
+        this.router.navigate(['promena-lozinke']);
+      }
+    }
     this.provera();
     this.ucitajAviokompaniju();
     this.ucitajOcene();

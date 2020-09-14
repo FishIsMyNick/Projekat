@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { RentACarAdmin } from 'src/app/entities/users/rent-a-car-admin/rent-a-car-admin';
 import { UserService } from 'src/app/shared/user.service';
@@ -10,12 +11,10 @@ import { RentAdminPrikaz } from 'src/app/_enums';
 })
 export class ProfilRentaComponent implements OnInit {
   user: RentACarAdmin;
-  prikaz: RentAdminPrikaz;
 
-  constructor(private servis: UserService) { }
+  constructor(private servis: UserService, private router: Router) { }
 
   ngOnInit(): void {
-    this.prikaz = RentAdminPrikaz.Profil;
     this.user = AppComponent.currentUser as RentACarAdmin;
   }
 
@@ -24,9 +23,6 @@ export class ProfilRentaComponent implements OnInit {
   }
 
   ChangePassword(){
-    this.prikaz = RentAdminPrikaz.Password;
-  }
-  Profil(){
-    this.prikaz = RentAdminPrikaz.Profil;
+    this.router.navigate(['promena-lozinke'])
   }
 }

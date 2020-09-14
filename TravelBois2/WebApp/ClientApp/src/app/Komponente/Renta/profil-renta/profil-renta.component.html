@@ -1,4 +1,4 @@
-<div *ngIf="prikaz === 1">
+<div class="container">
     <h1>Profil</h1>
     <div style="margin-left: 100px; margin-top: 65px;">
         <div>
@@ -34,24 +34,5 @@
             <button style="display: inline;" (click)="ChangePassword()">Promeni password</button>
             <button style="display: inline; margin-left: 120px;" (click)="Save()">Sacuvaj</button>
         </div>
-    </div>
-</div>
-<!-- PROMENA SIFRE-->
-<div *ngIf="prikaz === 2">
-    <h1>Promena sifre</h1>
-    <div style="margin-left: 100px; margin-top: 65px;">
-        <div>
-            <div style="display: inline;">Novi   password: </div>
-            <input type="password" style="display: inline; position: relative; left: 62px;" id="noviPass">
-        </div>
-        <br>
-        <div>
-            <div style="display: inline;">Potvrdi  password: </div>
-            <input type="password" style="display: inline; position: relative; left: 60px;" id="confirm">
-        </div>
-    </div>
-    <div style="margin-left: 100px; margin-top: 30px;">
-        <button style="display: inline;" (click)="SavePassword()">Sacuvaj</button>
-        <button style="display: inline; margin-left: 120px;" (click)="Profil()">Nazad</button>
     </div>
 </div>

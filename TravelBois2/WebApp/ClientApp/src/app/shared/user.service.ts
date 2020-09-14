@@ -200,8 +200,11 @@ SignOut() {
   deletePrijatelj(id: number): Observable<any> {
     return this.http.delete(this.BaseURI + '/ApplicationUser/DeletePrijatelj/' + id);
   }
-  async UpdateRentAdminPassword(newPass: string): Promise<any> {
+  async ChangePassword(username, oldPass, newPass): Promise<any> {
     const fd = new FormData()
+    fd.append(username, '');
+    fd.append(oldPass, '');
     fd.append(newPass, '');
+    return await this.http.post(this.BaseURI + '/ApplicationUser/ChangePassword', fd).toPromise();
   }
 }

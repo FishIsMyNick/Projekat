@@ -71,6 +71,28 @@ namespace WebApp.Controllers
             }
         }
         [HttpPost]
+        [Route("ChangePassword")]
+        public async Task<ActionResult<bool>> ChangePassword()
+        {
+            var request = HttpContext.Request.Form.Keys.ToList<string>();
+            var username = request[0];
+            var oldPass = request[1];
+            var newPass = request[2];
+
+            var user = await _userManager.FindByNameAsync(username);
+            if (await _userManager.CheckPasswordAsync(user, oldPass))
+            {
+                var res = await _userManager.ChangePasswordAsync(user, oldPass, newPass);
+                user.PromenioPassword = true;
+                await _userManager.UpdateAsync(user);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        [HttpPost]
         [Route("RegisterAvioAdmin")]
         //POST: /api/AvioAdmin/Register
         public async Task<Object> PostAvioAdmin(AvioAdminModel body)
@@ -142,12 +164,6 @@ namespace WebApp.Controllers
             }
         }
 
-        /// ///////////////////////////////////////////////////////////////////
-        /// ///////////////////////////////////////////////////////////////////
-        /// OVA METODA RADI
-        /// ///////////////////////////////////////////////////////////////////
-        /// ///////////////////////////////////////////////////////////////////
-        /// ///////////////////////////////////////////////////////////////////
         [HttpPost]
         [Route("Login")]
         //POST: /api/ApplicationUser/Login

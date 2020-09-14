@@ -39,10 +39,12 @@ import { LetBrzaRezervacijaComponent } from './Komponente/Avio/let-brza-rezervac
 import { InfoStranicaComponent } from './Komponente/Renta/info-stranica/info-stranica.component';
 import { ProfilRentaComponent } from './Komponente/Renta/profil-renta/profil-renta.component';
 import { DashboardComponent } from './Komponente/Korisnicki/dashboard/dashboard.component';
+import { PromenaLozinkeComponent } from './Komponente/Korisnicki/promena-lozinke/promena-lozinke.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: 'pocetna', pathMatch: 'full' },
+  { path: 'promena-lozinke', component: PromenaLozinkeComponent },
   { path: 'profilRenta', component: ProfilRentaComponent },
   { path: 'dashboard', component: DashboardComponent},
   { path: 'pocetna', component: PocetnaStranaComponent },

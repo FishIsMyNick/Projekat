@@ -8,6 +8,7 @@ export class User {
     userName: string;
     password: string;
     tipKorisnika: string;
+    promenioPassword: boolean;
 
     uid: string;
     email: string;
