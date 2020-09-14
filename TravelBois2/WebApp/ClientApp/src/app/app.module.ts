@@ -111,6 +111,7 @@ import { DashboardComponent } from './Komponente/Korisnicki/dashboard/dashboard.
   ],
   imports: [
     AngularFireAuthModule,
+    AngularFireModule.initializeApp(environment.firebase),
     BrowserModule,
     AppRoutingModule,
     FormsModule,
