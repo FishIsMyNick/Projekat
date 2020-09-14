@@ -38,7 +38,7 @@ namespace WebApp.Controllers
         [HttpPost]
         [Route("RegisterUser")]
         //POST: /api/ApplicationUser/Register
-        public async Task<Object> PostApplicationUser(ApplicationUserModel body)
+        public async Task<Object> RegisterUser(ApplicationUserModel body)
         {
             Console.WriteLine("post pozvan");
             var applicationUser = new ApplicationUser()
@@ -48,6 +48,7 @@ namespace WebApp.Controllers
                 Name = body.Name,
                 Lastname = body.Lastname,
                 Grad = body.Grad,
+                Drzava = body.Drzava,
                 BrojPasosa = body.BrojPasosa.ToString(),
                 BrojTelefona = body.BrojTelefona.ToString(),
                 TipKorisnika = body.TipKorisnika

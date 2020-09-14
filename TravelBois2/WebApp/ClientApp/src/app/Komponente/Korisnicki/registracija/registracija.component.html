@@ -52,6 +52,15 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Drzava:</td>
+                    <td>
+                        <input type="text" name="Drzava"  formControlName="Drzava"> 
+                    </td>
+                    <td>
+                      <label *ngIf="service.userFormModel.get('Drzava').touched && service.userFormModel.get('Drzava').errors?.required">Drzava je potrebna</label>
+                    </td>
+                </tr>
+                <tr>
                     <td>Broj telefona:</td>
                     <td>
                         <input name="BrojTelefona" formControlName="BrojTelefona">

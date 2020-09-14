@@ -30,6 +30,7 @@ export class UserService {
     Name: ['', [Validators.required]],
     Lastname: ['', [Validators.required]],
     Grad: ['', [Validators.required]],
+    Drzava: ['', Validators.required],
     BrojTelefona: ['', [Validators.required]],
     BrojPasosa: ['', [Validators.required]],
     Passwords: this.fb.group({
@@ -107,6 +108,7 @@ SignOut() {
       Name: this.userFormModel.value.Name,
       Lastname: this.userFormModel.value.Lastname,
       Grad: this.userFormModel.value.Grad,
+      Drzava: this.userFormModel.value.Drzava,
       BrojTelefona: this.userFormModel.value.BrojTelefona,
       BrojPasosa: this.userFormModel.value.BrojPasosa,
       Password: this.userFormModel.value.Passwords.Password,
