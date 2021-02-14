@@ -21,6 +21,24 @@
         </div>
         <div class="form">
             <div>
+                <label for="Grad">Grad:</label>
+                <input type="text" id="Grad" formControlName="Grad" class="form-control">
+                <div *ngIf="regRentaForm.controls.Grad.invalid && regRentaForm.get('Grad').touched">
+                    Unesite grad
+                </div>
+            </div>
+        </div>
+        <div class="form">
+            <div>
+                <label for="Drzava">Drzava:</label>
+                <input type="text" id="Drzava" formControlName="Drzava" class="form-control">
+                <div *ngIf="regRentaForm.controls.Drzava.invalid && regRentaForm.get('Drzava').touched">
+                    Unesite drzavu
+                </div>
+            </div>
+        </div>
+        <div class="form">
+            <div>
                 <label for="admin">Username admina:</label>
                 <input type="text" id="admin" formControlName="admin" class="form-control">
                 <div *ngIf="regRentaForm.controls.admin.invalid && regRentaForm.get('admin').touched">

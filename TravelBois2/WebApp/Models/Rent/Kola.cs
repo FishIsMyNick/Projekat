@@ -17,6 +17,10 @@ namespace WebApp.Models
 		[ForeignKey("renta")]
 		[Column(TypeName = "nvarchar(40)")]
 		public string NazivRente { get; set; }
+		[ForeignKey("filijala")]
+		[Column(TypeName = "nvarchar(40)")]
+		public string filijalaID { get; set; }
+
 		[Column(TypeName = "tinyint")]
 		public int BrojMesta { get; set; }
 		[Column(TypeName = "smallint")]

@@ -1,0 +1,158 @@
+Tipovi korisnika:
+
+1. neregistrovani korisnik
+	-pregledaju info o avionskim kompanijama
+	-pregledaju info o letovima
+	-pregledaju info o slobodnim mestima
+	-pregledaju info o rent-a-car servisima
+	
+4. admin rente
+	-definisu vozila koja su raspoloziva za iznajmljivanje
+	-definisu cenovnik usluga
+	-dobijaju izvestaje o slobodnim i zauzetim vozilima za odredjen period
+	-dobijaju izvestaje o ocenama korisnika
+	-dobijaju izvestaje o ostvarenom prihodu na 
+	 nedeljnom/mesecnom/godisnjem nivou
+	-uredjuju info stranicu rent-a-car servisa
+	
+5. admin
+	-registruje aviokompanije
+	-registruje rent-a-car servise
+	-registruje administratore rente i aviokompanija
+
+Funkcije:
+
+
+2.1 Prikaz informacija neregistrovanim korisnicima
+	-prikaz aviokompanija
+		-osnovni podaci
+			-adresa
+			-promo opis
+			-prosecna ocenama
+			-info o destinacijama na kojima saobraca
+			-mapa sa adresom i destinacijama
+		-pretraga letova po razlicitim parametrima
+			-za svaki let prikaz info o njemu
+	-prikaz rent-a-car servisa
+		-osnovni podaci
+			-adresa
+			-promo opis
+			-prosecna ocenama
+			-info o vozilima koja su dostupna unutar servisa
+			-info o filijalama koje postoje unutar servisa
+			-pretraga po razlicitim parametrima
+			-za svako vozilo prikaz info o njemu
+			-mapa sa adresom i filijalama
+	-registracija
+	-login
+	
+2.2 Registracija korisnika i prijavljivanje na sistem
+	-login
+		-email + password
+		-socijalna mreza
+	-registracija
+		-podaci
+			-email
+			-lozinka
+			-ime
+			-prezime
+			-grad
+			-br telefona
+			-lozinka
+			-potvrda lozinke
+		-funkcionalnost
+			-slanje emaila na datu adresu sa linkom za aktivaciju 
+			 korisnika
+			-korisnik ne moze da se prijavi dok ne aktivira nalog
+	-autentifikacija i autorizacija na serverskoj strani 
+	
+2.5 Profil rent-a-car servisa
+	-admin moze da uredjuje profil rente
+		-naziv servisa
+		-adresa
+		-promo opis
+		-cenovnik
+		-spisak vozila
+			-dodaje menja i ulkanja vozila (rezervisano vozilo ne moze se 
+			 ukloniti)
+		-filijale
+			-dodaje menja i uklanja filijale
+	-izvestaj o poslovanju
+		-prosecna ocena servisa
+		-prosecna ocena vozila
+		-grafik rezervisanih vozila na dnevnom/nedeljnom/mesecnom nivou
+		-prihodi servisa u odredjenom periodu
+	-azurira svoje podatke
+	-promeni lozinku
+	-prvi put kad se loguje mora da promeni lozinku
+	
+2.8 Postupak rezervacije vozila 
+	1.
+		-registrovan korisnik bira rentu 
+			-iz liste 
+			-pretragom
+	2.
+		-unosi datum i mesto preuzimanja vozila
+		-unosi datum i mesto vracanja vozila
+		-tip vozila
+		-broj putnika
+		-OPCIONO cenovni rang
+	3.
+		-prikaz slobodnih vozila koja zadovoljavaju kriterijume
+		-svaka stavka prikaza ima detalje o vozilu
+			-naziv
+			-marka 
+			-model 
+			-godiste 
+			-br sedista 
+			-tip vozila
+			-prosecna ocena 
+			-ukupna cena za sve dane
+			
+2.10 Postupak brze rezervacije vozila
+	-prikaz slobodnih vozila koja su na popustu u periodu kad je on na putu
+	-svaka stavka ima info
+		-vozilo (marka, model)
+		-datum od/do 
+		-originalna cena
+		-cena sa popustom 
+		-iskljucivo pojedinacna rezervacija klikom na dugme
+	-vozila onemogucena za klasicnu rezervaciju u periodu u kom su na brzoj 
+	 rezervaciji
+
+		
+2.12 Pretraga rent-a-car servisa 
+	-lokacija ili naziv rente
+	-vremenski period za koji je potrebno vozilo 
+	-pretraga daje listu
+		-naziv rente 
+		-lokacije filijala 
+		-ocena 
+	-odabir vrsi redirekciju na detaljniji prikaz filijale
+	
+2.13 Postupak ocenjivanja 
+	-registrovan korisnik u istoriji rezervacija moze uneti ocenu za
+		-let
+		-aviokompaniju (nakon sletanja aviona)
+		-vozilo 
+		-renta servis (nakon vracanja vozila)
+2.14 Profil administratora sistema
+	-registruju avio kompanije 
+	-registruju admine aviokompanija
+	-registruju rente
+	-registruju admine rente 
+	-glavni admin moze da dodaje druge admine
+	-odredjuje nacin odredjivanja popusta na osnovu bonus poena
+	
+
+===========================================
+AVIO ADMIN:
+email
+username
+ime
+prezime
+grad
+aviokompanija
+broj telefona
+broj pasosa
+pass

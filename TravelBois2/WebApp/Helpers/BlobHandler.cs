@@ -27,7 +27,7 @@ namespace WebApp.Helpers
             string connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
 
             // Servis
-            _blobServiceClient = new BlobServiceClient(connectionString);
+            _blobServiceClient = new BlobServiceClient(blobConnString);
 
             // Kontejneri
             _kolaContainerClient = _blobServiceClient.GetBlobContainerClient("kola");

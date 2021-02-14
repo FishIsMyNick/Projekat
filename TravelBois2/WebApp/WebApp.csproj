@@ -39,25 +39,6 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Migrations\20200607223316_Tipkorisnika.cs" />
-    <Compile Remove="Migrations\20200607223316_Tipkorisnika.Designer.cs" />
-    <Compile Remove="Migrations\20200823132705_User-Init.cs" />
-    <Compile Remove="Migrations\20200823132705_User-Init.Designer.cs" />
-    <Compile Remove="Migrations\20200823133610_User-Init2.cs" />
-    <Compile Remove="Migrations\20200823133610_User-Init2.Designer.cs" />
-    <Compile Remove="Migrations\Aviokompanija\20200610162509_OceneTabela.cs" />
-    <Compile Remove="Migrations\Aviokompanija\20200610162509_OceneTabela.Designer.cs" />
-    <Compile Remove="Migrations\Aviokompanija\20200610172558_OceneTabela4.cs" />
-    <Compile Remove="Migrations\Aviokompanija\20200610172558_OceneTabela4.Designer.cs" />
-    <Compile Remove="Migrations\User\20200824151319_UserPromPassNull.cs" />
-    <Compile Remove="Migrations\User\20200824151319_UserPromPassNull.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Rent\" />
-  </ItemGroup>
-
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">

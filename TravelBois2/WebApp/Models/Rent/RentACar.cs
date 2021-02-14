@@ -22,10 +22,6 @@ namespace WebApp.Models
 		public string AdminID { get; set; }
 		[Column(TypeName = "nvarchar(200)")]
 		public string Opis { get; set; }
-		[Column(TypeName = "decimal(1,1)")]
-		public float ProsecnaOcena { get; set; }
-		[Column(TypeName = "int")]
-		public int BrojOcena { get; set; }
 
 	}
 }

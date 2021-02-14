@@ -18,6 +18,8 @@ export class RegRentaKompanijuComponent implements OnInit {
   naziv: string;
   adminID: string;
   adresa: string;
+  grad: string;
+  drzava: string;
   opis: string;
   renta: RentACar;
   submitAttempted: boolean = false;
@@ -49,9 +51,13 @@ export class RegRentaKompanijuComponent implements OnInit {
     this.naziv = this.regRentaForm.get('naziv').value;
     this.opis = this.regRentaForm.get('opis').value;
     this.adresa = this.regRentaForm.get('adresa').value;
+    this.grad = this.regRentaForm.get('Grad').value;
+    this.drzava = this.regRentaForm.get('Drzava').value;
     this.adminID = this.regRentaForm.get('admin').value;
 
     this.renta = new RentACar(this.naziv, this.adresa);
+    this.renta.Grad = this.grad;
+    this.renta.Drzava = this.drzava;
     this.renta.AdminID = this.adminID;
     this.renta.Opis = this.opis;
 
@@ -71,7 +77,8 @@ export class RegRentaKompanijuComponent implements OnInit {
                   this.recievedImageData = res;
                   this.base64Data = this.recievedImageData.pic;
                   this.convertedImage = 'data:image/jpeg;base64,' + this.base64Data;
-                  this.router.navigate(['/pocetna'])},
+                  this.router.navigate(['/pocetna']);
+                  this.toastr.success('Uspesno ste registrovali Rent-A-Car servis!')},
                 (err) =>{
                   console.debug('Error during image saving: ' + err)
                 }
@@ -112,6 +119,8 @@ export class RegRentaKompanijuComponent implements OnInit {
     this.regRentaForm = new FormGroup({
       'naziv': new FormControl('', Validators.required),
       'adresa': new FormControl('', Validators.required),
+      'Grad': new FormControl('', Validators.required),
+      'Drzava': new FormControl('', Validators.required),
       'opis': new FormControl('', Validators.required),
       'slika': new FormControl('', Validators.required),
       'admin': new FormControl('', Validators.required)

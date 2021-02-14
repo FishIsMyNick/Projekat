@@ -52,6 +52,16 @@
                 </td>
             </tr>
             <tr>
+                <td>Drzava:</td>
+                <td>
+                    <input type="text" name="Drzava"  formControlName="Drzava"> 
+                </td>
+                <td>
+                  <label *ngIf="service.rentAdminFormModel.get('Drzava').touched && service.rentAdminFormModel.get('Drzava').errors?.required">Drzava je potrebna</label>
+
+                </td>
+            </tr>
+            <tr>
                 <td>Broj telefona:</td>
                 <td>
                     <input name="BrojTelefona" formControlName="BrojTelefona">
@@ -104,7 +114,3 @@
       </div>
     </form>
 </div>
-<button value="check" (click)="checkForm()">check</button>
-<ul>
-    <li *ngFor="let control of invalidControls">{{control}}</li>
-</ul>

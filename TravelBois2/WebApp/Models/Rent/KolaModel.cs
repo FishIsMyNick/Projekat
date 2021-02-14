@@ -10,6 +10,7 @@ namespace WebApp.Models
 	public class KolaModel
 	{
 		public string rentaID { get; set; }
+		public string filijalaID { get; set; }
 		public string Naziv { get; set; }
 		public int BrojMesta { get; set; }
 		public int Godiste { get; set; }

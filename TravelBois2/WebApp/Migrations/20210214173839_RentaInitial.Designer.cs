@@ -10,8 +10,8 @@ using WebApp.Data;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(RentaContext))]
-    [Migration("20200914095558_RentBRDates")]
-    partial class RentBRDates
+    [Migration("20210214173839_RentaInitial")]
+    partial class RentaInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,6 +52,9 @@ namespace WebApp.Migrations
 
                     b.Property<string>("TipVozila")
                         .HasColumnType("nvarchar(15)");
+
+                    b.Property<string>("filijalaID")
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Naziv");
 
@@ -127,6 +130,30 @@ namespace WebApp.Migrations
                     b.ToTable("Zauzetost");
                 });
 
+            modelBuilder.Entity("WebApp.Models.Rent.Filijala", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Adresa")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Drzava")
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Grad")
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("NazivRente")
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Filijale");
+                });
+
             modelBuilder.Entity("WebApp.Models.RentACar", b =>
                 {
                     b.Property<string>("Naziv")
@@ -138,9 +165,6 @@ namespace WebApp.Migrations
                     b.Property<string>("Adresa")
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("BrojOcena")
-                        .HasColumnType("int");
-
                     b.Property<string>("Drzava")
                         .HasColumnType("nvarchar(50)");
 
@@ -149,9 +173,6 @@ namespace WebApp.Migrations
 
                     b.Property<string>("Opis")
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<decimal>("ProsecnaOcena")
-                        .HasColumnType("decimal(1,1)");
 
                     b.HasKey("Naziv");
 

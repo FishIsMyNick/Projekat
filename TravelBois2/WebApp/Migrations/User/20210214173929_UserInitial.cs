@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApp.Migrations.User
 {
-    public partial class UserInit : Migration
+    public partial class UserInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,8 +29,11 @@ namespace WebApp.Migrations.User
                     Name = table.Column<string>(type: "nvarchar(30)", nullable: true),
                     Lastname = table.Column<string>(type: "nvarchar(30)", nullable: true),
                     Grad = table.Column<string>(type: "nvarchar(30)", nullable: true),
+                    Drzava = table.Column<string>(type: "nvarchar(30)", nullable: true),
                     BrojPasosa = table.Column<string>(type: "nvarchar(20)", nullable: true),
-                    TipKorisnika = table.Column<string>(type: "nvarchar(15)", nullable: true)
+                    BrojTelefona = table.Column<string>(type: "nvarchar(20)", nullable: true),
+                    TipKorisnika = table.Column<string>(type: "nvarchar(15)", nullable: true),
+                    PromenioPassword = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
