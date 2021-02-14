@@ -25,6 +25,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WebApp.Models.Enum;
 using TipKola = WebApp.Models.Enum.Enums.TipKola;
+using WebApp.Models.Rent;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -185,6 +186,20 @@ namespace WebApp.Controllers
 			}
 			return null;
 		}
+
+		[HttpPost]
+		[Route("GetFilijale")]
+		public ActionResult<List<Filijala>> GetFilijale()
+        {
+			var request = HttpContext.Request.Form.Keys.ToList<string>();
+			var admin = request[0];
+			List<RentACar> rente = _context.Rente.Where(e => e.AdminID == admin).ToList();
+			RentACar renta = rente.Count != 0 ? rente[0] : null;
+
+			List<Filijala> filijale = _context.Filijale.ToList().Where(e => e.NazivRente == renta.Naziv).ToList();
+
+			return filijale;
+        }
 
 		[HttpPost]
 		[Route("GetKola")]

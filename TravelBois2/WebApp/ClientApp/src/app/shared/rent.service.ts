@@ -60,6 +60,12 @@ export class RentService {
   GetAllRents(){
     return this.http.get(this.BaseURI + '/Rent/GetAllRents');
   }
+  async GetFilijale(adminID: string): Promise<any>{
+    const formData = new FormData();
+    formData.append(adminID, adminID);
+
+    return await this.http.post<any>(this.BaseURI + '/Rent/GetFilijale', formData).toPromise();
+  }
   async GetRent(adminID: string): Promise<any> {
     const formData = new FormData();
     formData.append(adminID, 'admin');

@@ -63,6 +63,7 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import { environment } from '../environments/environment';
 import { DashboardComponent } from './Komponente/Korisnicki/dashboard/dashboard.component';
 import { PromenaLozinkeComponent } from './Komponente/Korisnicki/promena-lozinke/promena-lozinke.component';
+import { FilijaleComponent } from './Komponente/Renta/filijale/filijale.component';
 
 
 @NgModule({
@@ -109,7 +110,8 @@ import { PromenaLozinkeComponent } from './Komponente/Korisnicki/promena-lozinke
     InfoStranicaComponent,
     ProfilRentaComponent,
     DashboardComponent,
-    PromenaLozinkeComponent
+    PromenaLozinkeComponent,
+    FilijaleComponent
   ],
   imports: [
     AngularFireAuthModule,
