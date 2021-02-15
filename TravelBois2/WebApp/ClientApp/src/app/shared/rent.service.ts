@@ -7,6 +7,7 @@ import { Kola } from '../entities/objects/kola';
 import { basename } from 'path';
 import { promise } from 'protractor';
 import { TipVozila } from '../_enums';
+import { Filijala } from '../entities/objects/filijala';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,12 @@ export class RentService {
 
 
   constructor(private http: HttpClient, private fb: FormBuilder) { }
+
+  filijalaForm = this.fb.group({
+    adresa: ['', Validators.required],
+    grad: ['', Validators.required],
+    drzava: ['', Validators.required]
+  });
 
   editCarForm = this.fb.group({
     brojMesta: ['', [Validators.required]],
@@ -57,6 +64,14 @@ export class RentService {
 
   }
 
+  async DodajFilijalu(filijala): Promise<any>{
+    return await this.http.post(this.BaseURI + '/Rent/DodajFilijalu', filijala).toPromise();
+  }
+
+  async IzmeniFilijalu(stara: Filijala, nova: Filijala): Promise<any> {
+    let f = new Filijala(stara.Id, stara.AdminID, stara.Adresa + '|' + nova.Adresa, stara.Grad + '|' + nova.Grad, stara.Drzava + '|' + nova.Drzava)
+    return await this.http.post(this.BaseURI + '/Rent/IzmeniFilijalu', f).toPromise();
+  }
   GetAllRents(){
     return this.http.get(this.BaseURI + '/Rent/GetAllRents');
   }
@@ -65,6 +80,11 @@ export class RentService {
     formData.append(adminID, adminID);
 
     return await this.http.post<any>(this.BaseURI + '/Rent/GetFilijale', formData).toPromise();
+  }
+  async GetFilijalaById(id: string): Promise<any> {
+    const formData = new FormData();
+    formData.append(id, id);
+    return await this.http.post<any>(this.BaseURI + '/Rent/GetFilijalaById', formData).toPromise();
   }
   async GetRent(adminID: string): Promise<any> {
     const formData = new FormData();

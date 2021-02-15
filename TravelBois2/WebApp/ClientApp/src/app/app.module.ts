@@ -64,6 +64,7 @@ import { environment } from '../environments/environment';
 import { DashboardComponent } from './Komponente/Korisnicki/dashboard/dashboard.component';
 import { PromenaLozinkeComponent } from './Komponente/Korisnicki/promena-lozinke/promena-lozinke.component';
 import { FilijaleComponent } from './Komponente/Renta/filijale/filijale.component';
+import { IzmeniFilijaluComponent } from './Komponente/Renta/izmeni-filijalu/izmeni-filijalu.component';
 
 
 @NgModule({
@@ -111,7 +112,8 @@ import { FilijaleComponent } from './Komponente/Renta/filijale/filijale.componen
     ProfilRentaComponent,
     DashboardComponent,
     PromenaLozinkeComponent,
-    FilijaleComponent
+    FilijaleComponent,
+    IzmeniFilijaluComponent
   ],
   imports: [
     AngularFireAuthModule,

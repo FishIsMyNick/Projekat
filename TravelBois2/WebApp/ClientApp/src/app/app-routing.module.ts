@@ -41,6 +41,7 @@ import { ProfilRentaComponent } from './Komponente/Renta/profil-renta/profil-ren
 import { DashboardComponent } from './Komponente/Korisnicki/dashboard/dashboard.component';
 import { PromenaLozinkeComponent } from './Komponente/Korisnicki/promena-lozinke/promena-lozinke.component';
 import { FilijaleComponent } from './Komponente/Renta/filijale/filijale.component';
+import { IzmeniFilijaluComponent } from './Komponente/Renta/izmeni-filijalu/izmeni-filijalu.component';
 
 
 const routes: Routes = [
@@ -84,7 +85,8 @@ const routes: Routes = [
   { path: 'rezervacija/:naziv/:id', component: RezervacijaLetaComponent, canActivate: [AuthGuard] },
   { path: 'napravi-brze-rezervacije', component: BrzeRezervacijeAdminComponent, canActivate: [AuthGuard] },
   { path: 'let-brza-rezervacija/:id', component: LetBrzaRezervacijaComponent, canActivate: [AuthGuard] },
-  { path: 'filijale', component: FilijaleComponent }
+  { path: 'filijale', component: FilijaleComponent },
+  { path: 'izmeni-filijalu', component: IzmeniFilijaluComponent }
 ];
 
 @NgModule({

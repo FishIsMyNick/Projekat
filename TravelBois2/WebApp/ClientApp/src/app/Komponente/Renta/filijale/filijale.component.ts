@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AppComponent } from '../../../app.component';
+import { Filijala } from '../../../entities/objects/filijala';
 import { RentService } from '../../../shared/rent.service';
 
 @Component({
@@ -9,19 +11,41 @@ import { RentService } from '../../../shared/rent.service';
 })
 export class FilijaleComponent implements OnInit {
 
+  currentUser: string;
   filijale: any;
+  prikaz: number;
 
-  constructor(private servis: RentService, private toastr: ToastrService) { }
+  adresa: string;
+  grad: string;
+  drzava: string;
+
+  constructor(private servce: RentService, private toastr: ToastrService, private router: Router) { }
 
   async ngOnInit() {
-    this.filijale = await this.servis.GetFilijale(AppComponent.currentUser.userName);
+    this.prikaz = 0;
+    this.currentUser = AppComponent.currentUser.userName;
+    this.filijale = await this.servce.GetFilijale(this.currentUser);
     console.debug(this.filijale);
   }
 
-  Izmeni(eventName){
-    console.debug('izmeni ' + eventName);
+  Izmeni(Id){
+    this.router.navigate(['izmeni-filijalu'], {
+      queryParams: {
+        id: Id //pass whatever here
+      }
+    });
   }
   Dodaj(){
+    this.prikaz = 1;
     console.debug('dodaj');
+  }
+  async onSubmit(){
+    let adresa = (<HTMLInputElement>document.getElementById('adresa')).value;
+    let grad = (<HTMLInputElement>document.getElementById('grad')).value;
+    let drzava = (<HTMLInputElement>document.getElementById('drzava')).value;
+
+    let f = new Filijala(0, this.currentUser, adresa, grad, drzava);
+    this.filijale = await this.servce.DodajFilijalu(f);
+    this.prikaz = 0;
   }
 }

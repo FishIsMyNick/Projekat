@@ -42,15 +42,6 @@ export class RentACar {
         
     }
     PrikaziFilijale(){}
-    GetAllCars(){
-        let kola = new Array<Kola>();
-        this.Filijale.forEach(element => {
-            element.ListaKola.forEach(element => {
-                kola.push(element);
-            });
-        });
-        return kola;
-    }
     PrikaziKola(){}
     RezervisiKola(ID:number, username:string, odKad:Date, doKad:Date){}
 }

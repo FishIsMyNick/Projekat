@@ -193,12 +193,66 @@ namespace WebApp.Controllers
         {
 			var request = HttpContext.Request.Form.Keys.ToList<string>();
 			var admin = request[0];
-			List<RentACar> rente = _context.Rente.Where(e => e.AdminID == admin).ToList();
-			RentACar renta = rente.Count != 0 ? rente[0] : null;
 
-			List<Filijala> filijale = _context.Filijale.ToList().Where(e => e.NazivRente == renta.Naziv).ToList();
+			List<Filijala> filijale = _context.Filijale.ToList().Where(e => e.AdminID == admin).ToList();
 
 			return filijale;
+        }
+
+		[HttpPost]
+		[Route("DodajFilijalu")]
+		public async Task<ActionResult<List<Filijala>>> DodajFilijalu(Filijala filijala)
+        {
+			_context.Filijale.Add(filijala);
+			await _context.SaveChangesAsync();
+
+			return await _context.Filijale.ToListAsync();
+        }
+
+		[HttpPost]
+		[Route("GetFilijalaById")]
+		public async Task<ActionResult<Filijala>> GetFilijalaById()
+        {
+			var request = HttpContext.Request.Form.Keys.First();
+			return await _context.Filijale.FindAsync(0);
+        }
+
+		[HttpPost]
+		[Route("IzmeniFilijalu")]
+		public async Task<ActionResult<List<Filijala>>> IzmeniFilijalu(Filijala pack)
+        {
+			Filijala stara = new Filijala(){
+				AdminID = pack.AdminID, 
+				Adresa = pack.Adresa.Split('|')[0], 
+				Grad = pack.Grad.Split('|')[0], 
+				Drzava = pack.Drzava.Split('|')[0]
+			};
+			Filijala nova = new Filijala()
+			{
+				AdminID = pack.AdminID,
+				Adresa = pack.Adresa.Split('|')[1],
+				Grad = pack.Grad.Split('|')[1],
+				Drzava = pack.Drzava.Split('|')[1]
+			};
+			var svef = await _context.Filijale.ToListAsync();
+			Filijala filijala = new Filijala();
+			foreach(Filijala f in svef)
+            {
+				if(f.AdminID == stara.AdminID)
+                {
+					if(f.Adresa == stara.Adresa && f.Grad == stara.Grad && f.Drzava == stara.Drzava)
+                    {
+						filijala = f;
+						break;
+                    }
+                }
+            }
+			filijala.Adresa = nova.Adresa;
+			filijala.Grad = nova.Grad;
+			filijala.Drzava = nova.Drzava;
+			_context.Filijale.Update(filijala);
+			await _context.SaveChangesAsync();
+			return await _context.Filijale.ToListAsync();
         }
 
 		[HttpPost]

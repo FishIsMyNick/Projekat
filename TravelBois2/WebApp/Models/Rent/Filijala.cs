@@ -13,7 +13,7 @@ namespace WebApp.Models.Rent
         [Column(TypeName = "int")]
         public int Id { get; set; }
         [Column(TypeName ="nvarchar(30)")]
-        public string NazivRente { get; set; }
+        public string AdminID { get; set; }
         [Column(TypeName = "nvarchar(50)")]
         public string Adresa { get; set; }
         [Column(TypeName = "nvarchar(20)")]
