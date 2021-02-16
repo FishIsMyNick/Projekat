@@ -44,7 +44,7 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
 
     this.rezervisanaKola = await this.GetRezervacijeList('n');
 
-    this.kalendarKola = new Kola(0, 0, '', '', 'Hecbek');
+    this.kalendarKola = new Kola(0, 0, '', '', 'Hecbek', 'renta', 0, 0);
     this.kalendarKola.zauzetost.push(new Zauzetost(new Date(1970, 1, 1), new Date(1970, 1, 1), '', '', ''));
     this.ucitaj = true;
   }

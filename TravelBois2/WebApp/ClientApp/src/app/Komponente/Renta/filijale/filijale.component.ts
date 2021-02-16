@@ -35,6 +35,10 @@ export class FilijaleComponent implements OnInit {
       }
     });
   }
+  async Obrisi(id){
+    await this.servce.ObrisiFilijalu(id);
+    this.ngOnInit();
+  }
   Dodaj(){
     this.prikaz = 1;
     console.debug('dodaj');

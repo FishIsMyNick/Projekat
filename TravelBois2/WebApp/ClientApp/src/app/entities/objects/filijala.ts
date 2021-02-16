@@ -4,17 +4,17 @@ import { element } from 'protractor';
 import { RentACar } from './rent-a-car';
 
 export class Filijala {
-    Id: any;
-    AdminID: string;
-    Adresa: string;
-    Grad: string;
-    Drzava: string;
+    id: any;
+    adminID: string;
+    adresa: string;
+    grad: string;
+    drzava: string;
 
     constructor(id, admin: string, adr:string, grad:string, drzava: string){
-        this.Id = id;
-        this.AdminID = admin;
-        this.Adresa = adr;
-        this.Grad = grad;
-        this.Drzava = drzava;
+        this.id = id;
+        this.adminID = admin;
+        this.adresa = adr;
+        this.grad = grad;
+        this.drzava = drzava;
     }
 }

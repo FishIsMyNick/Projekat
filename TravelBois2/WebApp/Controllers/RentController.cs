@@ -213,47 +213,28 @@ namespace WebApp.Controllers
 		[Route("GetFilijalaById")]
 		public async Task<ActionResult<Filijala>> GetFilijalaById()
         {
-			var request = HttpContext.Request.Form.Keys.First();
-			return await _context.Filijale.FindAsync(0);
+			var request = Int32.Parse(HttpContext.Request.Form.Keys.First());
+			return await _context.Filijale.FindAsync(request);
         }
 
 		[HttpPost]
 		[Route("IzmeniFilijalu")]
-		public async Task<ActionResult<List<Filijala>>> IzmeniFilijalu(Filijala pack)
+		public async Task<ActionResult<List<Filijala>>> IzmeniFilijalu(Filijala f)
         {
-			Filijala stara = new Filijala(){
-				AdminID = pack.AdminID, 
-				Adresa = pack.Adresa.Split('|')[0], 
-				Grad = pack.Grad.Split('|')[0], 
-				Drzava = pack.Drzava.Split('|')[0]
-			};
-			Filijala nova = new Filijala()
-			{
-				AdminID = pack.AdminID,
-				Adresa = pack.Adresa.Split('|')[1],
-				Grad = pack.Grad.Split('|')[1],
-				Drzava = pack.Drzava.Split('|')[1]
-			};
-			var svef = await _context.Filijale.ToListAsync();
-			Filijala filijala = new Filijala();
-			foreach(Filijala f in svef)
-            {
-				if(f.AdminID == stara.AdminID)
-                {
-					if(f.Adresa == stara.Adresa && f.Grad == stara.Grad && f.Drzava == stara.Drzava)
-                    {
-						filijala = f;
-						break;
-                    }
-                }
-            }
-			filijala.Adresa = nova.Adresa;
-			filijala.Grad = nova.Grad;
-			filijala.Drzava = nova.Drzava;
-			_context.Filijale.Update(filijala);
+			_context.Filijale.Update(f);
 			await _context.SaveChangesAsync();
 			return await _context.Filijale.ToListAsync();
         }
+		[HttpPost]
+		[Route("ObrisiFilijalu")]
+		public async Task<ActionResult<List<Filijala>>> IzmeniFilijalu()
+        {
+			int id = Int32.Parse(HttpContext.Request.Form.Keys.First());
+			_context.Filijale.Remove(_context.Filijale.Find(id));
+			await _context.SaveChangesAsync();
+			return await _context.Filijale.ToListAsync();
+        }
+
 
 		[HttpPost]
 		[Route("GetKola")]
@@ -475,10 +456,8 @@ namespace WebApp.Controllers
 			kola.BrojMesta = int.Parse(request[2]);
 			kola.Godiste = int.Parse(request[3]);
 			kola.Cena = int.Parse(request[4]);
-			kola.BrzaRezervacija = bool.Parse(request[5]);
+			kola.Filijala = int.Parse(request[5]);
 			kola.TipVozila = request[6];
-			kola.BrzaRezervacijaOd = DateTime.Parse(request[7].Split('+')[0]);
-			kola.BrzaRezervacijaDo = DateTime.Parse(request[7].Split('+')[1]);
 
 			var ret = _context.Kola.Update(kola);
 			await _context.SaveChangesAsync();
@@ -510,7 +489,7 @@ namespace WebApp.Controllers
 			kola.BrojMesta = int.Parse(request[1]);
 			kola.Godiste = int.Parse(request[2]);
 			kola.Cena = int.Parse(request[3]);
-			kola.BrzaRezervacija = bool.Parse(request[4]);
+			kola.Filijala = int.Parse(request[4]);
 			kola.TipVozila = request[5];
 			kola.Naziv = request[6] + "-" + request[7];
 			_context.Kola.Add(kola);

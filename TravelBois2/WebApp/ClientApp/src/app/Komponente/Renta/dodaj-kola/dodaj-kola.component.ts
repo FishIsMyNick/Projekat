@@ -13,11 +13,13 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './dodaj-kola.component.html'
 })
 export class DodajKolaComponent implements OnInit {
+  currentUser: string;
   carForm: FormGroup;
   static kola: Kola;
   renta: RentACar;
 
-  brzaRezervacija: boolean;
+  filijala: string;
+  filijale: any;
 
   public selectedFile: File = null;
   public event1;
@@ -29,7 +31,8 @@ export class DodajKolaComponent implements OnInit {
   constructor(private route: ActivatedRoute, private servis: RentService, private router: Router, private toastr: ToastrService) {
    }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.currentUser = AppComponent.currentUser.userName;
     let year = new Date();
     this.carForm = new FormGroup({
       'marka': new FormControl('', Validators.required),
@@ -38,14 +41,17 @@ export class DodajKolaComponent implements OnInit {
       'godiste': new FormControl('', [Validators.required, Validators.min(1900), Validators.max(year.getFullYear())]),
       'tip': new FormControl('', Validators.required),
       'cena': new FormControl('', [Validators.required, Validators.min(1)]),
-      'brzaRezervacija': new FormControl(''),
+      'filijala': new FormControl('', [Validators.required]),
       'slika': new FormControl('', Validators.required)
-            })
+    });
+    this.filijale = await this.servis.GetFilijale(this.currentUser);
   }
   async onSubmit() {
     console.debug('submit')
     var rent = await this.servis.GetRent(AppComponent.currentUser.userName);
     //console.debug(rent.naziv);
+    ;
+
 
     var kola: Kola = new Kola(
       this.carForm.get('brojMesta').value,
@@ -54,8 +60,8 @@ export class DodajKolaComponent implements OnInit {
       this.carForm.get('model').value,
       this.carForm.get('tip').value,
       rent.naziv,
-      this.carForm.get('cena').value,
-      this.brzaRezervacija);
+      this.carForm.get('cena').value, 
+      this.filijale[Number(this.carForm.get('filijala').value.split('.')[0]) - 1].id); // preuzeti id filijale
 
     this.servis.AddCar(kola).subscribe(
       (res) => {
@@ -86,6 +92,10 @@ export class DodajKolaComponent implements OnInit {
   GetTipovi(): Array<string>
   {
     return GetStringValues(TipVozila);
+  }
+  Change(value){
+    console.debug(this.carForm.get('filijala').value.split('.')[0]);
+
   }
   onFileChanged(file: FileList){
     this.selectedFile = file.item(0);

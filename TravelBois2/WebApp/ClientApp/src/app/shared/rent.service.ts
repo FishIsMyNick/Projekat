@@ -26,7 +26,7 @@ export class RentService {
 
   editCarForm = this.fb.group({
     brojMesta: ['', [Validators.required]],
-    brzaRezervacija: ['', [Validators.required]],
+    filijala: ['', [Validators.required]],
     cena: ['', [Validators.required]],
     godiste: ['', Validators.required],
     model: ['', Validators.required],
@@ -35,6 +35,14 @@ export class RentService {
     tipVozila: ['', Validators.required]
   });
 
+  InitEditFilijalaForm(filijala: Filijala){
+    this.filijalaForm.controls.adresa.patchValue(filijala.adresa);
+    this.filijalaForm.controls.adresa.markAsTouched();
+    this.filijalaForm.controls.grad.patchValue(filijala.grad);
+    this.filijalaForm.controls.grad.markAsTouched();
+    this.filijalaForm.controls.drzava.patchValue(filijala.drzava);
+    this.filijalaForm.controls.drzava.markAsTouched();
+  }
   InitEditCarForm(kola: any) {
     let naziv = kola.naziv.split('-');
     let marka = naziv[0];
@@ -68,9 +76,15 @@ export class RentService {
     return await this.http.post(this.BaseURI + '/Rent/DodajFilijalu', filijala).toPromise();
   }
 
-  async IzmeniFilijalu(stara: Filijala, nova: Filijala): Promise<any> {
-    let f = new Filijala(stara.Id, stara.AdminID, stara.Adresa + '|' + nova.Adresa, stara.Grad + '|' + nova.Grad, stara.Drzava + '|' + nova.Drzava)
-    return await this.http.post(this.BaseURI + '/Rent/IzmeniFilijalu', f).toPromise();
+  async IzmeniFilijalu(nova: Filijala): Promise<any> {
+    //let f = new Filijala(nova.id, nova.adminID, nova.adresa, nova.grad, nova.drzava)
+    return await this.http.post(this.BaseURI + '/Rent/IzmeniFilijalu', nova).toPromise();
+  }
+  async ObrisiFilijalu(id){
+    const formData = new FormData();
+    formData.append(id, id);
+
+    return await this.http.post<any>(this.BaseURI + '/Rent/ObrisiFilijalu', formData).toPromise();
   }
   GetAllRents(){
     return this.http.get(this.BaseURI + '/Rent/GetAllRents');
@@ -161,9 +175,8 @@ export class RentService {
     fd.append(kola.brojMesta, '');
     fd.append(kola.godiste, '');
     fd.append(kola.cena, '');
-    fd.append(kola.brzaRezervacija, '');
+    fd.append(kola.filijala, '');
     fd.append(kola.tipVozila, '');
-    fd.append(kola.brzaRezervacijaOd + '+' + kola.brzaRezervacijaDo, '');
     return await this.http.post<any>(this.BaseURI + '/Rent/UpdateCar', fd).toPromise();
   }
   async ReplaceCar(kola: any, newMarka, newModel): Promise<any> {
@@ -172,7 +185,7 @@ export class RentService {
     formData.append(kola.brojMesta, '');
     formData.append(kola.godiste, '');
     formData.append(kola.cena, '');
-    formData.append(kola.brzaRezervacija, '');
+    formData.append(kola.filijala, '');
     formData.append(kola.tipVozila, '');
     formData.append(newMarka, '');
     formData.append(newModel, '');

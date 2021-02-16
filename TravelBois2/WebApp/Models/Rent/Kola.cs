@@ -18,9 +18,8 @@ namespace WebApp.Models
 		[Column(TypeName = "nvarchar(40)")]
 		public string NazivRente { get; set; }
 		[ForeignKey("filijala")]
-		[Column(TypeName = "nvarchar(40)")]
-		public string filijalaID { get; set; }
-
+		[Column(TypeName = "smallint")]
+		public int Filijala { get; set; }
 		[Column(TypeName = "tinyint")]
 		public int BrojMesta { get; set; }
 		[Column(TypeName = "smallint")]
@@ -31,11 +30,5 @@ namespace WebApp.Models
 		public int Cena { get; set; }
 		[Column(TypeName = "smallint")]
 		public int CenaBrzeRezervacije { get; set; }
-		[Column(TypeName = "bit"), DefaultValue(null)]
-		public bool BrzaRezervacija { get; set; }
-		[Column(TypeName = "date")]
-		public DateTime BrzaRezervacijaOd { get; set; }
-		[Column(TypeName = "date")]
-		public DateTime BrzaRezervacijaDo { get; set; }
 	}
 }

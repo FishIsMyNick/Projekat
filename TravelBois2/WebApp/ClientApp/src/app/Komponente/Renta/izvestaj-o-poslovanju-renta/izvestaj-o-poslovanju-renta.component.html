@@ -17,7 +17,7 @@
                 <input type="radio" id="god" name="rezervacije" (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="god">Godina</label>
             </div>
             <div>Imate {{brojRezervacija}} rezervacija {{periodRezervacije}}.</div>
-            <div>Rezervisana vozila:
+            <div *ngIf="brojRezervacija !== 0">Rezervisana vozila:
                 <ul>
                     <li *ngFor="let kola of rezervisanaKola" style="display: list-item;">
                         {{kola}}

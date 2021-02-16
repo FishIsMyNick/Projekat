@@ -34,11 +34,10 @@ export class VozilaComponent implements OnInit {
 
     var resp = await this.servis.GetCarsFromAdmin(this.currentUser.userName);
     for(let element of resp) {
-      let k = new Kola(element.brojMesta, element.godiste, element.naziv.split('-')[0], element.naziv.split('-')[1], element.tipVozila, element.nazivRente, element.cena, element.brzaRezervacija);
-      k.BrzaRezervacijaOd = element.brzaRezervacijaOd;
-      k.BrzaRezervacijaDo = element.brzaRezervacijaDo;
+      let k = new Kola(element.brojMesta, element.godiste, element.naziv.split('-')[0], element.naziv.split('-')[1], element.tipVozila, element.nazivRente, element.cena, element.filijala);
+      
 
-      element.imgURL = 'assets/images/RentACar/Kola/' + element.naziv + '.jpg';
+      element.imgURL = '/assets/images/RentACar/Kola/' + element.naziv + '.jpg';
       this.kola.push(element)
     }
     console.debug(this.kola);

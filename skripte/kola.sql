@@ -1,0 +1,10 @@
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT TOP (100) [Naziv]
+      ,[NazivRente]
+      ,[BrojMesta]
+      ,[Godiste]
+      ,[TipVozila]
+      ,[Cena]
+      ,[CenaBrzeRezervacije]
+      ,[Filijala]
+  FROM [TravelBoisDB].[dbo].[Kola]

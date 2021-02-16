@@ -1,23 +1,21 @@
-<form [formGroup]="service.filijaleForm" (submit)="SacuvajIzmene()">
-    <div class="container, form">
+<div class="container, form">
+    <form [formGroup]="service.filijaleForm" (submit)="SacuvajIzmene()">
         <table>
             <tr>
                 <td>Adresa: </td>
                 <td><input id="adresa" name="adresa" formControlName="adresa" value="{{filijala.adresa}}"></td>
-                <td><label *ngIf="service.filijalaForm.get('adresa').touched && service.filijalaForm.get('adresa').errors?.required">Adresa je potrebna</label></td>
             </tr>
             <tr>
                 <td>Grad: </td>
-                <td><input id="grad" name="grad" formControlName="grad"></td>
-                <td><label *ngIf="service.filijalaForm.get('grad').touched && service.filijalaForm.get('grad').errors?.required">Grad je potreban</label></td>
+                <td><input id="grad" name="grad" formControlName="grad" value="{{filijala.grad}}"></td>
             </tr>
             <tr>
                 <td>Drzava: </td>
-                <td><input id="drzava" name="drzava" formControlName="drzava"></td>
-                <td><label *ngIf="service.filijalaForm.get('drzava').touched && service.filijalaForm.get('drzava').errors?.required">Drzava je potrebna</label></td>
+                <td><input id="drzava" name="drzava" formControlName="drzava" value="{{filijala.drzava}}"></td>
             </tr>
         </table>
-    <button [disabled]="service.filijalaForm.invalid" type="submit" class="btn btn-lg btn-block">Sacuvaj</button>
-
-    </div>
-</form>
+        <div class="container">
+            <button id="submit" type="submit" class="btn btn-lg btn-block">Sacuvaj</button>
+        </div>
+    </form>
+</div>

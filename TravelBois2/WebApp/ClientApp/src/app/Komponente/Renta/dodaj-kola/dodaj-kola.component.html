@@ -61,9 +61,13 @@
         </div>
         <div class="form">
             <div>
-                <label for="brzaRezervacija">Brza rezervacija:</label>
-                <input type="checkbox" id="brzaRezervacija" formControlName="brzaRezervacija" class="form-control" (change)="changeSelection()" [(ngModel)]="brzaRezervacija">
-                
+                <label for="filijala">Filijala:</label>
+                <select id="filijala" formControlName="filijala" class="form-control" [(ngModel)]="filijala" (change)="Change($event.target.value)">
+                    <option disabled selected> -- izaberite opciju -- </option>
+                    <option *ngFor="let f of filijale; index as i">
+                        {{i + 1}}. {{f.adresa}}, {{f.grad}}, {{f.drzava}}
+                    </option>
+                </select>
             </div>
         </div>
         <div class="form">
