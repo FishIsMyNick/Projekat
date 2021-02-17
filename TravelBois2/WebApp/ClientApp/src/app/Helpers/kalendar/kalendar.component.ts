@@ -61,7 +61,7 @@ export class KalendarComponent implements OnInit {
       ret = this.DateCmp(temp, s2);
     }
     else{
-      console.debug('ispalo iz provere')
+      //console.debug('ispalo iz provere')
       ret = false;
     }
     return ret;

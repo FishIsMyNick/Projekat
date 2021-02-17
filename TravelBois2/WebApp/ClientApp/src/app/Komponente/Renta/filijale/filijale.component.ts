@@ -12,6 +12,7 @@ import { RentService } from '../../../shared/rent.service';
 export class FilijaleComponent implements OnInit {
 
   currentUser: string;
+  renta: any;
   filijale: any;
   prikaz: number;
 
@@ -25,7 +26,7 @@ export class FilijaleComponent implements OnInit {
     this.prikaz = 0;
     this.currentUser = AppComponent.currentUser.userName;
     this.filijale = await this.servce.GetFilijale(this.currentUser);
-    console.debug(this.filijale);
+    this.renta = await this.servce.GetRent(this.currentUser);
   }
 
   Izmeni(Id){
@@ -36,8 +37,14 @@ export class FilijaleComponent implements OnInit {
     });
   }
   async Obrisi(id){
-    await this.servce.ObrisiFilijalu(id);
-    this.ngOnInit();
+    let ret = await this.servce.ObrisiFilijalu(id);
+    if(ret == null){
+      this.toastr.error('Ne mozete obrisati ovu filijalu jer ima kola prijavljenih u njoj!')
+    }
+    else{
+      this.toastr.success('Uspesno obrisana filijala!')
+      this.ngOnInit();
+    }
   }
   Dodaj(){
     this.prikaz = 1;
@@ -48,7 +55,7 @@ export class FilijaleComponent implements OnInit {
     let grad = (<HTMLInputElement>document.getElementById('grad')).value;
     let drzava = (<HTMLInputElement>document.getElementById('drzava')).value;
 
-    let f = new Filijala(0, this.currentUser, adresa, grad, drzava);
+    let f = new Filijala(0, this.currentUser, this.renta.naziv, adresa, grad, drzava);
     this.filijale = await this.servce.DodajFilijalu(f);
     this.prikaz = 0;
   }

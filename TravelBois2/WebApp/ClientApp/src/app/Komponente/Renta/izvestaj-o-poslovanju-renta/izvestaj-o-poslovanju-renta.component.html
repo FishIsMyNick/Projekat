@@ -10,11 +10,30 @@
             <h5 style="display: inline; margin-left: 7px;" *ngIf="ocenaKola !== 0">: {{ocenaKola}}</h5>
         </li>
         <hr>
-        <li><h3>Rezervacije vozila:</h3><br>
+        <li>
             <div style="display: inline;">
-                <input type="radio" id="nedelja" name="rezervacije" checked (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="dan">Nedelja</label>
-                <input type="radio" id="mesec" name="rezervacije" (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="mesec">Mesec</label><nbsp></nbsp>
-                <input type="radio" id="god" name="rezervacije" (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="god">Godina</label>
+                <h3>Rezervacije vozila:</h3>
+                <input style="width: 30px;" id="selDan">/<input style="width: 30px;" id="selMesec">/<input style="width: 50px;" id="selGodina"><button style="position: relative; left:10px;" (click)="CheckDate()">Pronadji rezervacije</button>
+            </div>
+            <div *ngIf="invalidDate" style="color: red;">Izabrani datum nije validan!</div>
+
+            <br>
+            
+            <div style="display: block;">
+                <canvas baseChart 
+                  [datasets]="barChartData"
+                  [labels]="barChartLabels"
+                  [options]="barChartOptions"
+                  [plugins]="barChartPlugins"
+                  [legend]="barChartLegend"
+                  [chartType]="barChartType">
+                </canvas>
+              </div>
+
+            <div style="display: inline;">
+                <input type="radio" id="dan" name="rezervacije" checked (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="dan">Dan</label>
+                <input type="radio" id="nedelja" name="rezervacije" (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="nedelja">Nedelja</label><nbsp></nbsp>
+                <input type="radio" id="mesec" name="rezervacije" (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="mesec">Mesec</label>
             </div>
             <div>Imate {{brojRezervacija}} rezervacija {{periodRezervacije}}.</div>
             <div *ngIf="brojRezervacija !== 0">Rezervisana vozila:

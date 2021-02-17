@@ -230,6 +230,11 @@ namespace WebApp.Controllers
 		public async Task<ActionResult<List<Filijala>>> IzmeniFilijalu()
         {
 			int id = Int32.Parse(HttpContext.Request.Form.Keys.First());
+			foreach(Kola k in _context.Kola.ToList())
+            {
+				if (k.Filijala == id)
+					return null;
+            }
 			_context.Filijale.Remove(_context.Filijale.Find(id));
 			await _context.SaveChangesAsync();
 			return await _context.Filijale.ToListAsync();
@@ -456,8 +461,9 @@ namespace WebApp.Controllers
 			kola.BrojMesta = int.Parse(request[2]);
 			kola.Godiste = int.Parse(request[3]);
 			kola.Cena = int.Parse(request[4]);
-			kola.Filijala = int.Parse(request[5]);
-			kola.TipVozila = request[6];
+			kola.CenaBrzeRezervacije = int.Parse(request[5]);
+			kola.Filijala = int.Parse(request[6]);
+			kola.TipVozila = request[7];
 
 			var ret = _context.Kola.Update(kola);
 			await _context.SaveChangesAsync();
@@ -527,10 +533,19 @@ namespace WebApp.Controllers
 
 			return kola;
 		}
-
+		/// <summary>
+		/// Brise kola, ocene kola i sliku kola u blob storage-u
+		/// </summary>
+		/// <param name="kola"></param>
+		/// <returns>
+		/// 0  => Uspesno obrisano
+		/// -1 => Kola su zauzeta, ne mogu se obrisati
+		/// -2 => Greska u brisanju slike, kola se ne brisu
+		/// -3 => Greska u brisanju kola ili ocena, kola se ne brisu
+		/// </returns>
 		[HttpPost]
 		[Route("DeleteCar")]
-		public async Task<bool> DeleteCar(Kola kola)
+		public async Task<int> DeleteCar(Kola kola)
 		{
 			var rezervacije = await _context.Zauzetost.ToListAsync();
 			// Da li su kola zauzeta? Ne mogu se obrisati
@@ -539,33 +554,43 @@ namespace WebApp.Controllers
 				if (z.Kola == kola.Naziv && z.Renta == kola.NazivRente)
 				{
 					if(z.Do > DateTime.Now)
-						return false;
+						return -1;
 				}
 			}
 			// else
-			_context.Kola.Remove(kola);
-
-			// Brisanje ocena
-			var ocene = await _context.OceneKola.ToListAsync();
-			foreach(OcenaKola o in ocene)
-			{
-				if(o.Naziv == kola.Naziv && o.Kompanija == kola.NazivRente)
-				{
-					_context.OceneKola.Remove(o);
-					await _context.SaveChangesAsync();
-				}
-			}
-
+			
 			try
 			{
-				await BlobHandler.DeleteCarImage(kola.Naziv);
+				await BlobHandler.DeleteCarImage(kola.Naziv);	//Obrisi sliku kola
 			}
 			catch(Exception e)
 			{
 				Console.WriteLine(e.Message);
+				return -2;
 			}
+
+			try
+			{
+				_context.Kola.Remove(kola);
+
+				// Brisanje ocena
+				var ocene = await _context.OceneKola.ToListAsync();
+				foreach (OcenaKola o in ocene)
+				{
+					if (o.Naziv == kola.Naziv && o.Kompanija == kola.NazivRente)
+					{
+						_context.OceneKola.Remove(o);
+					}
+				}
+			}
+			catch(Exception e)
+            {
+				Console.WriteLine(e.Message);
+				return -3;
+            }
+
 			await _context.SaveChangesAsync();
-			return true;
+			return 0;
 		}
 
 		[HttpPut]

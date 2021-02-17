@@ -3,11 +3,11 @@ import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/fo
 import { Location} from '@angular/common';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { RentACar } from 'src/app/entities/objects/rent-a-car';
 import { AppComponent } from 'src/app/app.component';
 import { AnyTxtRecord } from 'dns';
 import { HttpClient } from '@angular/common/http';
 import { RentService } from 'src/app/shared/rent.service';
+import { RentACar } from '../../../entities/objects/rent-a-car';
 
 @Component({
   selector: 'app-reg-renta-kompaniju',
@@ -56,10 +56,10 @@ export class RegRentaKompanijuComponent implements OnInit {
     this.adminID = this.regRentaForm.get('admin').value;
 
     this.renta = new RentACar(this.naziv, this.adresa);
-    this.renta.Grad = this.grad;
-    this.renta.Drzava = this.drzava;
-    this.renta.AdminID = this.adminID;
-    this.renta.Opis = this.opis;
+    this.renta.grad = this.grad;
+    this.renta.drzava = this.drzava;
+    this.renta.adminID = this.adminID;
+    this.renta.opis = this.opis;
 
     this.service.checkForRentAdmin(this.adminID).subscribe(
       (res: any) => {

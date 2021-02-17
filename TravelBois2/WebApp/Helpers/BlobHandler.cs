@@ -78,7 +78,7 @@ namespace WebApp.Helpers
         }
         public static async Task DeleteCarImage(string imageName)
 		{
-            _blobClient = _kolaContainerClient.GetBlobClient(imageName);
+            _blobClient = _kolaContainerClient.GetBlobClient(imageName + ".jpg");
             await _blobClient.DeleteAsync(DeleteSnapshotsOption.IncludeSnapshots);
 		}
         public static async Task UploadCompanyImage(IFormFile img, string filename)

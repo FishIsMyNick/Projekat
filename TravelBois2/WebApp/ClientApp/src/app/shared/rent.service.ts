@@ -175,6 +175,7 @@ export class RentService {
     fd.append(kola.brojMesta, '');
     fd.append(kola.godiste, '');
     fd.append(kola.cena, '');
+    fd.append(kola.cenaBrzeRezervacije, '');
     fd.append(kola.filijala, '');
     fd.append(kola.tipVozila, '');
     return await this.http.post<any>(this.BaseURI + '/Rent/UpdateCar', fd).toPromise();

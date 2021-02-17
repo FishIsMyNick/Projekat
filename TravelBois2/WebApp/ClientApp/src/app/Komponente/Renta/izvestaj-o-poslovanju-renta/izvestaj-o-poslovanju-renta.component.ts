@@ -9,6 +9,9 @@ import { TipVozila } from 'src/app/_enums';
 import { Zauzetost } from 'src/app/entities/misc/zauzetost';
 import { KalendarComponent } from '../../../Helpers/kalendar/kalendar.component';
 
+import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
+import { Label } from 'ng2-charts';
+
 @Component({
   selector: 'app-izvestaj-o-poslovanju-renta',
   templateUrl: './izvestaj-o-poslovanju-renta.component.html'
@@ -24,11 +27,36 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
   renta: any;
   kalendarKola: any;
   ucitaj: boolean = false;
+
   prihodi: number;
   nistaSelektovano: boolean;
-  periodRezervacije: string;
+
   rezervisanaKola;
   brojRezervacija;
+
+  danaUMesecu: number;
+  periodRezervacije: string;
+  selectedDate: Date = new Date();
+  invalidDate = false;
+
+  //chart
+  private danLabels: Label[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24/00'];
+  private nedeljaLabels: Label[] = ['Pon', 'Uto', 'Sre', 'Cet', 'Pet', 'Sub', 'Ned'];
+  private mesecLabels: Label[];
+
+
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+  };
+  public barChartLabels: Label[] = this.danLabels;
+  public barChartType: ChartType = 'bar';
+  public barChartLegend = false;
+  public barChartPlugins = [];
+
+  public barChartData: ChartDataSets[] = [
+    { data: [], label: 'Rezervisana kola' }
+  ];
+
 
   constructor(public fb: FormBuilder, private servis: RentService) {}
 
@@ -47,6 +75,83 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     this.kalendarKola = new Kola(0, 0, '', '', 'Hecbek', 'renta', 0, 0);
     this.kalendarKola.zauzetost.push(new Zauzetost(new Date(1970, 1, 1), new Date(1970, 1, 1), '', '', ''));
     this.ucitaj = true;
+
+    //chart
+    this.MakeMonthLabels(new Date())
+  }
+
+  
+  CheckDate(): boolean {
+    let dan = (<HTMLInputElement>document.getElementById('selDan')).value;
+    let mesec = (<HTMLInputElement>document.getElementById('selMesec')).value;
+    let godina = (<HTMLInputElement>document.getElementById('selGodina')).value;
+
+    let timestamp = Date.parse(mesec + '/' + dan + '/' + godina);
+
+    if(isNaN(timestamp)){
+      this.invalidDate = true;
+      return false;
+    }
+    else{
+      let datum = new Date(Number(godina), Number(mesec) - 1, 1);
+      this.CalcDanaUMesecu(datum)
+      if(Number(dan) > this.danaUMesecu){
+        this.invalidDate = true;
+        return false;
+      }
+      else{
+        this.invalidDate = false;
+        datum.setDate(Number(dan));
+        this.selectedDate = datum;
+        return true;
+      }
+    }
+  }
+
+  async RezervacijeChanged(event) {
+    let c = event.charAt(0);
+
+    this.brojRezervacija = 0;
+    let rezervacije = await this.GetRezervacije(c); // Sve rezervacije pronadjene u izabranom periodu
+    this.rezervisanaKola = new Array<string>();
+    for (let r of rezervacije) {
+      this.brojRezervacija++;
+      if (!this.rezervisanaKola.includes(r.kola)) {
+        this.rezervisanaKola.push(r.kola);
+      }
+    }
+
+    if(c == 'd'){
+      this.barChartLabels = this.danLabels;
+
+      let data = new Array<any>();
+      for(let i = 0; i < 24; i++){
+        data.concat(0);
+      }
+      rezervacije.forEach(element => {
+        data[this.Random(24) - 1] += 1 
+      });
+      this.barChartData.concat({
+        data: data
+      })
+    }
+    else if(c == 'n'){
+      this.barChartLabels = this.nedeljaLabels;
+
+      let data = new Array<any>();
+      for(let i = 0; i < 7; i++){
+        data.concat(0);
+      }
+
+      rezervacije.forEach(rezervacija => {
+        // TODO: dodati dane u nedelji iz rezervacije
+      });
+    }
+    else {
+      this.MakeMonthLabels(this.selectedDate);
+      this.barChartLabels = this.mesecLabels;
+    }
+    this.rezervisanaKola = await this.GetRezervacijeList(c);
   }
 
   async GetRezervacijeList(period) {
@@ -63,8 +168,12 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
   }
   async GetRezervacije(period) {
     var start, end;
-    let date = new Date();
-    if (period == 'n') {
+    let date = this.selectedDate;
+    if (period == 'd'){
+      start = date;
+      end = date;
+    }
+    else if (period == 'n') {
       this.periodRezervacije = 'ove nedelje';
       let dan = date.getDay();
       //nedelja
@@ -124,15 +233,10 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
       date.setDate(0);
       end = new Date(date);
     }
-    else if (period == 'g') {
-      this.periodRezervacije = 'ove godine';
-      date.setDate(1);
-      date.setMonth(0);
-      start = new Date(date);
-      date.setFullYear(date.getFullYear() + 1);
-      end = new Date(date);
+    else {
+      console.debug('greska u preuzimanju rezervacija: Izvestaj-O-Poslovanju')
     }
-
+    // Potencijalno dodati funkcionalnost odabira filijale
     let ret = new Array<Zauzetost>();
     for (let kola of await this.GetCars()) {
       for (let z of await this.servis.GetZauzetost(kola)) {
@@ -224,7 +328,42 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     let kola = await this.servis.GetKola(selection, this.renta.naziv);
     this.ocenaKola = await this.servis.ProsecnaOcenaKola(kola);
   }
-  async RezervacijeChanged(event) {
-    this.rezervisanaKola = await this.GetRezervacijeList(event.charAt(0));
+  
+  //Helpers
+  MakeMonthLabels(date: Date){
+    this.mesecLabels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'];
+    this.CalcDanaUMesecu(date);
+    for(let i = 29; i <= this.danaUMesecu; i++){
+      this.mesecLabels.concat(i.toString())
+    }
+  }
+  CalcDanaUMesecu(date: Date){
+    if(date.getMonth() === 1){
+      if(date.getFullYear() % 4 === 0){
+        this.danaUMesecu = 29;
+      }
+      else{
+        this.danaUMesecu = 28;
+      }
+    }
+    else if(date.getMonth() <= 6){
+      if(date.getMonth() % 2 !== 0){
+        this.danaUMesecu = 30;
+      }
+      else{
+        this.danaUMesecu = 31;
+      }
+    }
+    else{
+      if(date.getMonth() % 2 !== 0){
+        this.danaUMesecu = 31;
+      }
+      else{
+        this.danaUMesecu = 30;
+      }
+    }
+  }
+  Random(max, min = 1) {
+    return Math.round(Math.random() * (max - min) + min);
   }
 }

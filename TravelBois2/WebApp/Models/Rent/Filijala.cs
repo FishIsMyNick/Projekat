@@ -14,6 +14,8 @@ namespace WebApp.Models.Rent
         public int Id { get; set; }
         [Column(TypeName ="nvarchar(30)")]
         public string AdminID { get; set; }
+        [Column(TypeName = "nvarchar(30)")]
+        public string Renta { get; set; }
         [Column(TypeName = "nvarchar(50)")]
         public string Adresa { get; set; }
         [Column(TypeName = "nvarchar(20)")]

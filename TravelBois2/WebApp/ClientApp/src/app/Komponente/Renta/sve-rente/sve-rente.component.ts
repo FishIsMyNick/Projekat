@@ -55,6 +55,8 @@ export class SveRenteComponent implements OnInit {
     this.prikaz = RentPrikaz.listaKompanija;
     this.ocene = new Array<Ocena>();
     this.filtriranaKola = new Array<any>();
+    console.debug(this.GetCurrentUserType())
+    console.debug(this.GetCurrentUserType() == 'RegularUser')
 
     var resp = this.service.GetAllRents().subscribe(
       async (res:any) => {
@@ -99,7 +101,7 @@ export class SveRenteComponent implements OnInit {
     }
   }
   GetCurrentUserType(){
-    return this.currentUser.constructor.name;
+    return this.currentUser.tipKorisnika;
   }
   GetCompanyImgUrl(naziv: string){
     return 'assets/images/RentACar/Kompanije/' + naziv.replace(/ /g, '-') + '.jpg';

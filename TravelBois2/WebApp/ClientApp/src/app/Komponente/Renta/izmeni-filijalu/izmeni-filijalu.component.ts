@@ -35,7 +35,7 @@ export class IzmeniFilijaluComponent implements OnInit {
     let adresa = (<HTMLInputElement>document.getElementById('adresa')).value;
     let grad = (<HTMLInputElement>document.getElementById('grad')).value;
     let drzava = (<HTMLInputElement>document.getElementById('drzava')).value;
-    let nova = new Filijala(this.filijala.id, this.filijala.adminID, adresa, grad, drzava);
+    let nova = new Filijala(this.filijala.id, this.filijala.adminID, this.filijala.renta, adresa, grad, drzava);
 
     await this.service.IzmeniFilijalu(nova);
     this.router.navigateByUrl('/filijale');

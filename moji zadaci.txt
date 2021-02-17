@@ -7,18 +7,18 @@ Tipovi korisnika:
 	-pregledaju info o rent-a-car servisima
 	
 4. admin rente
-	-definisu vozila koja su raspoloziva za iznajmljivanje
-	-definisu cenovnik usluga
+	-definisu vozila koja su raspoloziva za iznajmljivanje 					OK
+	-definisu cenovnik usluga												OK
 	-dobijaju izvestaje o slobodnim i zauzetim vozilima za odredjen period
-	-dobijaju izvestaje o ocenama korisnika
+	-dobijaju izvestaje o ocenama korisnika									OK
 	-dobijaju izvestaje o ostvarenom prihodu na 
 	 nedeljnom/mesecnom/godisnjem nivou
-	-uredjuju info stranicu rent-a-car servisa
+	-uredjuju info stranicu rent-a-car servisa								OK
 	
 5. admin
-	-registruje aviokompanije
-	-registruje rent-a-car servise
-	-registruje administratore rente i aviokompanija
+	-registruje aviokompanije												OK
+	-registruje rent-a-car servise											OK
+	-registruje administratore rente i aviokompanija						OK
 
 Funkcije:
 

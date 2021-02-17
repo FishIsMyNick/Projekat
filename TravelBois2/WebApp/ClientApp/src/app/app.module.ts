@@ -66,6 +66,8 @@ import { PromenaLozinkeComponent } from './Komponente/Korisnicki/promena-lozinke
 import { FilijaleComponent } from './Komponente/Renta/filijale/filijale.component';
 import { IzmeniFilijaluComponent } from './Komponente/Renta/izmeni-filijalu/izmeni-filijalu.component';
 
+import { ChartsModule } from 'ng2-charts';
+
 
 @NgModule({
   declarations: [
@@ -129,7 +131,8 @@ import { IzmeniFilijaluComponent } from './Komponente/Renta/izmeni-filijalu/izme
     BrowserAnimationsModule,
     TooltipModule.forRoot(),
     ToastrModule.forRoot(),
-    FileUploadModule
+    FileUploadModule,
+    ChartsModule
   ],
   providers: [AppComponent, UserService,
     {
