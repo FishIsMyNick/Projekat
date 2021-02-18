@@ -14,6 +14,13 @@ export class KalendarComponent implements OnInit {
   datum: Datum;
   static s1: Date;
   static s2: Date;
+
+  static sd: Date;
+  static sp: string;
+
+  private sdStart: Date;
+  private sdEnd: Date;
+
   dateUnavailable: boolean;
   nistaSelektovano: boolean;
   test = '';
@@ -27,6 +34,9 @@ export class KalendarComponent implements OnInit {
     this.dateUnavailable = false;
     KalendarComponent.s1 = null;
     KalendarComponent.s2 = null;
+  }
+
+  static Update(){
   }
 
   IsToday(dan, mesec, godina){
@@ -139,4 +149,50 @@ export class KalendarComponent implements OnInit {
   GetS1() { return KalendarComponent.s1; }
   GetS2() { return KalendarComponent.s2; }
   public SelectOn(){}
+
+  // Helpers
+  GetNedeljaRezervacije(): void{
+    this.sdStart = new Date(KalendarComponent.sd);
+    let dan = this.sdStart.getDay();
+    //nedelja
+    if (dan == 0) {
+      this.sdStart.setDate(this.sdStart.getDate() - 6);
+    }
+    // ponedeljak
+    if (dan == 1) {
+        // nista
+    }
+    // utorak
+    if (dan == 2) {
+      this.sdStart.setDate(this.sdStart.getDate() - 1)
+    }
+    // sreda
+    if (dan == 3) {
+      this.sdStart.setDate(this.sdStart.getDate() - 2)
+    }
+    // cetvrtak
+    if (dan == 4) {
+      this.sdStart.setDate(this.sdStart.getDate() - 3)
+    }
+    // petak
+    if (dan == 5) {
+      this.sdStart.setDate(this.sdStart.getDate() - 4)
+    }
+    // subota
+    if (dan == 6) {
+      this.sdStart.setDate(this.sdStart.getDate() - 5)
+    }
+    this.sdEnd = new Date(this.sdStart);
+    this.sdEnd.setDate(this.sdEnd.getDate() + 6);
+  }
+  GetMesecRezervacije(): void {
+    this.sdStart = new Date(KalendarComponent.sd);
+    this.sdStart.setDate(1);
+    this.sdEnd = new Date(this.sdStart);
+    let d = new Datum();
+    d.SetDay(this.sdEnd.getDate());
+    d.SetMonth(this.sdEnd.getMonth());
+    d.SetYear(this.sdEnd.getFullYear());
+    this.sdEnd.setDate(this.sdEnd.getDate() + d.danaUMesecu);
+  }
 }

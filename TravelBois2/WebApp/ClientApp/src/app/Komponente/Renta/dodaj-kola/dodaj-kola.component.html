@@ -40,7 +40,7 @@
             <div>
                 <label for="tip">Tip vozila:</label>
                 <select id="tip" formControlName="tip" class="form-control">
-                    <option disabled selected> -- izaberite opciju -- </option>
+                    <option selected disabled > -- izaberite opciju -- </option>
                     <option *ngFor="let t of GetTipovi()">
                         {{t}}
                     </option>
@@ -63,7 +63,7 @@
             <div>
                 <label for="filijala">Filijala:</label>
                 <select id="filijala" formControlName="filijala" class="form-control" [(ngModel)]="filijala" (change)="Change($event.target.value)">
-                    <option disabled selected> -- izaberite opciju -- </option>
+                    <option selected disabled > -- izaberite opciju -- </option>
                     <option *ngFor="let f of filijale; index as i">
                         {{i + 1}}. {{f.adresa}}, {{f.grad}}, {{f.drzava}}
                     </option>

@@ -86,8 +86,6 @@ export class AppComponent {
   onLogOut() {
     localStorage.removeItem('token');
     this.router.navigate(['/pocetna']);
-    if (this.router.url == '/pocetna') {
       window.location.reload();
-    }
   }
 }

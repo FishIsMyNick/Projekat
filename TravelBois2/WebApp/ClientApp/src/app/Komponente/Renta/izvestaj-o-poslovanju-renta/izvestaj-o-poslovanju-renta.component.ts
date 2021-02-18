@@ -35,8 +35,9 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
   brojRezervacija;
 
   danaUMesecu: number;
+  viewPeriodRezervacije: string;
   periodRezervacije: string;
-  selectedDate: Date = new Date();
+  selectedDate: Date;
   invalidDate = false;
 
   //chart
@@ -47,6 +48,7 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
 
   public barChartOptions: ChartOptions = {
     responsive: true,
+    scales: { xAxes: [{}], yAxes: [{}] }
   };
   public barChartLabels: Label[] = this.danLabels;
   public barChartType: ChartType = 'bar';
@@ -61,6 +63,12 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
   constructor(public fb: FormBuilder, private servis: RentService) {}
 
   async ngOnInit() {
+    this.selectedDate = new Date();
+    this.selectedDate.setHours(0);
+    this.selectedDate.setMinutes(0);
+    this.selectedDate.setSeconds(0);
+    this.selectedDate.setMilliseconds(0);
+
     this.prihodi = 0;
     this.nistaSelektovano = false;
     this.currentUser = AppComponent.currentUser as RentACarAdmin;
@@ -78,6 +86,7 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
 
     //chart
     this.MakeMonthLabels(new Date())
+    this.RezervacijeChanged('d');
   }
 
   
@@ -85,6 +94,12 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     let dan = (<HTMLInputElement>document.getElementById('selDan')).value;
     let mesec = (<HTMLInputElement>document.getElementById('selMesec')).value;
     let godina = (<HTMLInputElement>document.getElementById('selGodina')).value;
+
+    if(dan == '' && mesec == '' && godina == ''){
+      this.selectedDate = new Date();
+      this.RezervacijeChanged(this.periodRezervacije);
+      return true;
+    }
 
     let timestamp = Date.parse(mesec + '/' + dan + '/' + godina);
 
@@ -102,17 +117,19 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
       else{
         this.invalidDate = false;
         datum.setDate(Number(dan));
-        this.selectedDate = datum;
+        this.selectedDate = new Date(datum);
+        this.RezervacijeChanged(this.periodRezervacije);
         return true;
       }
     }
   }
-
+  
+  // Radio button raspona pregleda rezervacija menja izgled grafa
   async RezervacijeChanged(event) {
-    let c = event.charAt(0);
+    this.periodRezervacije = event.charAt(0);
 
     this.brojRezervacija = 0;
-    let rezervacije = await this.GetRezervacije(c); // Sve rezervacije pronadjene u izabranom periodu
+    let rezervacije = await this.GetRezervacije(this.periodRezervacije); // Sve rezervacije pronadjene u izabranom periodu
     this.rezervisanaKola = new Array<string>();
     for (let r of rezervacije) {
       this.brojRezervacija++;
@@ -120,38 +137,103 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
         this.rezervisanaKola.push(r.kola);
       }
     }
-
-    if(c == 'd'){
+    // Izabran dan
+    if (this.periodRezervacije == 'd'){
+    let date = new Date(this.selectedDate);
+    let danas = new Date();
+      if (date.getDate() == danas.getDate() 
+        && date.getMonth() == danas.getMonth() 
+        && date.getFullYear() == danas.getFullYear())
+        this.viewPeriodRezervacije = 'danas';
+      else 
+        this.viewPeriodRezervacije = 'ovog dana';
       this.barChartLabels = this.danLabels;
 
-      let data = new Array<any>();
-      for(let i = 0; i < 24; i++){
-        data.concat(0);
-      }
+      let data = new Array<number>(24).fill(0);
+
       rezervacije.forEach(element => {
-        data[this.Random(24) - 1] += 1 
+        if(this.IsOverlapping(new Date(element.od), new Date(element.do), this.selectedDate))
+        data[this.Random(23)] += 1 
       });
-      this.barChartData.concat({
-        data: data
-      })
+      this.barChartData[0].data = data;
     }
-    else if(c == 'n'){
+    // Izabrana nedelja
+    else if(this.periodRezervacije == 'n'){
       this.barChartLabels = this.nedeljaLabels;
 
-      let data = new Array<any>();
-      for(let i = 0; i < 7; i++){
-        data.concat(0);
+      let start = this.GetNedeljaRezervacije(this.selectedDate);
+
+      let data = new Array<number>(7).fill(0);
+
+      let max = new Date(start);
+      max.setDate(max.getDate() + 6)
+
+      let i = 0;
+      for (let s = start; s <= max; s.setDate(s.getDate() + 1), i++){
+        rezervacije.forEach(element => {
+          if(this.IsOverlapping(new Date(element.od) , new Date(element.do), s))
+          data[i]++;
+        });
       }
 
-      rezervacije.forEach(rezervacija => {
-        // TODO: dodati dane u nedelji iz rezervacije
-      });
+      this.barChartData[0].data = data;
     }
+    // Izabran mesec
     else {
       this.MakeMonthLabels(this.selectedDate);
       this.barChartLabels = this.mesecLabels;
+
+      let data = new Array<number>(this.danaUMesecu).fill(0);
+
+      let start = new Date(this.selectedDate);
+      start.setDate(1);
+      let max = new Date(start);
+      max.setDate(this.danaUMesecu);
+
+      let i = 0;
+      for (let s = start; s <= max; s.setDate(s.getDate() + 1), i++){
+        rezervacije.forEach(element => {         
+          if(this.IsOverlapping(new Date(element.od) , new Date(element.do), s))
+          data[i]++;
+        });
+      }
+
+      this.barChartData[0].data = data;
     }
-    this.rezervisanaKola = await this.GetRezervacijeList(c);
+  }
+
+  GetNedeljaRezervacije(date: Date): Date{
+    let start = new Date(date);
+      let dan = date.getDay();
+      //nedelja
+      if (dan == 0) {
+        start.setDate(start.getDate() - 6);
+      }
+      // ponedeljak
+    if (dan == 1) {
+        // nista
+      }
+      // utorak
+      if (dan == 2) {
+        start.setDate(start.getDate() - 1)
+      }
+      // sreda
+      if (dan == 3) {
+        start.setDate(start.getDate() - 2)
+      }
+      // cetvrtak
+      if (dan == 4) {
+        start.setDate(start.getDate() - 3)
+      }
+      // petak
+      if (dan == 5) {
+        start.setDate(start.getDate() - 4)
+      }
+      // subota
+      if (dan == 6) {
+        start.setDate(start.getDate() - 5)
+      }
+      return start;
   }
 
   async GetRezervacijeList(period) {
@@ -167,66 +249,29 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     return list;
   }
   async GetRezervacije(period) {
-    var start, end;
-    let date = this.selectedDate;
+    var start, end : Date;
+    let date = new Date(this.selectedDate);
+    let danas = new Date();
+    console.debug(date, danas)
     if (period == 'd'){
+      if (date.getDate() == danas.getDate() 
+        && date.getMonth() == danas.getMonth() 
+        && date.getFullYear() == danas.getFullYear())
+        this.viewPeriodRezervacije = 'danas';
+      else 
+        this.viewPeriodRezervacije = 'ovog dana';
+
       start = date;
       end = date;
     }
     else if (period == 'n') {
-      this.periodRezervacije = 'ove nedelje';
-      let dan = date.getDay();
-      //nedelja
-      if (dan == 0) {
-        date.setDate(date.getDate() - 6)
-        start = new Date(date);
-        date.setDate(date.getDate() + 6);
-        end = new Date(date);
-      }
-      // ponedeljak
-      if (dan == 1) {
-        start = new Date(date);
-        date.setDate(date.getDate() + 6);
-        end = new Date(date);
-      }
-      // utorak
-      if (dan == 2) {
-        date.setDate(date.getDate() - 1)
-        start = new Date(date);
-        date.setDate(date.getDate() + 6);
-        end = new Date(date);
-      }
-      // sreda
-      if (dan == 3) {
-        date.setDate(date.getDate() - 2)
-        start = new Date(date);
-        date.setDate(date.getDate() + 6);
-        end = new Date(date);
-      }
-      // cetvrtak
-      if (dan == 4) {
-        date.setDate(date.getDate() - 3)
-        start = new Date(date);
-        date.setDate(date.getDate() + 6);
-        end = new Date(date);
-      }
-      // petak
-      if (dan == 5) {
-        date.setDate(date.getDate() - 4)
-        start = new Date(date);
-        date.setDate(date.getDate() + 6);
-        end = new Date(date);
-      }
-      // subota
-      if (dan == 6) {
-        date.setDate(date.getDate() - 5)
-        start = new Date(date);
-        date.setDate(date.getDate() + 6);
-        end = new Date(date);
-      }
+      this.viewPeriodRezervacije = 'ove nedelje';
+      start = this.GetNedeljaRezervacije(date);
+      end = new Date(start);
+      end.setDate(end.getDate() + 6);
     }
     else if (period == 'm') {
-      this.periodRezervacije = 'ovog meseca';
+      this.viewPeriodRezervacije = 'ovog meseca';
       date.setDate(1);
       start = new Date(date);
       date.setMonth(date.getMonth() + 1);
@@ -300,7 +345,10 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     }
     return Math.ceil(Math.abs(start.getTime() - end.getTime()) / (1000 * 3600 * 24));
   }
-  IsOverlapping(range1Start: Date, range1End: Date, range2Start: Date, range2End: Date): boolean{
+  IsOverlapping(range1Start: Date, range1End: Date, range2Start: Date, range2End: Date = null): boolean{
+    if (range2End == null)
+      range2End = range2Start;
+
     if(range1Start <= range2Start && range1End >= range2Start){
       return true;
     }
@@ -337,6 +385,7 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
       this.mesecLabels.concat(i.toString())
     }
   }
+
   CalcDanaUMesecu(date: Date){
     if(date.getMonth() === 1){
       if(date.getFullYear() % 4 === 0){
