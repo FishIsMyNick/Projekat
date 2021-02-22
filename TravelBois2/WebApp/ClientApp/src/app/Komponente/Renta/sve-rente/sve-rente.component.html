@@ -35,6 +35,13 @@
             <hr>
             <h3>Prosecna ocena: {{sr.prosecnaOcena}}</h3>
             <hr>
+            <select (change)="OnFilijalaChanged($event.target.value)">
+                <option selected name="sve">Sve filijale</option>
+                <option *ngFor="let f of filijale; index as i">
+                    {{i + 1}}. {{f.adresa}}, {{f.grad}}, {{f.drzava}}
+                </option>
+            </select>
+            <hr>
             <div style="position: relative; margin: 5px;">
                 <div class="filter-stavka">
                     <input type="text" placeholder="Marka" id="fMarka">

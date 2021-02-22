@@ -17,6 +17,8 @@ namespace WebApp.Models.Misc
 		public string User { get; set; }
 		[Column(TypeName = "nvarchar(40)")]
 		public string Kola { get; set; }
+		[Column(TypeName = "smallint")]
+		public int Filijala { get; set; }
 		[Column(TypeName = "nvarchar(40)")]
 		public string Renta { get; set; }	// FOREIGN KEY
 		[Column(TypeName ="date")]

@@ -148,6 +148,15 @@ export class RentService {
 
     return await this.http.post<any>(this.BaseURI + '/Rent/GetCarsFromRent', formData).toPromise();
   }
+
+  async GetKolaFilijale(rentaID: string, filijalaId: number = -1): Promise<any>{
+    const formData = new FormData();
+    formData.append(rentaID, 'rentaID');
+    formData.append(filijalaId.toString(), 'filijala');
+
+    return await this.http.post<any>(this.BaseURI + '/Rent/GetKolaFilijale', formData).toPromise();
+  }
+
   async GetAllCars(): Promise<any> {
     return await this.http.get(this.BaseURI + '/Rent/GetAllCars').toPromise();
   }
@@ -215,6 +224,7 @@ export class RentService {
                     d2.getMonth() + '/' +
                     d2.getFullYear(), 'do');
     formData.append(k.naziv, 'kola');
+    formData.append(k.filijala.toString(), 'filijala');
     formData.append(k.nazivRente, 'renta');
     formData.append(user, 'user');
     return this.http.post<any>(this.BaseURI + '/Rent/AddReservation', formData)

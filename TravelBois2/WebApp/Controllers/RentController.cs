@@ -362,6 +362,22 @@ namespace WebApp.Controllers
 		}
 
 		[HttpPost]
+		[Route("GetKolaFilijale")]
+		public async Task<ActionResult<List<Kola>>> GetKolaFilijale()
+        {
+			var request = HttpContext.Request.Form.Keys.ToList();
+			string renta = request[0];
+			int filijala = Int32.Parse(request[1]);
+
+			var svaKola = await _context.Kola.ToListAsync();
+			var kolaRente = svaKola.Where(e => e.NazivRente == renta).ToList();
+			if (filijala == -1)
+				return kolaRente;
+			else 
+				return kolaRente.Where(e => e.Filijala == filijala).ToList();
+        }
+
+		[HttpPost]
 		[Route("GetZauzetost")]
 		public async Task<ActionResult<List<Zauzetost>>> GetZauzetost(Kola kola)
 		{
@@ -640,12 +656,14 @@ namespace WebApp.Controllers
 				dok = temp;
 			}
 			string kola = request[2];
-			string rent = request[3];
-			string user = request[4];
+			int filijala = Int32.Parse(request[3]);
+			string rent = request[4];
+			string user = request[5];
 			Zauzetost z = new Zauzetost();
 			z.Do = dok;
 			z.Od = od;
 			z.Kola = kola;
+			z.Filijala = filijala;
 			z.Renta = rent;
 			z.User = user;
 			_context.Zauzetost.Add(z);

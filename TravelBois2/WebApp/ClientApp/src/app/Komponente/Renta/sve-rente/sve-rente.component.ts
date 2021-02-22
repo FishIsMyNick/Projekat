@@ -13,6 +13,7 @@ import { RentService } from 'src/app/shared/rent.service';
 import { OcenaService } from 'src/app/shared/ocena.service';
 import { KalendarComponent } from 'src/app/Helpers/kalendar/kalendar.component';
 import { ToastrService } from 'ngx-toastr';
+import { Filijala } from '../../../entities/objects/filijala';
 
 @Component({
   selector: 'app-rent-a-car',
@@ -28,6 +29,7 @@ export class SveRenteComponent implements OnInit {
   sc: any;
   filtriranaKola: Array<any> = new Array<any>();
   ocena: any;
+  filijale: Array<Filijala>;
 
   SortForm: FormGroup;
   ocene: Array<Ocena>;
@@ -55,8 +57,6 @@ export class SveRenteComponent implements OnInit {
     this.prikaz = RentPrikaz.listaKompanija;
     this.ocene = new Array<Ocena>();
     this.filtriranaKola = new Array<any>();
-    console.debug(this.GetCurrentUserType())
-    console.debug(this.GetCurrentUserType() == 'RegularUser')
 
     var resp = this.service.GetAllRents().subscribe(
       async (res:any) => {
@@ -71,6 +71,27 @@ export class SveRenteComponent implements OnInit {
       }
     )
   }
+
+  async OnFilijalaChanged(name){
+    if(name == 'Sve filijale'){
+      this.kola = await this.service.GetKolaFilijale(this.sr.naziv);
+    }
+    else{
+      name = name.split('.')[0];
+      let f = this.filijale[Number(name) - 1];
+      this.kola = await this.service.GetKolaFilijale(this.sr.naziv, f.id);
+    }
+
+    this.filtriranaKola = new Array<any>();
+    for (let k of this.kola) {
+      if (!k.brzaRezervacija) {
+        this.filtriranaKola.push(k);
+      }
+    }
+    this.filtriranaKola.forEach(element => element.imgURL = 'assets/images/RentACar/Kola/' + element.naziv + '.jpg');
+  }
+
+
   async PrimeniFilter() {
     let marka = (<HTMLInputElement>document.getElementById('fMarka')).value;
     let minGod = (<HTMLInputElement>document.getElementById('minGod')).value;
@@ -124,6 +145,7 @@ export class SveRenteComponent implements OnInit {
         }
       });
     }
+    this.filijale = await this.service.GetFilijale(this.sr.adminID);
 
     this.kola = await this.service.GetCarsFromRent(this.sr.naziv);
     this.filtriranaKola = new Array<any>();

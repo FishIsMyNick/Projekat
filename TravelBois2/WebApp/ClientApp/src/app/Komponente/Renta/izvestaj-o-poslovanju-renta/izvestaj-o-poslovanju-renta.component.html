@@ -15,9 +15,19 @@
                 <h3>Rezervacije vozila:</h3>
                 <input style="width: 30px;" id="selDan">/<input style="width: 30px;" id="selMesec">/<input style="width: 50px;" id="selGodina"><button style="position: relative; left:10px;" (click)="CheckDate()">Pronadji rezervacije</button>
             </div>
+            
+            <br>
+
             <div *ngIf="invalidDate" style="color: red;">Izabrani datum nije validan!</div>
 
             <br>
+
+            <select (change)="OnFilijalaChanged($event.target.value)">
+                <option selected name="sve">Sve filijale</option>
+                <option *ngFor="let f of filijale; index as i">
+                    {{i + 1}}. {{f.adresa}}, {{f.grad}}, {{f.drzava}}
+                </option>
+            </select>
             
             <div style="display: block;">
                 <canvas baseChart 

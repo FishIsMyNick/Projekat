@@ -62,7 +62,7 @@
         <div class="form">
             <div>
                 <label for="filijala">Filijala:</label>
-                <select id="filijala" formControlName="filijala" class="form-control" [(ngModel)]="filijala" (change)="Change($event.target.value)">
+                <select id="filijala" formControlName="filijala" class="form-control" (change)="Change($event.target.value)">
                     <option selected disabled > -- izaberite opciju -- </option>
                     <option *ngFor="let f of filijale; index as i">
                         {{i + 1}}. {{f.adresa}}, {{f.grad}}, {{f.drzava}}
