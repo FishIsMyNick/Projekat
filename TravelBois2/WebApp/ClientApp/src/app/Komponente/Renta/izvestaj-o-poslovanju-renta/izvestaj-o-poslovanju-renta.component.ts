@@ -160,11 +160,16 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
   async UpdateGraph(period: string) {
     let rezervacije = await this.GetRezervacije(this.periodRezervacije);
     let fRezervacije = new Array<any>();
-    rezervacije.forEach(element => {
-      if(element.filijala == this.selectedFilijala.id){
-        fRezervacije.push(element);
-      }
-    });
+    if (this.selectedFilijala == null) {
+      fRezervacije = rezervacije;
+    }
+    else {
+      rezervacije.forEach(element => {
+        if (element.filijala == this.selectedFilijala.id) {
+          fRezervacije.push(element);
+        }
+      });
+    }
 
     // Izabran dan
     if (this.periodRezervacije == 'd'){
@@ -261,7 +266,7 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
       }
     }
     
-    this.UpdateGraph(this.periodRezervacije, rezervacije);
+    this.UpdateGraph(this.periodRezervacije);
   }
 
   GetNedeljaRezervacije(date: Date): Date{

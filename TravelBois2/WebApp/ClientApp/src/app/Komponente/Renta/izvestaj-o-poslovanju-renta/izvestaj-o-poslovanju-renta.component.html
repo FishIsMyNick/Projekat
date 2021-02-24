@@ -4,7 +4,7 @@
         <hr>
         <li><h3>Ocena vozila: </h3>
             <select style="display: inline;" (change)="CarChanged($event.target.selectedOptions[0].innerText)">
-                <option></option>
+                <option disabled selected>Izaberite vozilo</option>
                 <option *ngFor="let car of carNames">{{car}}</option>
             </select> 
             <h5 style="display: inline; margin-left: 7px;" *ngIf="ocenaKola !== 0">: {{ocenaKola}}</h5>
