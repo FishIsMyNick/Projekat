@@ -13,6 +13,7 @@
             <td><img [src]="car.imgURL" height="100px"></td>
             <td><button name="{{car.naziv}}+{{car.nazivRente}}" (click)="EditCar($event.target.name)">Izmeni</button></td>
             <td><button name="{{car.naziv}}+{{car.nazivRente}}" (click)="DeleteCar($event.target.name)">Obrisi</button></td>
+            <td><button name="{{car.naziv}}+{{car.nazivRente}}" (click)="BrzaRezervacija($event.target.name)">Dodaj brzu rezervaciju</button></td>
         </tr>
         </table>
     </form>
@@ -74,4 +75,14 @@
           <button (click)="Save(editKola.naziv)">Sacuvaj</button>
           <button style="margin-left: 200px;" (click)="Nazad()">Nazad</button>
       </div>
+</div>
+
+<div *ngIf="prikaz === 3" class="container">
+    <h2>Dodaj brzu rezervaciju za</h2>
+    <h3>{{kalendarKola.naziv}}:</h3>
+    <kalendar [kola]="kalendarKola"></kalendar>
+    <br>
+    <button (click)="DodajBrzuRezervaciju()">Sacuvaj</button>
+    <br>
+    <label *ngIf="invalidBR">Ne mozete rezervisati protekle dane niti dane koji su vec rezervisani</label>
 </div>

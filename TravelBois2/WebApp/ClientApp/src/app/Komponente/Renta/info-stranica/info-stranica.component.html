@@ -1,23 +1,25 @@
-<h2>Info stranica</h2>
-<br>
-<div>
-    <h5 style="display: inline;">Grad: </h5>
-    <input style="display: inline; position: relative; left: 80px;" id="grad" value="{{renta.grad}}">
+<div class="container">
+    <h2>Info stranica</h2>
+    <br>
+    <div>
+        <h5 style="display: inline;">Grad: </h5>
+        <input style="display: inline; position: relative; left: 80px;" id="grad" value="{{renta.grad}}">
+    </div>
+    <br>
+    <div>
+        <h5 style="display: inline;">Drzava: </h5>
+        <input style="display: inline; position: relative; left: 63px;" id="drzava" value="{{renta.drzava}}">
+    </div>
+    <br>
+    <div>
+        <h5 style="display: inline;">Adresa: </h5>
+        <input style="display: inline; position: relative; left: 63px;" id="adresa" value="{{renta.adresa}}">
+    </div>
+    <br>
+    <div>
+        <h5 style="display: inline; position: absolute; top: 280px;">Opis: </h5>
+        <textarea style="display: inline; position: relative; left: 137px; width: 300px; height: 400px; text-align: start;" id="opis" value="{{renta.opis}}"></textarea>
+    </div>
+    <br>
+    <button style="margin-left: 137px;" (click)="Save()">Sacuvaj</button>
 </div>
-<br>
-<div>
-    <h5 style="display: inline;">Drzava: </h5>
-    <input style="display: inline; position: relative; left: 63px;" id="drzava" value="{{renta.drzava}}">
-</div>
-<br>
-<div>
-    <h5 style="display: inline;">Adresa: </h5>
-    <input style="display: inline; position: relative; left: 63px;" id="adresa" value="{{renta.adresa}}">
-</div>
-<br>
-<div>
-    <h5 style="display: inline; position: absolute; top: 280px;">Opis: </h5>
-    <textarea style="display: inline; position: relative; left: 137px; width: 300px; height: 400px; text-align: start;" id="opis" value="{{renta.opis}}"></textarea>
-</div>
-<br>
-<button style="margin-left: 137px;" (click)="Save()">Sacuvaj</button>

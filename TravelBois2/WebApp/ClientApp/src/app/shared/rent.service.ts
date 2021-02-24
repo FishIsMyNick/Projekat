@@ -215,7 +215,7 @@ export class RentService {
 
     return await this.http.post<any>(this.BaseURI + '/Rent/GetReservations', formData).toPromise();
   }
-  AddReservation(d1: Date, d2: Date, k: any, user): Observable<any> {
+  AddReservation(d1: Date, d2: Date, k: any, user, br: boolean = false): Observable<any> {
     const formData = new FormData();
     formData.append(d1.getDate() + '/' + 
                     d1.getMonth() + '/' +
@@ -227,6 +227,7 @@ export class RentService {
     formData.append(k.filijala.toString(), 'filijala');
     formData.append(k.nazivRente, 'renta');
     formData.append(user, 'user');
+    formData.append(br.toString(), 'br');
     return this.http.post<any>(this.BaseURI + '/Rent/AddReservation', formData)
   }
   async DeleteReservation(id): Promise<any> {

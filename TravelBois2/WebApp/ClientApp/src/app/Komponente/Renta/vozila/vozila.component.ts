@@ -3,13 +3,14 @@ import { User } from 'src/app/entities/users/user/user';
 import { AppComponent } from 'src/app/app.component';
 import { RentACarAdmin } from 'src/app/entities/users/rent-a-car-admin/rent-a-car-admin';
 import { RentService } from 'src/app/shared/rent.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { element } from 'protractor';
 import { Kola } from 'src/app/entities/objects/kola';
 import { TipVozila, VozilaPrikaz, GetStringValues } from '../../../_enums';
 import { ToastrService } from 'ngx-toastr';
 import { Observable, Observer } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
+import { KalendarComponent } from '../../../Helpers/kalendar/kalendar.component';
 
 @Component({
   selector: 'app-vozila',
@@ -23,7 +24,10 @@ export class VozilaComponent implements OnInit {
   editKola: any;
   prikaz: VozilaPrikaz;
 
-  constructor(private servis: RentService, private route: ActivatedRoute, private toastr: ToastrService){}
+  kalendarKola: Kola;
+  invalidBR: boolean = false;
+
+  constructor(private router: Router,  private servis: RentService, private route: ActivatedRoute, private toastr: ToastrService){}
 
   async ngOnInit() {
     this.kola = new Array<any>();
@@ -31,6 +35,8 @@ export class VozilaComponent implements OnInit {
     this.kompanija = this.route.snapshot.paramMap.get('naziv');
     this.dodajKola = '/dodaj-kola/' + this.kompanija;
     this.prikaz = VozilaPrikaz.Katalog;
+
+    this.kalendarKola = new Kola(5, 5, '', '', '', '', 0, 0, 0);
 
     var resp = await this.servis.GetCarsFromAdmin(this.currentUser.userName);
     for(let element of resp) {
@@ -40,7 +46,33 @@ export class VozilaComponent implements OnInit {
       element.imgURL = '/assets/images/RentACar/Kola/' + element.naziv + '.jpg';
       this.kola.push(element)
     }
-    console.debug(this.kola);
+  }
+
+  async BrzaRezervacija(name){
+    let s = name.split('+');
+    this.kalendarKola = await this.servis.GetKola(s[0], s[1]) as Kola;
+    this.kalendarKola.zauzetost = await this.servis.GetZauzetost(this.kalendarKola);
+
+    this.prikaz = 3;
+  }
+  DodajBrzuRezervaciju(){
+    let d1 = KalendarComponent.s1
+    let d2 = KalendarComponent.s2
+    let today = new Date();
+    if(d1 > today && d2 > today){
+      this.servis.AddReservation(d1, d2, this.kalendarKola, this.currentUser.userName, true).subscribe(
+        (res: any) => {
+          this.toastr.success("Uspesno ste napravili brzu rezervaciju!");
+          this.router.navigate(['/pocetna']);
+        },
+        err => {
+          console.debug(err);
+        }
+      )
+    }
+    else{
+      this.toastr.error('Ne mozete praviti rezervacije za protekle dane!');
+    }
   }
 
   EditCar(eventName) { 

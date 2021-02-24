@@ -25,5 +25,7 @@ namespace WebApp.Models.Misc
 		public DateTime Od { get; set; }
 		[Column(TypeName = "date")]
 		public DateTime Do { get; set; }
+		[Column(TypeName = "char(1)")]
+		public bool BrzaRezervacija { get; set; }
 	}
 }

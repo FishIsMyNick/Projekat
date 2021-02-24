@@ -659,6 +659,7 @@ namespace WebApp.Controllers
 			int filijala = Int32.Parse(request[3]);
 			string rent = request[4];
 			string user = request[5];
+			bool br = request[6] == "true" ? true : false;
 			Zauzetost z = new Zauzetost();
 			z.Do = dok;
 			z.Od = od;
@@ -666,6 +667,7 @@ namespace WebApp.Controllers
 			z.Filijala = filijala;
 			z.Renta = rent;
 			z.User = user;
+			z.BrzaRezervacija = br;
 			_context.Zauzetost.Add(z);
 			int rez = await _context.SaveChangesAsync();
 			return rez > 0;
