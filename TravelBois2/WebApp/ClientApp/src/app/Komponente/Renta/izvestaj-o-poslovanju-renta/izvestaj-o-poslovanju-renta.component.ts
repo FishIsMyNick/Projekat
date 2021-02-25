@@ -166,7 +166,8 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     else {
       rezervacije.forEach(element => {
         if (element.filijala == this.selectedFilijala.id) {
-          fRezervacije.push(element);
+          if(element.user != '__BR__')
+            fRezervacije.push(element);
         }
       });
     }
@@ -260,10 +261,11 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     let rezervacije = await this.GetRezervacije(this.periodRezervacije); // Sve rezervacije pronadjene u izabranom periodu
     this.rezervisanaKola = new Array<string>();
     for (let r of rezervacije) {
-      this.brojRezervacija++;
-      if (!this.rezervisanaKola.includes(r.kola)) {
-        this.rezervisanaKola.push(r.kola);
-      }
+      if(r.user != '__BR__')
+        this.brojRezervacija++;
+        if (!this.rezervisanaKola.includes(r.kola)) {
+          this.rezervisanaKola.push(r.kola);
+        }
     }
     
     this.UpdateGraph(this.periodRezervacije);
@@ -351,9 +353,10 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     let ret = new Array<Zauzetost>();
     for (let kola of await this.GetCars()) {
       for (let z of await this.servis.GetZauzetost(kola)) {
-        if (this.IsOverlapping(start, end, new Date(z.od), new Date(z.do))) {
-          ret.push(z);
-        }
+        if(z.user != '__BR__')
+          if (this.IsOverlapping(start, end, new Date(z.od), new Date(z.do))) {
+            ret.push(z);
+          }
       }
     }
     return ret;
@@ -377,10 +380,15 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
       var suma = 0;
       for (let kola of await this.GetCars()) {
         for (let termin of await this.servis.GetZauzetost(kola)) {
-          termin.od = new Date(termin.od);
-          termin.do = new Date(termin.do);
-          if (this.IsOverlapping(start, end, termin.od, termin.do)) {
-            suma += this.GetOverlappingInDays(start, end, termin.od, termin.do) * kola.cena;
+          if (termin.user != '__BR__') {
+            termin.od = new Date(termin.od);
+            termin.do = new Date(termin.do);
+            if (this.IsOverlapping(start, end, termin.od, termin.do)) {
+              if (termin.brzaRezervacija)
+                suma += this.GetOverlappingInDays(start, end, termin.od, termin.do) * kola.cenaBrzeRezervacije;
+              else
+                suma += this.GetOverlappingInDays(start, end, termin.od, termin.do) * kola.cena;
+            }
           }
         }
       }

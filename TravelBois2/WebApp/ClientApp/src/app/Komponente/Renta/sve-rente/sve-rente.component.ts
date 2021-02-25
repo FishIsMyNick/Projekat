@@ -58,18 +58,12 @@ export class SveRenteComponent implements OnInit {
     this.ocene = new Array<Ocena>();
     this.filtriranaKola = new Array<any>();
 
-    var resp = this.service.GetAllRents().subscribe(
-      async (res:any) => {
-        for(let element of res) {
-          element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
-          element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
-          this.rente.push(element)
-        }
-      },
-      (err) =>{
-        console.log(err)
+    var res = await this.service.GetAllRents();
+      for(let element of res) {
+        element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
+        element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
+        this.rente.push(element)
       }
-    )
   }
 
   async OnFilijalaChanged(name){

@@ -416,7 +416,15 @@ namespace WebApp.Controllers
 		{
 			string id = HttpContext.Request.Form.Keys.First();
 			var z = await _context.Zauzetost.FindAsync(id);
-			_context.Remove(z);
+            if (z.BrzaRezervacija)
+            {
+				z.User = "__BR__";
+				_context.Zauzetost.Update(z);
+            }
+            else
+            {
+				_context.Zauzetost.Remove(z);
+            }
 			await _context.SaveChangesAsync();
 			return z;
 		}
@@ -567,10 +575,11 @@ namespace WebApp.Controllers
 			// Da li su kola zauzeta? Ne mogu se obrisati
 			foreach (Zauzetost z in rezervacije)
 			{
-				if (z.Kola == kola.Naziv && z.Renta == kola.NazivRente)
+				if (z.Kola == kola.Naziv && z.Renta == kola.NazivRente && z.Filijala == kola.Filijala)
 				{
-					if(z.Do > DateTime.Now)
-						return -1;
+					if(!(z.BrzaRezervacija && z.User == "__BR__"))
+						if(z.Do > DateTime.Now)
+							return -1;
 				}
 			}
 			// else
@@ -598,6 +607,12 @@ namespace WebApp.Controllers
 						_context.OceneKola.Remove(o);
 					}
 				}
+
+				foreach(Zauzetost z in rezervacije)
+                {
+					if (z.Kola == kola.Naziv && z.Renta == kola.NazivRente && z.Filijala == kola.Filijala)
+						_context.Zauzetost.Remove(z);
+                }
 			}
 			catch(Exception e)
             {
@@ -668,10 +683,26 @@ namespace WebApp.Controllers
 			z.Renta = rent;
 			z.User = user;
 			z.BrzaRezervacija = br;
+			if (br)
+            {
+				z.User = "__BR__";
+            }
 			_context.Zauzetost.Add(z);
 			int rez = await _context.SaveChangesAsync();
 			return rez > 0;
 		}
+
+		[HttpPost]
+		[Route("MakeBR")]
+		public async Task<ActionResult<Zauzetost>> MakeBR()
+        {
+			var request = HttpContext.Request.Form.Keys.ToList();
+			var z = await _context.Zauzetost.FindAsync(request[0]);
+			z.User = request[1];
+			_context.Zauzetost.Update(z);
+			await _context.SaveChangesAsync();
+			return z;
+        }
 
 		[HttpPost]
 		[Route("RentAdminExists")]

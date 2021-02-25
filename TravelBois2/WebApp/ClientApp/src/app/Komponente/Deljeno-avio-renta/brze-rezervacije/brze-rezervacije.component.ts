@@ -22,11 +22,11 @@ export class BrzeRezervacijeComponent implements OnInit {
   letovi: Array<Let>;
   idLetova: Array<number>;
   idBrzihRezervacija: Array<number>;
-  brzeRezervacije: Array<BrzaRezervacija>;
+  brzeRezervacije: Array<any>;
   empty: number;
   kola: Array<any>;
 
-  kolaHeaders = ['Rent-A-Car', 'Marka', 'Model', 'Godiste', 'Broj mesta', 'Tip', 'Cena po danu', 'Od', 'Do', 'Prosecna ocena'];
+  kolaHeaders = ['Rent-A-Car', 'Filijala', 'Marka', 'Model', 'Godiste', 'Broj mesta', 'Tip', 'Cena po danu', 'Od', 'Do', 'Prosecna ocena'];
   kolaData: Array<Array<string>>;
 
 
@@ -38,16 +38,35 @@ export class BrzeRezervacijeComponent implements OnInit {
     this.kolaData = new Array<Array<string>>();
     this.empty = 0;
     this.kola = new Array<any>();
+    this.brzeRezervacije = new Array<any>();
 
     this.ucitajLetove();
     this.ucitajBrzeRezervacije();
 
     let svaKola = await this.rentServis.GetAllCars();
-    for (let k of svaKola) {
-      if (k.brzaRezervacija) {
-        k.prosecnaOcena = await this.GetProsecnaOcena(k);
-        this.kola.push(k);
+    let rente = await this.rentServis.GetAllRents();
+    for(let renta of rente){
+      for(let filijala of await this.rentServis.GetFilijale(renta.adminID)) {
+        for(let k of await this.rentServis.GetKolaFilijale(renta.naziv, filijala.id)) {
+          for(let r of await this.rentServis.GetZauzetost(k)){
+            if (r.brzaRezervacija && r.user == '__BR__') {
+              r.prosecnaOcena = await this.GetProsecnaOcena(k);
+              r.filijala = filijala.adresa + ', ' + filijala.grad + ', ' + filijala.drzava;
+              this.brzeRezervacije.push(r);
+            }
+          }
+        }
       }
+    }
+
+    for(let r of this.brzeRezervacije){
+      var k = await this.rentServis.GetKola(r.kola, r.renta);
+      k.brzaRezervacijaOd = r.od.toString();
+      k.brzaRezervacijaDo = r.do.toString();
+      k.prosecnaOcena = r.prosecnaOcena;
+      k.filijala = r.filijala;
+      k.rezId = r.id;
+      this.kola.push(k);
     }
   }
 
@@ -55,9 +74,15 @@ export class BrzeRezervacijeComponent implements OnInit {
     return await this.rentServis.ProsecnaOcenaKola(kola);
   }
   async Reserve(id) {
-    let naziv = id.split('+');
-    let kola = await this.rentServis.GetKola(naziv[0], naziv[1]);
-    let res = await this.rentServis.AddReservation(new Date(kola.brzaRezervacijaOd), new Date(kola.brzaRezervacijaDo), kola, this.currentUser.userName);
+    let rez = await this.rentServis.MakeBR(id, this.currentUser.userName);
+    if(rez == null){
+      this.toastr.error('Doslo je do greske u pravljenju brze rezervacije');
+    }
+    else{
+      console.debug('napravio rez');
+      this.router.navigate(['/pocetna']);
+      this.toastr.success('Uspesno ste napravili brzu rezervaciju!');
+    }
   }
 
   prikazi() {

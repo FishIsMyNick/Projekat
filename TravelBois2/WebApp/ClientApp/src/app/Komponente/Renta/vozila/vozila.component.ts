@@ -42,7 +42,6 @@ export class VozilaComponent implements OnInit {
     for(let element of resp) {
       let k = new Kola(element.brojMesta, element.godiste, element.naziv.split('-')[0], element.naziv.split('-')[1], element.tipVozila, element.nazivRente, element.cena, element.filijala);
       
-
       element.imgURL = '/assets/images/RentACar/Kola/' + element.naziv + '.jpg';
       this.kola.push(element)
     }
@@ -63,7 +62,7 @@ export class VozilaComponent implements OnInit {
       this.servis.AddReservation(d1, d2, this.kalendarKola, this.currentUser.userName, true).subscribe(
         (res: any) => {
           this.toastr.success("Uspesno ste napravili brzu rezervaciju!");
-          this.router.navigate(['/pocetna']);
+          this.prikaz = VozilaPrikaz.Katalog;
         },
         err => {
           console.debug(err);
@@ -106,7 +105,16 @@ export class VozilaComponent implements OnInit {
     this.toastr.success('Uspesno ste izmenili automobil: ' + ret.naziv.split('-')[0] + ' ' + ret.naziv.split('-')[1] + '!');
     // this.kola = await this.servis.GetCarsFromAdmin(AppComponent.currentUser.userName);
     // this.prikaz = VozilaPrikaz.Katalog;
-    this.ngOnInit();
+    this.kola = new Array<any>();
+    var resp = await this.servis.GetCarsFromAdmin(this.currentUser.userName);
+    for(let element of resp) {
+      let k = new Kola(element.brojMesta, element.godiste, element.naziv.split('-')[0], element.naziv.split('-')[1], element.tipVozila, element.nazivRente, element.cena, element.filijala);
+      
+      element.imgURL = '/assets/images/RentACar/Kola/' + element.naziv + '.jpg';
+      this.kola.push(element)
+    }
+
+    this.prikaz = VozilaPrikaz.Katalog;
   }
 
   async DeleteCar(naziv) {
@@ -114,7 +122,16 @@ export class VozilaComponent implements OnInit {
     let resp: number = await this.servis.DeleteCar(kola);
     if (resp == 0) {
       this.toastr.success('Uspesno ste obrisali kola ' + kola.naziv.split('-')[0] + ' ' + kola.naziv.split('-')[1] + '!');
-      this.ngOnInit();
+      this.kola = new Array<any>();
+    var svaKola = await this.servis.GetCarsFromAdmin(this.currentUser.userName);
+    for(let element of svaKola) {
+      let k = new Kola(element.brojMesta, element.godiste, element.naziv.split('-')[0], element.naziv.split('-')[1], element.tipVozila, element.nazivRente, element.cena, element.filijala);
+      
+      element.imgURL = '/assets/images/RentACar/Kola/' + element.naziv + '.jpg';
+      this.kola.push(element)
+    }
+
+    this.prikaz = VozilaPrikaz.Katalog;
     }
     else if (resp == -1) {
       this.toastr.error('Postoje rezervacije za kola ' + kola.naziv.split('-')[0] + ' ' + kola.naziv.split('-')[1] + '!');

@@ -86,8 +86,8 @@ export class RentService {
 
     return await this.http.post<any>(this.BaseURI + '/Rent/ObrisiFilijalu', formData).toPromise();
   }
-  GetAllRents(){
-    return this.http.get(this.BaseURI + '/Rent/GetAllRents');
+  async GetAllRents(): Promise<any>{
+    return this.http.get(this.BaseURI + '/Rent/GetAllRents').toPromise();
   }
   async GetFilijale(adminID: string): Promise<any>{
     const formData = new FormData();
@@ -229,6 +229,12 @@ export class RentService {
     formData.append(user, 'user');
     formData.append(br.toString(), 'br');
     return this.http.post<any>(this.BaseURI + '/Rent/AddReservation', formData)
+  }
+  async MakeBR(id, username): Promise<any> {
+    const formData = new FormData();
+    formData.append(id, 'id');
+    formData.append(username, 'username');
+    return await this.http.post(this.BaseURI + '/Rent/MakeBR', formData).toPromise()
   }
   async DeleteReservation(id): Promise<any> {
     const fd = new FormData();
