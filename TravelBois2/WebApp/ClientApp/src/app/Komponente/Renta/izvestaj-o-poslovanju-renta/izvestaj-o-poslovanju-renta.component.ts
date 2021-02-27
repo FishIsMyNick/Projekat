@@ -133,6 +133,10 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
       this.RezervacijeChanged(this.periodRezervacije);
       return true;
     }
+    else if(dan == '' || mesec == '' || godina == ''){
+        this.invalidDate = true;
+      return false;
+    }
 
     let timestamp = Date.parse(mesec + '/' + dan + '/' + godina);
 

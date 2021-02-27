@@ -4,14 +4,14 @@ Tipovi korisnika:
 	-pregledaju info o avionskim kompanijama
 	-pregledaju info o letovima
 	-pregledaju info o slobodnim mestima
-	-pregledaju info o rent-a-car servisima
+	-pregledaju info o rent-a-car servisima		OK
 	
-4. admin rente
+4. admin rente	OK
 	-definisu vozila koja su raspoloziva za iznajmljivanje 					OK
 	-definisu cenovnik usluga												OK
-	-dobijaju izvestaje o slobodnim i zauzetim vozilima za odredjen period
+	-dobijaju izvestaje o slobodnim i zauzetim vozilima za odredjen period	OK
 	-dobijaju izvestaje o ocenama korisnika									OK
-	-dobijaju izvestaje o ostvarenom prihodu na 
+	-dobijaju izvestaje o ostvarenom prihodu na 							OK
 	 nedeljnom/mesecnom/godisnjem nivou
 	-uredjuju info stranicu rent-a-car servisa								OK
 	
@@ -24,7 +24,7 @@ Funkcije:
 
 
 2.1 Prikaz informacija neregistrovanim korisnicima
-	-prikaz aviokompanija
+	-prikaz aviokompanija	EH
 		-osnovni podaci
 			-adresa
 			-promo opis
@@ -33,7 +33,7 @@ Funkcije:
 			-mapa sa adresom i destinacijama
 		-pretraga letova po razlicitim parametrima
 			-za svaki let prikaz info o njemu
-	-prikaz rent-a-car servisa
+	-prikaz rent-a-car servisa	
 		-osnovni podaci
 			-adresa
 			-promo opis
@@ -66,31 +66,31 @@ Funkcije:
 			-korisnik ne moze da se prijavi dok ne aktivira nalog
 	-autentifikacija i autorizacija na serverskoj strani 
 	
-2.5 Profil rent-a-car servisa
-	-admin moze da uredjuje profil rente
-		-naziv servisa
-		-adresa
-		-promo opis
-		-cenovnik
-		-spisak vozila
+2.5 Profil rent-a-car servisa	OK
+	-admin moze da uredjuje profil rente									OK
+		-naziv servisa	XX	
+		-adresa			OK
+		-promo opis		OK
+		-cenovnik		OK
+		-spisak vozila	OK
 			-dodaje menja i ulkanja vozila (rezervisano vozilo ne moze se 
-			 ukloniti)
-		-filijale
+			 ukloniti) 
+		-filijale		OK
 			-dodaje menja i uklanja filijale
-	-izvestaj o poslovanju
-		-prosecna ocena servisa
-		-prosecna ocena vozila
-		-grafik rezervisanih vozila na dnevnom/nedeljnom/mesecnom nivou
-		-prihodi servisa u odredjenom periodu
-	-azurira svoje podatke
-	-promeni lozinku
-	-prvi put kad se loguje mora da promeni lozinku
+	-izvestaj o poslovanju													OK
+		-prosecna ocena servisa			OK
+		-prosecna ocena vozila			OK
+		-grafik rezervisanih vozila na dnevnom/nedeljnom/mesecnom nivou	OK
+		-prihodi servisa u odredjenom periodu	OK
+	-azurira svoje podatke	OK
+	-promeni lozinku	OK
+	-prvi put kad se loguje mora da promeni lozinku	OK
 	
 2.8 Postupak rezervacije vozila 
 	1.
-		-registrovan korisnik bira rentu 
-			-iz liste 
-			-pretragom
+		-registrovan korisnik bira rentu 	OK
+			-iz liste 	OK
+			-pretragom	OK
 	2.
 		-unosi datum i mesto preuzimanja vozila
 		-unosi datum i mesto vracanja vozila

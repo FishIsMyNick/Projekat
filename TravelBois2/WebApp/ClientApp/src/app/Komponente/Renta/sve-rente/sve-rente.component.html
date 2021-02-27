@@ -1,5 +1,7 @@
 <!--PRIKAZ SVIH RENTI-->
 <div *ngIf="prikaz === 1">
+        <label style="margin-top: 20px; margin-left:80px;">Pretraga</label>
+        <input style="margin-top: 10px; margin-left:10px;" id="pretraga-kompanija" (change)="PretraziKompanije($event.target.value)">
     <ul class="lista-kompanija">
         <li *ngFor="let renta of rente">
             <div class="kompanija-container">
@@ -30,53 +32,100 @@
         <!-- Podaci o kompaniji i pretraga -->
         <div class="kompanija-container" style="margin: 10px 30px;">
             <h3>{{sr.adresa}}</h3>
-            <hr>
+            <br>
             <h3>{{sr.opis}}</h3>
-            <hr>
+            <br>
             <h3>Prosecna ocena: {{sr.prosecnaOcena}}</h3>
             <hr>
-            <select (change)="OnFilijalaChanged($event.target.value)">
+            <!-- IZBACENA SELEKCIJA FILIJALE 
+                <select (change)="OnFilijalaChanged($event.target.value)">
                 <option selected name="sve">Sve filijale</option>
                 <option *ngFor="let f of filijale; index as i">
                     {{i + 1}}. {{f.adresa}}, {{f.grad}}, {{f.drzava}}
                 </option>
             </select>
-            <hr>
+            <hr> -->
+            <!-- FILTRIRANJE KOLA -->
             <div style="position: relative; margin: 5px;">
+                <h4>Filtriranje</h4>
                 <div class="filter-stavka">
-                    <input type="text" placeholder="Marka" id="fMarka">
-                    <input type="checkbox" id="chkMarka">
+                    Mesto preuzimanja<br>
+                    <select id="mestoOd" class="form-control">
+                        <option *ngFor="let l of lokacijeFilijala" [selected]="l === fMestoOd">{{l}}</option>
+                    </select>
                 </div>
+                <br>
                 <div class="filter-stavka">
-                    <input type="text" placeholder="Najmanje godiste" id="minGod">
-                    <input type="checkbox" id="chkMinGod">
+                    Od:<input type="number" style="width: 45px;" id="selDanOd" value="{{fDatumOd.getDate()}}">/<input type="number" style="width: 45px;" id="selMesecOd" value="{{fDatumOd.getMonth() + 1}}">/<input type="number" style="width: 65px;" id="selGodinaOd" value="{{fDatumOd.getFullYear()}}">
+                    <label *ngIf="invalidDateOd" style="color: red;">Datum nije validan</label>
+                    <label *ngIf="passedDateOd" style="color: red;">Ne mozete praviti rezervacije za protekle dane</label>
                 </div>
+                <br>
+                <br>
                 <div class="filter-stavka">
-                    <input type="text" placeholder="Najvece godiste" id="maxGod">
-                    <input type="checkbox" id="chkMaxGod">
+                    Do:<input type="number" style="width: 45px;" id="selDanDo" value="{{fDatumDo.getDate()}}">/<input type="number" style="width: 45px;" id="selMesecDo" value="{{fDatumDo.getMonth() + 1}}">/<input type="number" style="width: 65px;" id="selGodinaDo" value="{{fDatumDo.getFullYear()}}">
+                    <label *ngIf="invalidDateDo" style="color: red;">Datum nije validan</label>
+                    <label *ngIf="passedDateDo" style="color: red;">Ne mozete praviti rezervacije za protekle dane</label>
+                    <label *ngIf="badDateOrder" style="color: red;">Datum zavrsetka ne moze biti manji od datuma pocetka</label>
                 </div>
+                <br>
+                <br>
                 <div class="filter-stavka">
-                    <input type="text" placeholder="Najmanja cena" id="minCena">
-                    <input type="checkbox" id="chkMinCena">
+                    <label for="tip">Tip vozila:</label>
+                    <select id="tip" class="form-control" style="position: relative; left: 63px;">
+                        <option>Sva</option>
+                        <option *ngFor="let t of GetTipovi()" [selected]="t === fTip">
+                            {{t}}
+                        </option>
+                    </select>
                 </div>
+                <br>
+                <br>
                 <div class="filter-stavka">
-                    <input type="text" placeholder="Najveca cena" id="maxCena">
-                    <input type="checkbox" id="chkMaxCena">
+                    <label for="brPutnika">Broj putnika: </label><input id="brPutnika" type="number" style="width: 50px;" value="{{fBrPutnika}}">
                 </div>
-                <button style="position: absolute; top: 50px; right: 40px;" (click)="PrimeniFilter()">Primeni</button>
+                <br>
+                <br>
+                Cenovni opseg <span style="color: red;">*</span>
+                <br>
+                <div class="filter-stavka">
+                    <input type="number" placeholder="Najmanja cena" value="{{fMinCena}}" id="minCena" style="width: 180px;">
+                </div>
+                <br>
+                <div class="filter-stavka">
+                    <input type="number" placeholder="Najveca cena" value="{{fMaxCena}}" id="maxCena" style="width: 180px;">
+                </div>
+                <br>
+                <br>
+                <button (click)="PrimeniFilter()">Primeni</button>
             </div>
         </div>
     </div>
     <div style="position: absolute; top: 80px; left: 400px;">
         <div class="kompanija-container" style="float: left;">
-            <ul class="kola-container">
+            <h3 *ngIf="filtriranaKola.length === 0">
+                Nema kola koja zadovoljavaju kriterijume
+            </h3>
+            <ul>
                 <li *ngFor="let kola of filtriranaKola">
-                    <button class="kola-slika-blok" (click)="prikaziKola(kola)">
-                        <img [src]="kola.imgURL" class="kola-slika-blok">
-                            <div class="kola-model-text">
-                                {{kola.naziv}}
+                    <div>
+                        <div style="display: inline;">
+                            <div>
+                                <img [src]="kola.imgURL" class="kola-slika-blok">
+                                <button (click)="prikaziKola(kola)" style="position: relative; top: 115px; left: -110px; float:left;">Detaljnije</button>
                             </div>
-                    </button>
+                            <div style="margin-left: 20px;" style="float:left; position: relative; top: -30px; left: 8px;">
+                                Naziv: {{kola.naziv}} <br>
+                                Godiste: {{kola.godiste}} <br>
+                                Broj mesta: {{kola.brojMesta}} <br>
+                                Tip vozila: {{kola.tipVozila}} <br>
+                                Prosecna ocena: {{kola.prosecnaOcena}} <br>
+                                Cena: {{kola.cena}}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div><br><br><br><br><br><br><br><hr></div>
                 </li>
             </ul>
         </div>
