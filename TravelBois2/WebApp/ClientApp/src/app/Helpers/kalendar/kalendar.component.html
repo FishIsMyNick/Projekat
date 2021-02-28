@@ -29,34 +29,41 @@
         <li *ngFor="let dan of ' '.repeat(datum.danUNedelji).split(''), let x = index"></li>
         <!-- nastavak normalnog punjenja grida -->
         <li *ngFor="let dan of ' '.repeat(datum.danaUMesecu).split(''), let x = index">
-            <span *ngIf="IsAvalable(x + 1, datum.mesec, datum.godina); else unavailable">
-                <span class="selected" 
-                *ngIf="IsSelected(x + 1, datum.mesec, datum.godina); else notSelected"
-                (click)="Select(x + 1, datum.mesec, datum.godina)">
+            <span *ngIf="IsPassed(x + 1, datum.mesec, datum.godina); else current">
+                <span class="passed">
                     {{x + 1}}
                 </span>
-                <ng-template #notSelected>
-                    <span class="active" 
-                    *ngIf="IsToday(x + 1, datum.mesec, datum.godina); else notActive"
+            </span>
+            <ng-template #current>
+                <span *ngIf="IsAvalable(x + 1, datum.mesec, datum.godina); else unavailable">
+                    <span class="selected" 
+                    *ngIf="IsSelected(x + 1, datum.mesec, datum.godina); else notSelected"
                     (click)="Select(x + 1, datum.mesec, datum.godina)">
                         {{x + 1}}
                     </span>
-                </ng-template>
-                <ng-template #notActive>
-                    <span (click)="Select(x + 1, datum.mesec, datum.godina)">
-                        {{x + 1}}
-                    </span>
-                </ng-template>
-            </span>
-            <ng-template #unavailable>
-                <span class="occupied">
-                    <span class="active" *ngIf="x + 1 === datum.GetDay() && datum.mesec === datum.today.getMonth() && datum.godina === datum.today.getFullYear(); else notActive">
-                        {{x + 1}}
-                    </span>
+                    <ng-template #notSelected>
+                        <span class="active" 
+                        *ngIf="IsToday(x + 1, datum.mesec, datum.godina); else notActive"
+                        (click)="Select(x + 1, datum.mesec, datum.godina)">
+                            {{x + 1}}
+                        </span>
+                    </ng-template>
                     <ng-template #notActive>
-                        {{x + 1}}
+                        <span (click)="Select(x + 1, datum.mesec, datum.godina)">
+                            {{x + 1}}
+                        </span>
                     </ng-template>
                 </span>
+                <ng-template #unavailable>
+                    <span class="occupied">
+                        <span class="active" *ngIf="x + 1 === datum.GetDay() && datum.mesec === datum.today.getMonth() && datum.godina === datum.today.getFullYear(); else notActive">
+                            {{x + 1}}
+                        </span>
+                        <ng-template #notActive>
+                            {{x + 1}}
+                        </ng-template>
+                    </span>
+                </ng-template>
             </ng-template>
         </li>
     </ul>

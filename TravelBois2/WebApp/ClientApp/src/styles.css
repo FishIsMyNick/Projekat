@@ -646,6 +646,10 @@ div.form label.required:first-child:after{
       color: red;
   }
 
+  .days li .passed {
+    color: blue;
+  }
+
   /*===================================ISTORIJA==============================*/
 
 table {

@@ -121,6 +121,7 @@
                                 Tip vozila: {{kola.tipVozila}} <br>
                                 Prosecna ocena: {{kola.prosecnaOcena}} <br>
                                 Cena: {{kola.cena}}
+                                <!--Cena za sve dane-->
                             </div>
                         </div>
                     </div>
@@ -165,7 +166,7 @@
         </div>
         <!--KALENDAR-->
         <div *ngIf="GetCurrentUserType() !== 'User'">
-            <kalendar [kola]="sc"></kalendar>
+            <kalendar [kola]="sc" [startDate]="startDate"></kalendar>
         </div>
     </div>
 </div>

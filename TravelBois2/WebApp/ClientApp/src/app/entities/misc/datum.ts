@@ -12,7 +12,7 @@ export class Datum implements OnInit{
 
     constructor(datum: Datum = null){
         this.today = new Date();
-        if(datum === null)
+        if(datum == null)
             this.datum = new Date()
         else
             this.datum = new Date(datum.datum);
@@ -40,13 +40,19 @@ export class Datum implements OnInit{
     }
     //Setters
     SetDay(dan: number){
-        this.datum.setDate(dan);
+      this.datum.setDate(dan);
+      this.dan = dan;
+      this.danUNedelji = this.datum.getDay();
     }
     SetMonth(mon: number){
-        this.datum.setMonth(mon);
+      this.datum.setMonth(mon);
+      this.mesec = mon;
+      this.danUNedelji = this.datum.getDay();
     }
     SetYear(god: number){
-        this.datum.setFullYear(god);
+      this.datum.setFullYear(god);
+      this.godina = god;
+      this.danUNedelji = this.datum.getDay();
     }
     //Ostalo
     UvecajMesec(){

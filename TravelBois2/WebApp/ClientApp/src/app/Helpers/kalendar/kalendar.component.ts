@@ -10,6 +10,7 @@ import { TipVozila } from '../../_enums';
 })
 export class KalendarComponent implements OnInit {
   @Input() kola: any;
+  @Input() startDate: any;
 
   datum: Datum;
   static s1: Date;
@@ -21,6 +22,8 @@ export class KalendarComponent implements OnInit {
   private sdStart: Date;
   private sdEnd: Date;
 
+  private today: Date;
+
   dateUnavailable: boolean;
   nistaSelektovano: boolean;
   test = '';
@@ -31,12 +34,24 @@ export class KalendarComponent implements OnInit {
 
   ngOnInit() {
     this.datum = new Datum(this.datum)
+    if (this.startDate != '') {
+      this.datum.SetDay(this.startDate.getDate());
+      this.datum.SetMonth(this.startDate.getMonth());
+      this.datum.SetYear(this.startDate.getFullYear());
+    }
+
     this.dateUnavailable = false;
     KalendarComponent.s1 = null;
     KalendarComponent.s2 = null;
+    this.today = new Date();
+    this.ZeroDate(this.today);
   }
 
   static Update(){
+  }
+  IsPassed(dan, mesec, godina) {
+    let date = new Date(godina, mesec, dan);
+    return date < this.today;
   }
 
   IsToday(dan, mesec, godina){
@@ -107,11 +122,11 @@ export class KalendarComponent implements OnInit {
 
   UmanjiMesec(){
     this.datum.UmanjiMesec();
-    this.ngOnInit();
+    //this.ngOnInit();
   }
   UvecajMesec(){
     this.datum.UvecajMesec();
-    this.ngOnInit();
+    //this.ngOnInit();
   }
 
   Select(dan, mesec, godina) {
@@ -194,5 +209,11 @@ export class KalendarComponent implements OnInit {
     d.SetMonth(this.sdEnd.getMonth());
     d.SetYear(this.sdEnd.getFullYear());
     this.sdEnd.setDate(this.sdEnd.getDate() + d.danaUMesecu);
+  }
+  ZeroDate(date: Date){
+    date.setMilliseconds(0);
+    date.setSeconds(0);
+    date.setMinutes(0);
+    date.setHours(0);
   }
 }

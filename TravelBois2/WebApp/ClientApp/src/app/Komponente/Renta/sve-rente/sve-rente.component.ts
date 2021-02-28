@@ -30,6 +30,7 @@ export class SveRenteComponent implements OnInit {
   filtriranaKola: Array<any> = new Array<any>();
   ocena: any;
   filijale: Array<Filijala>;
+  startDate: any;
 
   SortForm: FormGroup;
   ocene: Array<Ocena>;
@@ -104,6 +105,7 @@ export class SveRenteComponent implements OnInit {
     this.fBrPutnika = 0;
     this.fMinCena = 0;
     this.fMaxCena = 0;
+    this.startDate = '';
   }
 
   async PretraziKompanije(value){
@@ -159,6 +161,8 @@ export class SveRenteComponent implements OnInit {
     this.fBrPutnika = Number((<HTMLInputElement>document.getElementById('brPutnika')).value);
     this.fMinCena = Number((<HTMLInputElement>document.getElementById('minCena')).value);
     this.fMaxCena = Number((<HTMLInputElement>document.getElementById('maxCena')).value);
+
+    this.startDate = this.fDatumOd;
 
     //console.debug(mestoOd, datumOd, mestoDo, datumDo, tip, brPutnika, minCena, maxCena)
     this.Filtriranje();

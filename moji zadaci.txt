@@ -92,11 +92,11 @@ Funkcije:
 			-iz liste 	OK
 			-pretragom	OK
 	2.
-		-unosi datum i mesto preuzimanja vozila
-		-unosi datum i mesto vracanja vozila
-		-tip vozila
-		-broj putnika
-		-OPCIONO cenovni rang
+		-unosi datum i mesto preuzimanja vozila	OK
+		-unosi datum i mesto vracanja vozila	OK
+		-tip vozila								OK
+		-broj putnika							OK
+		-OPCIONO cenovni rang					OK
 	3.
 		-prikaz slobodnih vozila koja zadovoljavaju kriterijume
 		-svaka stavka prikaza ima detalje o vozilu
