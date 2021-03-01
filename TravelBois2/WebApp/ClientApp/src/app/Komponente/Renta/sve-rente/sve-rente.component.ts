@@ -14,7 +14,7 @@ import { OcenaService } from 'src/app/shared/ocena.service';
 import { KalendarComponent } from 'src/app/Helpers/kalendar/kalendar.component';
 import { ToastrService } from 'ngx-toastr';
 import { Filijala } from '../../../entities/objects/filijala';
-import { latLng, tileLayer } from 'leaflet';
+import { latLng, tileLayer, map } from 'leaflet';
 
 @Component({
   selector: 'app-rent-a-car',
@@ -56,6 +56,7 @@ export class SveRenteComponent implements OnInit {
   fMaxCena: number;
   filtrirano: boolean;
 
+  // Mapa
   options = {
     layers: [
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -83,7 +84,6 @@ export class SveRenteComponent implements OnInit {
   constructor(private router: Router, private toastr: ToastrService, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService) { }
 
   async ngOnInit() {
-    
     this.InitFilter();
 
     this.rente = new Array<any>();
@@ -100,11 +100,11 @@ export class SveRenteComponent implements OnInit {
     this.badDateOrder = false;
 
     var res = await this.service.GetAllRents();
-      for(let element of res) {
-        element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
-        element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
-        this.rente.push(element)
-      }
+    for(let element of res) {
+      element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
+      element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
+      this.rente.push(element)
+    }
   }
 
   async InitFilter(){
@@ -414,8 +414,26 @@ export class SveRenteComponent implements OnInit {
     this.filijale.forEach(element => {
       this.lokacijeFilijala.push(element.grad);
     });
-    if(this.fMestoOd == '')
+    if(this.fMestoOd == '' || this.fMestoOd == null)
       this.fMestoOd = this.lokacijeFilijala[0];
+
+    var lok = new Array<any>();
+    this.filijale.forEach(element => {
+      if(element.grad == this.fMestoOd){
+          var geocoder = new google.maps.Geocoder();
+          geocoder.geocode({ 'address': element.adresa }, function (results, status) {
+
+            if (status == google.maps.GeocoderStatus.OK) {
+              var latitude = results[0].geometry.location.lat();
+              var longitude = results[0].geometry.location.lng();
+              lok.push({ latitude, longitude });
+              console.log(latitude, longitude);
+            }
+          });
+      }
+    });
+    
+    // var map = L.map('map').setView([51.505, -0.09], 13);
 
     this.kola = await this.service.GetCarsFromRent(this.sr.naziv);
     this.filtriranaKola = new Array<any>();
