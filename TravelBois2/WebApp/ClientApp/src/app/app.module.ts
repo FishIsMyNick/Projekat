@@ -67,6 +67,7 @@ import { FilijaleComponent } from './Komponente/Renta/filijale/filijale.componen
 import { IzmeniFilijaluComponent } from './Komponente/Renta/izmeni-filijalu/izmeni-filijalu.component';
 
 import { ChartsModule } from 'ng2-charts';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 
 @NgModule({
@@ -132,7 +133,8 @@ import { ChartsModule } from 'ng2-charts';
     TooltipModule.forRoot(),
     ToastrModule.forRoot(),
     FileUploadModule,
-    ChartsModule
+    ChartsModule,
+    LeafletModule
   ],
   providers: [AppComponent, UserService,
     {

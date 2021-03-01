@@ -14,6 +14,7 @@ import { OcenaService } from 'src/app/shared/ocena.service';
 import { KalendarComponent } from 'src/app/Helpers/kalendar/kalendar.component';
 import { ToastrService } from 'ngx-toastr';
 import { Filijala } from '../../../entities/objects/filijala';
+import { latLng, tileLayer } from 'leaflet';
 
 @Component({
   selector: 'app-rent-a-car',
@@ -55,6 +56,16 @@ export class SveRenteComponent implements OnInit {
   fMaxCena: number;
   filtrirano: boolean;
 
+  options = {
+    layers: [
+      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      })
+    ],
+    zoom: 7,
+    center: latLng([ 46.879966, -121.726909 ])
+  };
+
 
   // 
   static sd1: Date = new Date(1970, 1, 1);
@@ -72,8 +83,8 @@ export class SveRenteComponent implements OnInit {
   constructor(private router: Router, private toastr: ToastrService, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService) { }
 
   async ngOnInit() {
+    
     this.InitFilter();
-
 
     this.rente = new Array<any>();
     this.kola = new Array<any>();
@@ -95,6 +106,7 @@ export class SveRenteComponent implements OnInit {
         this.rente.push(element)
       }
   }
+
   async InitFilter(){
     this.filtrirano = false;
     this.today = new Date();
@@ -163,6 +175,8 @@ export class SveRenteComponent implements OnInit {
     this.fMaxCena = Number((<HTMLInputElement>document.getElementById('maxCena')).value);
 
     this.startDate = this.fDatumOd;
+    KalendarComponent.s1 = this.fDatumOd;
+    KalendarComponent.s2 = this.fDatumDo;
 
     //console.debug(mestoOd, datumOd, mestoDo, datumDo, tip, brPutnika, minCena, maxCena)
     this.Filtriranje();

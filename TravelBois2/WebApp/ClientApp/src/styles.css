@@ -516,6 +516,10 @@ div.form label.required:first-child:after{
     display: inline-block;
   }
 
+  .map {
+    width: 400px;
+    height: 350px;
+  }
   
   
   /* Dropdown Content (Hidden by Default) */

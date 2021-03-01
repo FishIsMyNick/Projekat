@@ -41,8 +41,8 @@ export class KalendarComponent implements OnInit {
     }
 
     this.dateUnavailable = false;
-    KalendarComponent.s1 = null;
-    KalendarComponent.s2 = null;
+    // KalendarComponent.s1 = null;
+    // KalendarComponent.s2 = null;
     this.today = new Date();
     this.ZeroDate(this.today);
   }

@@ -82,7 +82,7 @@
                 <br>
                 <br>
                 <div class="filter-stavka">
-                    <label for="brPutnika">Broj putnika: </label><input id="brPutnika" type="number" style="width: 50px;" value="{{fBrPutnika}}">
+                    <label for="brPutnika">Broj putnika:  <span style="color: red;">*</span></label><input id="brPutnika" type="number" style="width: 50px;" value="{{fBrPutnika}}">
                 </div>
                 <br>
                 <br>
@@ -132,6 +132,12 @@
         </div>
         <h3><button (click)="prikaziListu()">Nazad</button>
             <button *ngIf="GetCurrentUserType() === 'RegularUser'"style="float: right;" (click)="Oceni()">Oceni</button></h3>
+    </div>
+    <div style="position: absolute; top: 100px; left: 800px;">
+        <div class="map"
+            leaflet
+            [leafletOptions]="options">
+        </div>
     </div>
 </div>
 
