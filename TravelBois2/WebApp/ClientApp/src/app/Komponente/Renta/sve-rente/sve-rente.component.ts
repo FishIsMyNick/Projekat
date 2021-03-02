@@ -15,6 +15,7 @@ import { KalendarComponent } from 'src/app/Helpers/kalendar/kalendar.component';
 import { ToastrService } from 'ngx-toastr';
 import { Filijala } from '../../../entities/objects/filijala';
 import { latLng, tileLayer, map } from 'leaflet';
+import { MapService } from '../../../shared/map.service';
 
 @Component({
   selector: 'app-rent-a-car',
@@ -31,7 +32,10 @@ export class SveRenteComponent implements OnInit {
   filtriranaKola: Array<any> = new Array<any>();
   ocena: any;
   filijale: Array<Filijala>;
+
+  //kalendar
   startDate: any;
+  settable: boolean;
 
   SortForm: FormGroup;
   ocene: Array<Ocena>;
@@ -81,10 +85,11 @@ export class SveRenteComponent implements OnInit {
 
   testUrl: string = 'assets/images/RentACar/Kompanije/Car-2-Go.jpg';
 
-  constructor(private router: Router, private toastr: ToastrService, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService) { }
+  constructor(private router: Router, private toastr: ToastrService, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService, private mapService: MapService) { }
 
   async ngOnInit() {
     this.InitFilter();
+    this.settable = true;
 
     this.rente = new Array<any>();
     this.kola = new Array<any>();
@@ -280,6 +285,10 @@ export class SveRenteComponent implements OnInit {
             this.filtriranaKola = Array.from(prosla);
           }
         }
+        
+        this.filtriranaKola.forEach(element => {
+          element.cenaRez = element.cena * (((this.fDatumDo.getTime() - this.fDatumOd.getTime()) / 86400000) + 1)
+        });
       }
 
     }
@@ -417,23 +426,15 @@ export class SveRenteComponent implements OnInit {
     if(this.fMestoOd == '' || this.fMestoOd == null)
       this.fMestoOd = this.lokacijeFilijala[0];
 
-    var lok = new Array<any>();
-    this.filijale.forEach(element => {
-      if(element.grad == this.fMestoOd){
-          var geocoder = new google.maps.Geocoder();
-          geocoder.geocode({ 'address': element.adresa }, function (results, status) {
-
-            if (status == google.maps.GeocoderStatus.OK) {
-              var latitude = results[0].geometry.location.lat();
-              var longitude = results[0].geometry.location.lng();
-              lok.push({ latitude, longitude });
-              console.log(latitude, longitude);
-            }
-          });
-      }
-    });
+    // var lok = new Array<any>();
+    // this.filijale.forEach(element => {
+    //   if (element.grad == this.fMestoOd) {
+    //     console.debug(this.fMestoOd)
+    //     this.mapService.GetAddressCoords2(element.adresa + ', ' + element.grad + ', ' + element.drzava)
+    //     console.debug('mapa prosla');
+    //   }
+    // });
     
-    // var map = L.map('map').setView([51.505, -0.09], 13);
 
     this.kola = await this.service.GetCarsFromRent(this.sr.naziv);
     this.filtriranaKola = new Array<any>();
@@ -446,6 +447,7 @@ export class SveRenteComponent implements OnInit {
             break;
           }
         }
+        k.cenaRez = k.cena;
         this.filtriranaKola.push(k);
       }
     }

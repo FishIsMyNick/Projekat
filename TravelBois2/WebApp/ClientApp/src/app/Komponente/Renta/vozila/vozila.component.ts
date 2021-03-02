@@ -25,6 +25,8 @@ export class VozilaComponent implements OnInit {
   prikaz: VozilaPrikaz;
 
   kalendarKola: Kola;
+  kalendarStart: Date;
+  kalendarSettable: boolean;
   invalidBR: boolean = false;
 
   constructor(private router: Router,  private servis: RentService, private route: ActivatedRoute, private toastr: ToastrService){}
@@ -37,6 +39,8 @@ export class VozilaComponent implements OnInit {
     this.prikaz = VozilaPrikaz.Katalog;
 
     this.kalendarKola = new Kola(5, 5, '', '', '', '', 0, 0, 0);
+    this.kalendarStart = new Date();
+    this.kalendarSettable = false;
 
     var resp = await this.servis.GetCarsFromAdmin(this.currentUser.userName);
     for(let element of resp) {

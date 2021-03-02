@@ -26,7 +26,7 @@ export class BrzeRezervacijeComponent implements OnInit {
   empty: number;
   kola: Array<any>;
 
-  kolaHeaders = ['Rent-A-Car', 'Filijala', 'Marka', 'Model', 'Godiste', 'Broj mesta', 'Tip', 'Cena po danu', 'Od', 'Do', 'Prosecna ocena'];
+  kolaHeaders = ['Rent-A-Car', 'Filijala', 'Marka', 'Model', 'Godiste', 'Broj mesta', 'Tip', 'Cena po danu', 'Cena sa popustom', 'Od', 'Do', 'Prosecna ocena'];
   kolaData: Array<Array<string>>;
 
 

@@ -11,6 +11,7 @@ import { TipVozila } from '../../_enums';
 export class KalendarComponent implements OnInit {
   @Input() kola: any;
   @Input() startDate: any;
+  @Input() settable: any;
 
   datum: Datum;
   static s1: Date;
@@ -41,8 +42,10 @@ export class KalendarComponent implements OnInit {
     }
 
     this.dateUnavailable = false;
-    // KalendarComponent.s1 = null;
-    // KalendarComponent.s2 = null;
+    if(!this.settable){
+      KalendarComponent.s1 = null;
+      KalendarComponent.s2 = null;
+    }
     this.today = new Date();
     this.ZeroDate(this.today);
   }

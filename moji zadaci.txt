@@ -23,7 +23,7 @@ Tipovi korisnika:
 Funkcije:
 
 
-2.1 Prikaz informacija neregistrovanim korisnicima
+2.1 Prikaz informacija neregistrovanim korisnicima			OK
 	-prikaz aviokompanija	EH
 		-osnovni podaci
 			-adresa
@@ -33,7 +33,7 @@ Funkcije:
 			-mapa sa adresom i destinacijama
 		-pretraga letova po razlicitim parametrima
 			-za svaki let prikaz info o njemu
-	-prikaz rent-a-car servisa	
+	-prikaz rent-a-car servisa		OK
 		-osnovni podaci
 			-adresa
 			-promo opis
@@ -43,15 +43,15 @@ Funkcije:
 			-pretraga po razlicitim parametrima
 			-za svako vozilo prikaz info o njemu
 			-mapa sa adresom i filijalama
-	-registracija
-	-login
+	-registracija 	OK
+	-login			OK
 	
 2.2 Registracija korisnika i prijavljivanje na sistem
 	-login
-		-email + password
-		-socijalna mreza
+		-email + password	OK
+		-socijalna mreza	NE
 	-registracija
-		-podaci
+		-podaci			OK
 			-email
 			-lozinka
 			-ime
@@ -66,7 +66,7 @@ Funkcije:
 			-korisnik ne moze da se prijavi dok ne aktivira nalog
 	-autentifikacija i autorizacija na serverskoj strani 
 	
-2.5 Profil rent-a-car servisa	OK
+2.5 Profil rent-a-car servisa									OK
 	-admin moze da uredjuje profil rente									OK
 		-naziv servisa	XX	
 		-adresa			OK
@@ -86,7 +86,7 @@ Funkcije:
 	-promeni lozinku	OK
 	-prvi put kad se loguje mora da promeni lozinku	OK
 	
-2.8 Postupak rezervacije vozila 
+2.8 Postupak rezervacije vozila 								OK
 	1.
 		-registrovan korisnik bira rentu 	OK
 			-iz liste 	OK
@@ -98,8 +98,8 @@ Funkcije:
 		-broj putnika							OK
 		-OPCIONO cenovni rang					OK
 	3.
-		-prikaz slobodnih vozila koja zadovoljavaju kriterijume
-		-svaka stavka prikaza ima detalje o vozilu
+		-prikaz slobodnih vozila koja zadovoljavaju kriterijume	OK
+		-svaka stavka prikaza ima detalje o vozilu				OK
 			-naziv
 			-marka 
 			-model 
@@ -109,15 +109,15 @@ Funkcije:
 			-prosecna ocena 
 			-ukupna cena za sve dane
 			
-2.10 Postupak brze rezervacije vozila
-	-prikaz slobodnih vozila koja su na popustu u periodu kad je on na putu
-	-svaka stavka ima info
+2.10 Postupak brze rezervacije vozila									OK
+	-prikaz slobodnih vozila koja su na popustu u periodu kad je on na putu		ONAKO
+	-svaka stavka ima info		OK
 		-vozilo (marka, model)
 		-datum od/do 
 		-originalna cena
 		-cena sa popustom 
 		-iskljucivo pojedinacna rezervacija klikom na dugme
-	-vozila onemogucena za klasicnu rezervaciju u periodu u kom su na brzoj 
+	-vozila onemogucena za klasicnu rezervaciju u periodu u kom su na brzoj 	OK
 	 rezervaciji
 
 		
@@ -130,18 +130,18 @@ Funkcije:
 		-ocena 
 	-odabir vrsi redirekciju na detaljniji prikaz filijale
 	
-2.13 Postupak ocenjivanja 
-	-registrovan korisnik u istoriji rezervacija moze uneti ocenu za
+2.13 Postupak ocenjivanja 														OK
+	-registrovan korisnik u istoriji rezervacija moze uneti ocenu za	
 		-let
 		-aviokompaniju (nakon sletanja aviona)
 		-vozilo 
 		-renta servis (nakon vracanja vozila)
 2.14 Profil administratora sistema
-	-registruju avio kompanije 
-	-registruju admine aviokompanija
-	-registruju rente
-	-registruju admine rente 
-	-glavni admin moze da dodaje druge admine
+	-registruju avio kompanije 	OK
+	-registruju admine aviokompanija		OK
+	-registruju rente						OK
+	-registruju admine rente 				OK
+	-glavni admin moze da dodaje druge admine	
 	-odredjuje nacin odredjivanja popusta na osnovu bonus poena
 	
 

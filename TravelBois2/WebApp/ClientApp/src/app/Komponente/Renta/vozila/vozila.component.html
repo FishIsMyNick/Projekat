@@ -76,11 +76,11 @@
           <button style="margin-left: 200px;" (click)="Nazad()">Nazad</button>
       </div>
 </div>
-
+<!-- BRZE REZERVACIJE -->
 <div *ngIf="prikaz === 3" class="container">
     <h2>Dodaj brzu rezervaciju za</h2>
     <h3>{{kalendarKola.naziv}}:</h3>
-    <kalendar [kola]="kalendarKola"></kalendar>
+    <kalendar [kola]="kalendarKola" [startDate]="kalendarStart" [settable] = "kalendarSettable"></kalendar>
     <br>
     <button (click)="DodajBrzuRezervaciju()">Sacuvaj</button>
     <br>
