@@ -42,6 +42,7 @@ export class PocetnaStranaComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = AppComponent.currentUser;
+    this.userName = this.currentUser.userName;
     if (this.currentUser.tipKorisnika != 'RegularUser' && this.currentUser.tipKorisnika != 'User'){
       if(!this.currentUser.promenioPassword){
         this.router.navigate(['promena-lozinke']);
@@ -50,6 +51,9 @@ export class PocetnaStranaComponent implements OnInit {
     //this.provera();
     this.ucitajAviokompaniju();
     this.ucitajOcene();
+  }
+  IsMainAdmin(){
+    return this.userName == 'admin';
   }
   getType() {
     return AppComponent.currentUser.tipKorisnika;

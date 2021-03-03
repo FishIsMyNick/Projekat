@@ -142,6 +142,7 @@ namespace WebApp.Controllers
                 Name = body.Name,
                 Lastname = body.Lastname,
                 Grad = body.Grad,
+                Drzava = body.Drzava,
                 BrojPasosa = body.BrojPasosa.ToString(),
                 BrojTelefona = body.BrojTelefona.ToString(),
                 PromenioPassword = false,
@@ -150,6 +151,55 @@ namespace WebApp.Controllers
             try
             {
                 var result = await _userManager.CreateAsync(rentAdmin, body.Password);
+                if (result.Errors.Any())
+                {
+                    var test = result.Errors.ToList();
+                    //return BadRequest(new { message = test[0].Description});
+                    return Ok(result);
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        [Route("RegisterAdmin")]
+        //POST: /api/AvioAdmin/Register
+        public async Task<Object> PostAdmin(AdminModel body)
+        {
+            Console.WriteLine("post pozvan");
+            var admin = new Admin()
+            {
+                UserName = body.UserName,
+                Email = body.Email,
+                Name = body.Name,
+                Lastname = body.Lastname,
+                Grad = body.Grad,
+                Drzava = body.Drzava,
+                BrojPasosa = body.BrojPasosa.ToString(),
+                BrojTelefona = body.BrojTelefona.ToString(),
+                PromenioPassword = false,
+                TipKorisnika = body.TipKorisnika
+            };
+            try
+            {
+                var svi = await _userManager.Users.ToListAsync();
+                foreach(var u in svi)
+                {
+                    if (u.Email == admin.Email)
+                    {
+                        IdentityError err = new IdentityError();
+                        err.Code = "DuplicateEmail";
+                        IdentityResult res = new IdentityResult();
+                        res.Errors.Append(err);
+                        return Ok(res);
+                    }
+                }
+                var result = await _userManager.CreateAsync(admin, body.Password);
                 if (result.Errors.Any())
                 {
                     var test = result.Errors.ToList();

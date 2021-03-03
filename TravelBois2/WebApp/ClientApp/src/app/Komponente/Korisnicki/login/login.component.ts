@@ -19,7 +19,9 @@ export class LoginComponent implements OnInit {
 
   userDetails;
 
-  constructor( private service: UserService, private router: Router, private toastr: ToastrService) { }
+  constructor( private service: UserService, 
+              private router: Router, 
+              private toastr: ToastrService) { }
 
   ngOnInit(): void {
     if (localStorage.getItem('token') != null) {
@@ -27,9 +29,8 @@ export class LoginComponent implements OnInit {
     }
   }
   
-  SigninWithGoogle(){
-    this.service.SigninWithGoogle();
-  }
+  
+
 
   onSubmit(form: NgForm) {
     this.service.login(form.value).subscribe(

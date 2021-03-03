@@ -1,0 +1,116 @@
+<div class="container">
+    <h1>Registracija admina Rent-A-Car servisa</h1>
+    <form [formGroup]="service.rentAdminFormModel" (ngSubmit)="onSubmit()">
+      <div class="form">
+        <table>
+            <tr>
+                <td><label>Email:</label></td>
+                <td>
+                    <input type="text" name="Email" formControlName="Email">
+                    
+                </td>
+                <td>
+                    <label *ngIf="service.rentAdminFormModel.get('Email').touched && service.rentAdminFormModel.get('Email').errors?.email">Email nije validan</label>
+                    <label *ngIf="service.rentAdminFormModel.get('Email').touched && service.rentAdminFormModel.get('Email').errors?.required">Email je potreban</label>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Username:</label></td>
+                <td>
+                    <input type="text" name="UserName" formControlName="UserName"> 
+                </td>
+                <td>
+                    <label *ngIf="service.rentAdminFormModel.get('UserName').touched && service.rentAdminFormModel.get('UserName').errors?.required">Username je potreban</label>
+                </td>
+            </tr>
+            <tr>
+                <td>Ime:</td>
+                <td>
+                    <input type="text" name="Name" formControlName="Name"> 
+                </td>
+                <td>
+                  <label *ngIf="service.rentAdminFormModel.get('Name').touched && service.rentAdminFormModel.get('Name').errors?.required">Ime je potrebno</label>
+                </td>
+            </tr>
+            <tr>
+                <td>Prezime:</td>
+                <td>
+                    <input type="text" name="Lastname" formControlName="Lastname"> 
+                </td>
+                <td>
+                  <label *ngIf="service.rentAdminFormModel.get('Lastname').touched && service.rentAdminFormModel.get('Lastname').errors?.required">Prezime je potrebno</label>
+                </td>
+            </tr>
+            <tr>
+                <td>Grad:</td>
+                <td>
+                    <input type="text" name="Grad"  formControlName="Grad"> 
+                </td>
+                <td>
+                  <label *ngIf="service.rentAdminFormModel.get('Grad').touched && service.rentAdminFormModel.get('Grad').errors?.required">Grad je potreban</label>
+
+                </td>
+            </tr>
+            <tr>
+                <td>Drzava:</td>
+                <td>
+                    <input type="text" name="Drzava"  formControlName="Drzava"> 
+                </td>
+                <td>
+                  <label *ngIf="service.rentAdminFormModel.get('Drzava').touched && service.rentAdminFormModel.get('Drzava').errors?.required">Drzava je potrebna</label>
+
+                </td>
+            </tr>
+            <tr>
+                <td>Broj telefona:</td>
+                <td>
+                    <input name="BrojTelefona" formControlName="BrojTelefona">
+                </td>
+                <td>
+                  <label *ngIf="service.rentAdminFormModel.get('BrojTelefona').touched && service.rentAdminFormModel.get('BrojTelefona').errors?.required">Broj telefona je potreban</label>
+
+                </td>
+            </tr>
+            <tr>
+                <td>Broj pasosa:</td>
+                <td>
+                    <input name="BrojPasosa" formControlName="BrojPasosa"> 
+                </td>
+                <td>
+                  <label *ngIf="service.rentAdminFormModel.get('BrojPasosa').touched && service.rentAdminFormModel.get('BrojPasosa').errors?.required">Broj pasosa je potreban</label>
+                </td>
+            </tr>
+            <div formGroupName="Passwords">
+                <tr>
+                    <td><label>Sifra:</label>
+                    <td style="padding-left: 32px">
+                        <input type="password" name="password" formControlName="Password"> 
+                    </td>
+                    <td>
+                        <label *ngIf="service.rentAdminFormModel.get('Passwords.Password').touched && service.rentAdminFormModel.get('Passwords.Password').errors?.required">Sifra je potreban</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label>Potvrdi sifru:</label>
+                    <td style="padding-left: 32px">
+                        <input type="password" name="ConfirmPassword" formControlName="ConfirmPassword"> 
+                    </td>
+                    <td>
+                        <label *ngIf="service.rentAdminFormModel.get('Passwords.ConfirmPassword').touched && service.rentAdminFormModel.get('Passwords.ConfirmPassword').errors?.required">Potvrda sifre je potrebna</label>
+                        <label *ngIf="service.rentAdminFormModel.get('Passwords.ConfirmPassword').touched && service.rentAdminFormModel.get('Passwords.ConfirmPassword').errors?.passwordMismatch">Sifre se ne poklapaju </label>
+                    </td>
+                </tr>
+            </div>
+        </table>
+      </div>
+      <div>
+          <div>
+              <button [disabled]="service.rentAdminFormModel.invalid" class="btn btn-lg btn-block" type="submit">Sacuvaj</button>
+              
+          </div>
+          <div>
+              <button class="btn btn-primary" (click)="onBack()" type="button">Nazad</button>
+          </div>
+      </div>
+    </form>
+</div>

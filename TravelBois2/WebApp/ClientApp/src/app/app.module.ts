@@ -68,6 +68,8 @@ import { IzmeniFilijaluComponent } from './Komponente/Renta/izmeni-filijalu/izme
 
 import { ChartsModule } from 'ng2-charts';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { EmailConfirmationComponent } from './Komponente/Korisnicki/email-confirmation/email-confirmation.component';
+import { RegAdminaComponent } from './Komponente/Admin/reg-admina/reg-admina.component';
 
 
 @NgModule({
@@ -116,7 +118,9 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     DashboardComponent,
     PromenaLozinkeComponent,
     FilijaleComponent,
-    IzmeniFilijaluComponent
+    IzmeniFilijaluComponent,
+    EmailConfirmationComponent,
+    RegAdminaComponent
   ],
   imports: [
     AngularFireAuthModule,

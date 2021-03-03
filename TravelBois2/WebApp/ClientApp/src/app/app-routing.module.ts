@@ -42,6 +42,7 @@ import { DashboardComponent } from './Komponente/Korisnicki/dashboard/dashboard.
 import { PromenaLozinkeComponent } from './Komponente/Korisnicki/promena-lozinke/promena-lozinke.component';
 import { FilijaleComponent } from './Komponente/Renta/filijale/filijale.component';
 import { IzmeniFilijaluComponent } from './Komponente/Renta/izmeni-filijalu/izmeni-filijalu.component';
+import { RegAdminaComponent } from './Komponente/Admin/reg-admina/reg-admina.component';
 
 
 const routes: Routes = [
@@ -86,7 +87,8 @@ const routes: Routes = [
   { path: 'napravi-brze-rezervacije', component: BrzeRezervacijeAdminComponent, canActivate: [AuthGuard] },
   { path: 'let-brza-rezervacija/:id', component: LetBrzaRezervacijaComponent, canActivate: [AuthGuard] },
   { path: 'filijale', component: FilijaleComponent },
-  { path: 'izmeni-filijalu', component: IzmeniFilijaluComponent }
+  { path: 'izmeni-filijalu', component: IzmeniFilijaluComponent },
+  { path: 'regAdmina', component: RegAdminaComponent }
 ];
 
 @NgModule({

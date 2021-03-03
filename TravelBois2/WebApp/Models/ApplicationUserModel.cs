@@ -17,5 +17,8 @@ namespace ServerApp.Models
         public string BrojPasosa { get; set; }
 		public string BrojTelefona { get; set; }
         public string TipKorisnika { get; set; }
+        //public bool Active { get; set; }
+        //public string ActiveToken { get; set; }
+        //public DateTime ActiveExpires { get; set; }
 	}
 }

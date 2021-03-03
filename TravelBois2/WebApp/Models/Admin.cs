@@ -10,6 +10,8 @@ namespace WebApp.Models
 {
 	public class Admin : ApplicationUser
 	{
+		[Column(TypeName = "bit")]
+		public bool PromenioPassword { get; set; }
 
 	}
 }

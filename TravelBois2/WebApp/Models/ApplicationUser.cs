@@ -13,20 +13,39 @@ namespace WebApp.Models
 	{
 		[Column(TypeName ="nvarchar(30)")]
 		public string Name { get; set; }
+
 		[Column(TypeName = "nvarchar(30)")]
 		public string Lastname { get; set; }
+
 		[Column(TypeName = "nvarchar(30)")]
 		public string Grad { get; set; }
+
 		[Column(TypeName = "nvarchar(30)")]
 		public string Drzava { get; set; }
+
 		[Column(TypeName = "nvarchar(20)")]
 		public string BrojPasosa { get; set; }
+
 		[Column(TypeName = "nvarchar(20)")]
 		public string BrojTelefona { get; set; }
+
 		[Column(TypeName = "nvarchar(15)")]
 		public string TipKorisnika { get; set; }
+
 		[Column(TypeName = "bit")]
 		[DefaultValue("null")]
 		public bool PromenioPassword { get; set; }
+
+		//[Column(TypeName = "bit")]
+		//[DefaultValue("null")]
+		//public bool Active { get; set; }
+
+		//[Column(TypeName = "nvarchar(30)")]
+		//public string ActiveToken { get; set; }
+
+		//[Column(TypeName = "date")]
+		//public DateTime ActiveExpires { get; set; }
+
+
 	}
 }

@@ -16,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Filijala } from '../../../entities/objects/filijala';
 import { latLng, tileLayer, map } from 'leaflet';
 import { MapService } from '../../../shared/map.service';
+import { GeoCodingServiceService } from '../../../shared/geo-coding-service.service';
 
 @Component({
   selector: 'app-rent-a-car',
@@ -85,7 +86,7 @@ export class SveRenteComponent implements OnInit {
 
   testUrl: string = 'assets/images/RentACar/Kompanije/Car-2-Go.jpg';
 
-  constructor(private router: Router, private toastr: ToastrService, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService, private mapService: MapService) { }
+  constructor(private router: Router, private toastr: ToastrService, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService, private mapService: MapService, private geoService: GeoCodingServiceService) { }
 
   async ngOnInit() {
     this.InitFilter();
@@ -426,14 +427,22 @@ export class SveRenteComponent implements OnInit {
     if(this.fMestoOd == '' || this.fMestoOd == null)
       this.fMestoOd = this.lokacijeFilijala[0];
 
+    // Mapa
+
     // var lok = new Array<any>();
-    // this.filijale.forEach(element => {
-    //   if (element.grad == this.fMestoOd) {
-    //     console.debug(this.fMestoOd)
-    //     this.mapService.GetAddressCoords2(element.adresa + ', ' + element.grad + ', ' + element.drzava)
-    //     console.debug('mapa prosla');
-    //   }
-    // });
+    this.filijale.forEach(element => {
+      if (element.grad == this.fMestoOd) {
+        var adresa = element.adresa + ', ' + element.grad + ', ' + element.drzava;
+        this.geoService.checkAddress(adresa).subscribe(
+          (res) =>{
+            if(res){
+              var latlon = this.geoService.LatLon(adresa);
+              console.debug(latlon);
+            }
+          }
+        )
+      }
+    });
     
 
     this.kola = await this.service.GetCarsFromRent(this.sr.naziv);

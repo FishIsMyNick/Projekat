@@ -68,6 +68,7 @@ export class UserService {
     }, {validator: this.comparePasswords})
   });
 
+
   OAuthProvider(provider){
     return this.afAuth.signInWithPopup(provider).then ((res) => {
       this.ngZone.run(() => {
@@ -134,6 +135,23 @@ SignOut() {
       TipKorisnika: 'RentAdmin'
     }
     return this.http.post(this.BaseURI + '/ApplicationUser/RegisterRentAdmin', body);
+  }
+  registerAdmin() {
+    console.debug('callback register')
+    var body = {
+      Email: this.rentAdminFormModel.value.Email,
+      UserName: this.rentAdminFormModel.value.UserName,
+      Name: this.rentAdminFormModel.value.Name,
+      Lastname: this.rentAdminFormModel.value.Lastname,
+      Grad: this.rentAdminFormModel.value.Grad,
+      Drzava: this.rentAdminFormModel.value.Drzava,
+      NazivKompanije: this.rentAdminFormModel.value.NazivKompanije,
+      BrojTelefona: this.rentAdminFormModel.value.BrojTelefona,
+      BrojPasosa: this.rentAdminFormModel.value.BrojPasosa,
+      Password: this.rentAdminFormModel.value.Passwords.Password,
+      TipKorisnika: 'Admin'
+    }
+    return this.http.post(this.BaseURI + '/ApplicationUser/RegisterAdmin', body);
   }
 
   registerAvioAdmin() {
