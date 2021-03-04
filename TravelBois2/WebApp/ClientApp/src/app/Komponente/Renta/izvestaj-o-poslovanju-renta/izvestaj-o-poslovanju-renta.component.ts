@@ -12,6 +12,7 @@ import { KalendarComponent } from '../../../Helpers/kalendar/kalendar.component'
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { Filijala } from '../../../entities/objects/filijala';
+import { prependListener } from 'process';
 
 @Component({
   selector: 'app-izvestaj-o-poslovanju-renta',
@@ -26,13 +27,28 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
   carNames: Array<string>;
   date: Date = new Date();
   renta: any;
-  kalendarKola: any;
   ucitaj: boolean = false;
   filijale: Array<Filijala>;
+  today: Date;
 
+  //kalendar
+  kalendarKola: any;
+  kalendarSD: string = '';
+  kalendarSettable: boolean = false;
+
+  //profit
+  pDan: number;
+  pMesec: number;
+  pGodina: number;
   prihodi: number;
-  nistaSelektovano: boolean;
+  pSelectedFilijala: Filijala;
+  pNistaSelektovano: boolean;
+  periodProfita: string;
 
+  //rezervacije
+  rDan: number;
+  rMesec: number;
+  rGodina: number;
   rezervisanaKola;
   brojRezervacija;
 
@@ -42,6 +58,7 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
   selectedDate: Date;
   selectedFilijala: Filijala;
   invalidDate = false;
+  nistaSelektovano: boolean;
 
   //chart
   private danLabels: Label[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24/00'];
@@ -65,11 +82,23 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
   public barChartData: ChartDataSets[] = [
     { data: [], label: 'Rezervisana kola' }
   ];
+  pSelectedDate: Date;
+  pInvalidDate: boolean;
+  pDanaUMesecu: number;
 
 
   constructor(public fb: FormBuilder, private servis: RentService) {}
 
   async ngOnInit() {
+    this.today = new Date();
+    this.ZeroDate(this.today);
+    this.pDan = this.today.getDate();
+    this.pMesec = this.today.getMonth() + 1;
+    this.pGodina = this.today.getFullYear();
+    this.rDan = this.today.getDate();
+    this.rMesec = this.today.getMonth() + 1;
+    this.rGodina = this.today.getFullYear();
+    
     this.selectedDate = new Date();
     this.selectedDate.setHours(0);
     this.selectedDate.setMinutes(0);
@@ -77,9 +106,12 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     this.selectedDate.setMilliseconds(0);
 
     this.selectedFilijala = null;
+    this.pSelectedFilijala = null;
 
     this.prihodi = 0;
+    this.periodProfita = 'n';
     this.nistaSelektovano = false;
+    this.pNistaSelektovano = false;
     this.currentUser = AppComponent.currentUser as RentACarAdmin;
     this.renta = await this.servis.GetRent(this.currentUser.userName);
 
@@ -110,6 +142,87 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     };
   }
 
+  async OnFilijalaProfitChanged(name){
+    if(name == 'Sve filijale'){
+      this.pSelectedFilijala = null;
+    }
+    else{
+      name = name.split('.')[0];
+      this.pSelectedFilijala = this.filijale[Number(name) - 1];
+    }
+  }
+  async ProfitChanged(event) {
+    this.periodProfita = event.charAt(1).toLowerCase();
+  }
+  async IzracunajPrihode() {
+      let suma = 0;
+      let filijale = new Array<Filijala>();
+      let kola = new Array<any>();
+      if(this.pCheckDate()){
+        if(this.pSelectedFilijala == null){
+          filijale = Array.from(this.filijale);
+        }
+        else {
+          filijale.push(this.pSelectedFilijala);
+        }
+
+        for(let f of filijale){
+          for(let k of await this.servis.GetKolaFilijale(this.renta.naziv, f.id)){
+            kola.push(k);
+          }
+        }
+
+        // pocetak i kraj odabranog perioda
+        var start;
+        var end;
+        if(this.periodProfita == 'n'){
+          start = this.GetNedeljaRezervacije(this.pSelectedDate);
+
+          end = new Date(start);
+          end.setDate(end.getDate() + 6)
+        }
+        else if(this.periodProfita == 'm'){
+          start = new Date(this.pSelectedDate);
+          start.setDate(1);
+
+          end = new Date(start);
+          end.setDate(this.pDanaUMesecu);
+        }
+        else{
+          start = new Date(this.pSelectedDate);
+          start.setDate(1);
+          start.setMonth(0);
+                
+          end = new Date(start);
+          end.setDate(31);
+          end.setMonth(11);
+        }
+
+        let rezervacije = new Array<any>();
+        for(let k of kola){
+          for(let r of await this.servis.GetZauzetost(k)){
+            let doDate = new Date(r.do);
+            this.ZeroDate(doDate);
+            doDate.setHours(1);
+            if( doDate < this.today){
+              // Ako je u periodu prihoda dodaj sumi cena*dana
+              let dana = this.GetOverlappingInDays(start, end, new Date(r.od), new Date(r.do));
+              if(r.brzaRezervacija){
+                if(r.user != '__BR__')
+                  suma += dana * k.cenaBrzeRezervacije;
+              }
+              else {
+                suma += dana * k.cena;
+              }
+            }
+          }
+        }
+
+        this.prihodi = suma;
+      }
+
+  }
+
   async OnFilijalaChanged(name){
     if(name == 'Sve filijale'){
       this.selectedFilijala = null;
@@ -121,7 +234,37 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
       await this.UpdateGraph(this.periodRezervacije);
     }
   }
+  pCheckDate(): boolean {
+    let dan = (<HTMLInputElement>document.getElementById('pSelDan')).value;
+    let mesec = (<HTMLInputElement>document.getElementById('pSelMesec')).value;
+    let godina = (<HTMLInputElement>document.getElementById('pSelGodina')).value;
 
+    if(dan == '' || mesec == '' || godina == ''){
+        this.pInvalidDate = true;
+      return false;
+    }
+
+    let timestamp = Date.parse(mesec + '/' + dan + '/' + godina);
+
+    if(isNaN(timestamp)){
+      this.pInvalidDate = true;
+      return false;
+    }
+    else{
+      let datum = new Date(Number(godina), Number(mesec) - 1, 1);
+      this.pCalcDanaUMesecu(datum)
+      if(Number(dan) > this.pDanaUMesecu){
+        this.pInvalidDate = true;
+        return false;
+      }
+      else{
+        this.pInvalidDate = false;
+        datum.setDate(Number(dan));
+        this.pSelectedDate = new Date(datum);
+        return true;
+      }
+    }
+  }
   
   CheckDate(): boolean {
     let dan = (<HTMLInputElement>document.getElementById('selDan')).value;
@@ -366,62 +509,34 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
     return ret;
   }
 
-  async IzracunajPrihode() {
-    if (KalendarComponent.s1 == null && KalendarComponent.s2 == null) {
-      this.nistaSelektovano = true;
-      this.prihodi = 0;
-    }
-    else {
-      this.nistaSelektovano = false;
-      let start = new Date(KalendarComponent.s1);
-      let end = new Date(KalendarComponent.s2);
-      if (KalendarComponent.s1 == null) {
-        start = new Date(KalendarComponent.s2);
-      }
-      if (start == null)
-        start = end;
-      end.setTime(end.getTime() + 100);
-      var suma = 0;
-      for (let kola of await this.GetCars()) {
-        for (let termin of await this.servis.GetZauzetost(kola)) {
-          if (termin.user != '__BR__') {
-            termin.od = new Date(termin.od);
-            termin.do = new Date(termin.do);
-            if (this.IsOverlapping(start, end, termin.od, termin.do)) {
-              if (termin.brzaRezervacija)
-                suma += this.GetOverlappingInDays(start, end, termin.od, termin.do) * kola.cenaBrzeRezervacije;
-              else
-                suma += this.GetOverlappingInDays(start, end, termin.od, termin.do) * kola.cena;
-            }
-          }
+  
+  GetOverlappingInDays(range1Start: Date, range1End: Date, range2Start: Date, range2End: Date): number{
+    if(this.IsOverlapping(range1Start, range1End, range2Start, range2End)){
+      var start: Date;
+      var end: Date;
+
+      if(range1Start.getTime() <= range2Start.getTime()){
+        start = range2Start;
+        if(range1End.getTime() <= range2End.getTime()){
+          end = range1End;
+        }
+        else{
+          end = range2End;
         }
       }
-      this.prihodi = suma;
-    }
-  }
-  GetOverlappingInDays(range1Start: Date, range1End: Date, range2Start: Date, range2End: Date): number{
-    var start: Date;
-    var end: Date;
-
-    if(range1Start.getTime() <= range2Start.getTime()){
-      start = range2Start;
-      if(range1End.getTime() <= range2End.getTime()){
-        end = range1End;
-      }
       else{
-        end = range2End;
+        start = range1Start;
+        if(range1End.getTime() <= range2End.getTime()){
+          end = range1End;
+        }
+        else{
+          end = range2End;
+        }
       }
+      return Math.ceil(Math.abs(start.getTime() - end.getTime()) / (1000 * 3600 * 24)) + 1;
     }
-    else{
-      start = range1Start;
-      if(range1End.getTime() <= range2End.getTime()){
-        end = range1End;
-      }
-      else{
-        end = range2End;
-      }
-    }
-    return Math.ceil(Math.abs(start.getTime() - end.getTime()) / (1000 * 3600 * 24));
+    else 
+    return 0;
   }
   IsOverlapping(range1Start: Date, range1End: Date, range2Start: Date, range2End: Date = null): boolean{
     if (range2End == null)
@@ -490,7 +605,39 @@ export class IzvestajOPoslovanjuRentaComponent implements OnInit {
       }
     }
   }
+  pCalcDanaUMesecu(date: Date){
+    if(date.getMonth() === 1){
+      if(date.getFullYear() % 4 === 0){
+        this.pDanaUMesecu = 29;
+      }
+      else{
+        this.pDanaUMesecu = 28;
+      }
+    }
+    else if(date.getMonth() <= 6){
+      if(date.getMonth() % 2 !== 0){
+        this.pDanaUMesecu = 30;
+      }
+      else{
+        this.pDanaUMesecu = 31;
+      }
+    }
+    else{
+      if(date.getMonth() % 2 !== 0){
+        this.pDanaUMesecu = 31;
+      }
+      else{
+        this.pDanaUMesecu = 30;
+      }
+    }
+  }
   Random(max, min = 1) {
     return Math.round(Math.random() * (max - min) + min);
+  }
+  ZeroDate(date: Date){
+    date.setMilliseconds(0);
+    date.setSeconds(0);
+    date.setMinutes(0);
+    date.setHours(0);
   }
 }

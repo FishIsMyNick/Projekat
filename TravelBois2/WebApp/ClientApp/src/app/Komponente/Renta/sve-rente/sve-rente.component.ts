@@ -105,12 +105,14 @@ export class SveRenteComponent implements OnInit {
     this.passedDateDo = false;
     this.badDateOrder = false;
 
-    var res = await this.service.GetAllRents();
-    for(let element of res) {
+    var rente = await this.service.GetAllRents();
+    for(let element of rente) {
       element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
       element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
       this.rente.push(element)
     }
+
+    
   }
 
   async InitFilter(){
