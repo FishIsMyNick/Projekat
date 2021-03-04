@@ -1,24 +1,66 @@
 <!--PRIKAZ SVIH RENTI-->
-<div *ngIf="prikaz === 1">
-        <label style="margin-top: 20px; margin-left:80px;">Pretraga</label>
-        <input style="margin-top: 10px; margin-left:10px;" id="pretraga-kompanija" (change)="PretraziKompanije($event.target.value)">
-    <ul class="lista-kompanija">
-        <li *ngFor="let renta of rente">
-            <div class="kompanija-container">
-                <div class="kompanija-element">Naziv: {{renta.naziv}}</div>
-                <hr>
-                <div class="kompanija-element">Adresa: {{renta.adresa}}</div>
-                <hr>
-                <div class="kompanija-element">Opis: {{renta.opis}}</div>
-                <hr>
-                <div class="kompanija-element">Prosecna ocena: {{renta.prosecnaOcena}}</div>
-                <img [src]="renta.imgUrl" class="kompanija-slika">
-                <!--Prosecna ocena ovde-->
-                <hr>
-                <button (click)="prikaziRentu(renta.naziv)">Otvori</button>
-            </div>
-        </li>
-    </ul>
+<div *ngIf="prikaz === 1" style="display: inline;">
+    <div style="position: relative; left: 50px; top: 10px;">
+        <ul class="lista-kompanija">
+            <li *ngFor="let renta of filijale">
+                <div class="kompanija-container">
+                    <div class="kompanija-element">Naziv: {{renta.naziv}}</div>
+                    <hr>
+                    <div class="kompanija-element">Adresa: {{renta.adresa}}, {{renta.grad}}, {{renta.drzava}}</div>
+                    <hr>
+                    <div class="kompanija-element">Opis: {{renta.opis}}</div>
+                    <hr>
+                    <div class="kompanija-element">Prosecna ocena: {{renta.prosecnaOcena}}</div>
+                    <img [src]="renta.imgUrl" class="kompanija-slika">
+                    <!--Prosecna ocena ovde-->
+                    <hr>
+                    <button (click)="prikaziRentu(renta.naziv)">Otvori</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div style="position: absolute; top: 30px; left: 10px;">
+        <h3 style="margin-top: 20px; margin-left:15px;">Pretraga</h3>
+        <ul style="list-style: none;">
+            <li>
+                Naziv: <input style="margin-top: 10px; margin-left:32px;" id="pretraga-kompanija" value="{{fNazivKompanije}}">
+            </li>
+            <li>
+                Lokacija:   <select style="margin-top: 10px; margin-left:15px;" id="pretraga-kompanija-lokacija">
+                                <option [selected]="fLokacijaKompanije === 'Sve'">Sve</option>
+                                <option *ngFor="let l of lokacijeFilijala" [selected]="fLokacijaKompanije === l">{{l}}</option>
+                            </select>
+            </li>
+            <li><br></li>
+            <li>
+                Datum od:
+                <div class="filter-stavka">
+                    <input type="number" style="width: 45px;" id="odDan" value="{{fDatumOd.getDate()}}">/<input type="number" style="width: 45px;" id="odMesec" value="{{fDatumOd.getMonth() + 1}}">/<input type="number" style="width: 65px;" id="odGodina" value="{{fDatumOd.getFullYear()}}">
+                </div>
+                <div>
+                     <label *ngIf="fInvalidDateOd" style="color: red;">Datum nije validan</label>
+                     <label *ngIf="fPassedDateOd" style="color: red;">Ne mozete birati protekle dane</label>
+                </div>
+               
+            </li>
+            <li><br></li>
+            <li>
+                Datum do:
+                <div style="display: inline;">
+                    <input type="number" style="width: 45px;" id="doDan" value="{{fDatumDo.getDate()}}">/<input type="number" style="width: 45px;" id="doMesec" value="{{fDatumDo.getMonth() + 1}}">/<input type="number" style="width: 65px;" id="doGodina" value="{{fDatumDo.getFullYear()}}">
+                </div>
+                <div>
+                    <label *ngIf="fInvalidDateDo" style="color: red; display: block;">Datum nije validan</label>
+                    <label *ngIf="fPassedDateDo" style="color: red; display: block;">Ne mozete birati protekle dane</label>
+                    <label *ngIf="fBadDateOrder" style="color: red; display: block;">Datum kraja rezervacije ne moze biti <br> manji od datuma pocetka</label>
+                </div>
+            </li>
+            <li><br></li>
+            <li>
+                <button (click)="PretraziKompanije()">Pretrazi</button>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <!--PRIKAZ ODABRANE RENTE-->

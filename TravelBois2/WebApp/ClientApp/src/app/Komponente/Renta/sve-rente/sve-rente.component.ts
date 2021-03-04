@@ -32,7 +32,7 @@ export class SveRenteComponent implements OnInit {
   sc: any;
   filtriranaKola: Array<any> = new Array<any>();
   ocena: any;
-  filijale: Array<Filijala>;
+  filijale: Array<any>;
 
   //kalendar
   startDate: any;
@@ -86,6 +86,21 @@ export class SveRenteComponent implements OnInit {
 
   testUrl: string = 'assets/images/RentACar/Kompanije/Car-2-Go.jpg';
 
+  //filtriranje kompanija
+  fInvalidDateOd: boolean;
+  fInvalidDateDo: boolean;
+  fPassedDateOd: boolean;
+  fPassedDateDo: boolean;
+  fBadDateOrder: boolean;
+  odDan: number;
+  odMesec: number;
+  odGodina: number;
+  doDan: number;
+  doMesec: number;
+  doGodina: number;
+  fNazivKompanije: string;
+  fLokacijaKompanije: string;
+
   constructor(private router: Router, private toastr: ToastrService, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService, private mapService: MapService, private geoService: GeoCodingServiceService) { }
 
   async ngOnInit() {
@@ -105,6 +120,21 @@ export class SveRenteComponent implements OnInit {
     this.passedDateDo = false;
     this.badDateOrder = false;
 
+    let today = new Date();
+    this.fDatumOd = new Date();
+    this.ZeroDate(this.fDatumOd);
+    this.fDatumDo = new Date();
+    this.ZeroDate(this.fDatumDo);
+    this.odDan = today.getDate();
+    this.odMesec = today.getMonth() + 1;
+    this.odGodina = today.getFullYear();
+    this.doDan = today.getDate();
+    this.doMesec = today.getMonth() + 1;
+    this.doGodina = today.getFullYear();
+    this.fNazivKompanije = '';
+    this.fLokacijaKompanije = 'Sve';
+
+
     var rente = await this.service.GetAllRents();
     for(let element of rente) {
       element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
@@ -112,7 +142,22 @@ export class SveRenteComponent implements OnInit {
       this.rente.push(element)
     }
 
-    
+    this.lokacijeFilijala = new Array<string>();
+    this.filijale = new Array<any>();
+    let fil = new Array<any>();
+    for(let r of rente){
+      for(let f of await this.service.GetFilijale(r.adminID)){
+        f.naziv = r.naziv;
+        f.opis = r.opis;
+        f.imgUrl = r.imgUrl;
+        f.prosecnaOcena = 1;
+        fil.push(f)
+        if(!this.lokacijeFilijala.includes(f.grad)){
+          this.lokacijeFilijala.push(f.grad);
+        }
+      }
+    }
+    this.filijale = Array.from(fil);
   }
 
   async InitFilter(){
@@ -128,26 +173,187 @@ export class SveRenteComponent implements OnInit {
     this.startDate = '';
   }
 
-  async PretraziKompanije(value){
-    if(value == ''){
-      var res = await this.service.GetAllRents();
-      for(let element of res) {
-        element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
-        element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
-        this.rente.push(element)
-      }
+  async PretraziKompanije(returning: boolean = false){
+    let dateOk = true;
+    var dateOd;
+    var dateDo;
+    this.fBadDateOrder = false;
+
+    if(!returning){
+      this.fInvalidDateOd = false;
+      this.fPassedDateOd = false;
+      this.fDatumOd = this.fCheckDate(true);
+
+      this.fPassedDateDo = false;
+      this.fInvalidDateDo = false;
+      this.fDatumDo = this.fCheckDate(false);
+
+      this.fNazivKompanije = (<HTMLInputElement>document.getElementById('pretraga-kompanija')).value;
+      this.fLokacijaKompanije = (<HTMLInputElement>document.getElementById('pretraga-kompanija-lokacija')).value;
     }
-    else {
-      var res = await this.service.GetAllRents();
-      let nRente = new Array<any>();
-      for (let element of res) {
-        if (element.naziv.toLowerCase().includes(value.toLowerCase())) {
+
+    //provera dal je dobar datum
+    if(!(this.fDatumOd))
+      dateOk = false;
+    if(!(this.fDatumDo))
+      dateOk = false;
+    if(this.fDatumDo < this.fDatumOd){
+      dateOk = false;
+      this.fBadDateOrder = true;
+    }
+    if(dateOk){
+      //filter naziva
+      if(this.fNazivKompanije == ''){
+        this.rente = new Array<any>();
+        for(let element of await this.service.GetAllRents()) {
           element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
           element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
-          nRente.push(element);
+          this.rente.push(element)
         }
       }
-      this.rente = nRente;
+      else {
+        let nRente = new Array<any>();
+        for (let element of this.rente) {
+          if (element.naziv.toLowerCase().includes(this.fNazivKompanije.toLowerCase())) {
+            element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
+            element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
+            nRente.push(element);
+          }
+        }
+        this.rente = Array.from(nRente);
+        let filijale = new Array<any>();
+        for(let r of this.rente){
+          for(let f of await this.service.GetFilijale(r.adminID)){
+            f.naziv = r.naziv;
+            f.imgUrl = r.imgUrl;
+            f.opis = r.opis;
+            f.prosecnaOcena = 1;
+            filijale.push(f);
+          }
+        }
+        this.filijale = Array.from(filijale);
+      }
+      //filter lokacije
+      if(this.fLokacijaKompanije == 'Sve'){
+        let filijale = new Array<any>();
+        for(let r of this.rente){
+          for(let f of await this.service.GetFilijale(r.adminID)){
+            f.naziv = r.naziv;
+            f.imgUrl = r.imgUrl;
+            f.opis = r.opis;
+            f.prosecnaOcena = 1;
+            filijale.push(f);
+          }
+        }
+        this.filijale = Array.from(filijale);
+      }
+      else {
+        let filijale = new Array<any>();
+        for (let r of this.rente){
+          for(let f of await this.service.GetFilijale(r.adminID)){
+            if(f.grad == this.fLokacijaKompanije){
+              f.naziv = r.naziv;
+              f.imgUrl = r.imgUrl;
+              f.opis = r.opis;
+              f.prosecnaOcena = 1;
+              filijale.push(f);
+            }
+          }
+        }
+        this.filijale = Array.from(filijale);
+      }
+      //filtriranje po datumu
+      let fil = new Array<any>();
+      for(let f of this.filijale){
+        for(let k of await this.service.GetKolaFilijale(f.naziv, f.id)){
+          let overlapped = false;
+          for(let z of await this.service.GetZauzetost(k)){
+            if(this.IsOverlapping(new Date(z.od), new Date(z.do), this.fDatumOd, this.fDatumDo)){
+              overlapped = true;
+              break;
+            }
+          }
+          if(!overlapped){
+            fil.push(f);
+            break;
+          }
+        }
+      }
+      this.filijale = Array.from(fil);
+    }
+  }
+
+  fCheckDate(od: boolean = false): Date {
+    let today = new Date();
+    this.ZeroDate(today);
+    if(od){
+      this.fInvalidDateOd = false;
+      this.fPassedDateOd = false;
+    }
+    else{
+      this.fInvalidDateDo = false;
+      this.fPassedDateDo = false;
+    }
+
+    var dan;
+    var mesec;
+    var godina;
+
+    if(od){
+      dan = (<HTMLInputElement>document.getElementById('odDan')).value;
+      mesec = (<HTMLInputElement>document.getElementById('odMesec')).value;
+      godina = (<HTMLInputElement>document.getElementById('odGodina')).value;
+    }
+    else {
+      dan = (<HTMLInputElement>document.getElementById('doDan')).value;
+      mesec = (<HTMLInputElement>document.getElementById('doMesec')).value;
+      godina = (<HTMLInputElement>document.getElementById('doGodina')).value;
+    }
+    
+    if(dan == '' || mesec == '' || godina == ''){
+      if(od)
+        this.fInvalidDateOd = true;
+      else
+        this.fInvalidDateDo = true;
+      return null;
+    }
+
+    let timestamp = Date.parse(mesec + '/' + dan + '/' + godina);
+
+    if(isNaN(timestamp)){
+      if(od)
+        this.fInvalidDateOd = true;
+      else
+        this.fInvalidDateDo = true;
+      return null;
+    }
+    else{
+      let datum = new Date(Number(godina), Number(mesec) - 1, 1);
+      let DuM = this.CalcDanaUMesecu(datum);
+      if(Number(dan) > DuM){
+        if(od)
+          this.fInvalidDateOd = true;
+        else
+          this.fInvalidDateDo = true;
+        return null;
+      }
+      else{
+        datum.setDate(Number(dan));
+        if(datum < today){
+          if(od)
+            this.fPassedDateOd = true;
+          else
+            this.fPassedDateDo = true;
+          return null;
+        }
+        else {
+          if(od)
+            this.fInvalidDateOd = false;
+          else
+            this.fInvalidDateDo = false;
+          return new Date(datum);
+        }
+      }
     }
   }
   // NE KORISTI SE
@@ -408,7 +614,24 @@ export class SveRenteComponent implements OnInit {
     console.debug(val)
   }
 
-  prikaziListu(){
+  // Prikazuje listu renti
+  async prikaziListu(){
+    await this.PretraziKompanije(true);
+    // var rente = await this.service.GetAllRents();
+    // for(let element of rente) {
+    //   element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
+    //   element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
+    //   this.rente.push(element)
+    // }
+
+    // this.lokacijeFilijala = new Array<string>();
+    // for(let r of rente){
+    //   for(let f of await this.service.GetFilijale(r.adminID)){
+    //     if(!this.lokacijeFilijala.includes(f.grad)){
+    //       this.lokacijeFilijala.push(f.grad);
+    //     }
+    //   }
+    // }
     this.prikaz = RentPrikaz.listaKompanija;
     this.InitFilter();
   }
