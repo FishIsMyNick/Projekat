@@ -141,8 +141,8 @@ Funkcije:
 	-registruju admine aviokompanija		OK
 	-registruju rente						OK
 	-registruju admine rente 				OK
-	-glavni admin moze da dodaje druge admine	
-	-odredjuje nacin odredjivanja popusta na osnovu bonus poena
+	-glavni admin moze da dodaje druge admine	OK
+	-odredjuje nacin odredjivanja popusta na osnovu bonus poena	
 	
 
 ===========================================

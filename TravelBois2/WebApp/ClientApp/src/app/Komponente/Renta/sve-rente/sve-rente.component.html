@@ -27,7 +27,7 @@
             </li>
             <li>
                 Lokacija:   <select style="margin-top: 10px; margin-left:15px;" id="pretraga-kompanija-lokacija">
-                                <option [selected]="fLokacijaKompanije === 'Sve'">Sve</option>
+                                <option [selected]="fMestoOd === 'Sve'">Sve</option>
                                 <option *ngFor="let l of lokacijeFilijala" [selected]="fLokacijaKompanije === l">{{l}}</option>
                             </select>
             </li>
@@ -93,6 +93,7 @@
                 <div class="filter-stavka">
                     Mesto preuzimanja<br>
                     <select id="mestoOd" class="form-control">
+                        <option [selected]="fMestoOd === 'Sve'">Sve</option>
                         <option *ngFor="let l of lokacijeFilijala" [selected]="l === fMestoOd">{{l}}</option>
                     </select>
                 </div>

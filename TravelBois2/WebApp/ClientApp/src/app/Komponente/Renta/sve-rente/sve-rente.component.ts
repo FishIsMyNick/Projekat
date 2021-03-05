@@ -99,7 +99,6 @@ export class SveRenteComponent implements OnInit {
   doMesec: number;
   doGodina: number;
   fNazivKompanije: string;
-  fLokacijaKompanije: string;
 
   constructor(private router: Router, private toastr: ToastrService, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService, private mapService: MapService, private geoService: GeoCodingServiceService) { }
 
@@ -132,7 +131,7 @@ export class SveRenteComponent implements OnInit {
     this.doMesec = today.getMonth() + 1;
     this.doGodina = today.getFullYear();
     this.fNazivKompanije = '';
-    this.fLokacijaKompanije = 'Sve';
+    this.fMestoOd = 'Sve';
 
 
     var rente = await this.service.GetAllRents();
@@ -189,7 +188,7 @@ export class SveRenteComponent implements OnInit {
       this.fDatumDo = this.fCheckDate(false);
 
       this.fNazivKompanije = (<HTMLInputElement>document.getElementById('pretraga-kompanija')).value;
-      this.fLokacijaKompanije = (<HTMLInputElement>document.getElementById('pretraga-kompanija-lokacija')).value;
+      this.fMestoOd = (<HTMLInputElement>document.getElementById('pretraga-kompanija-lokacija')).value;
     }
 
     //provera dal je dobar datum
@@ -234,7 +233,7 @@ export class SveRenteComponent implements OnInit {
         this.filijale = Array.from(filijale);
       }
       //filter lokacije
-      if(this.fLokacijaKompanije == 'Sve'){
+      if(this.fMestoOd == 'Sve'){
         let filijale = new Array<any>();
         for(let r of this.rente){
           for(let f of await this.service.GetFilijale(r.adminID)){
@@ -251,7 +250,7 @@ export class SveRenteComponent implements OnInit {
         let filijale = new Array<any>();
         for (let r of this.rente){
           for(let f of await this.service.GetFilijale(r.adminID)){
-            if(f.grad == this.fLokacijaKompanije){
+            if(f.grad == this.fMestoOd){
               f.naziv = r.naziv;
               f.imgUrl = r.imgUrl;
               f.opis = r.opis;
@@ -414,7 +413,8 @@ export class SveRenteComponent implements OnInit {
         if(this.fDatumDo < this.fDatumOd){
           this.badDateOrder = true;
         }
-        else{ // Primeni filter
+        else{ 
+          // Primeni filter
           this.filtriranaKola = new Array<any>();
           for(let k of this.kola){
             if(!k.brzaRezervacija){
@@ -431,12 +431,20 @@ export class SveRenteComponent implements OnInit {
           this.filtriranaKola.forEach(element => element.imgURL = 'assets/images/RentACar/Kola/' + element.naziv + '.jpg');
           // do ovde radi
 
-          let prosla = new Array<any>();  // filtriranje grada
-          for (let element of this.filtriranaKola) {
-            if(element.grad == this.fMestoOd)
-              prosla.push(element)
+          // filtriranje grada
+          if(this.fMestoOd == 'Sve'){
+
           }
-          this.filtriranaKola = Array.from(prosla);
+          else {
+            let prosla = new Array<any>();  
+            for (let element of this.filtriranaKola) {
+              if(element.grad == this.fMestoOd)
+                prosla.push(element)
+            }
+            this.filtriranaKola = Array.from(prosla);
+          }
+
+          let prosla = new Array<any>();  
 
           if(this.fBrPutnika > 0){ //filtriranje broja putnika
             prosla = new Array<any>();
@@ -617,33 +625,21 @@ export class SveRenteComponent implements OnInit {
   // Prikazuje listu renti
   async prikaziListu(){
     await this.PretraziKompanije(true);
-    // var rente = await this.service.GetAllRents();
-    // for(let element of rente) {
-    //   element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
-    //   element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
-    //   this.rente.push(element)
-    // }
-
-    // this.lokacijeFilijala = new Array<string>();
-    // for(let r of rente){
-    //   for(let f of await this.service.GetFilijale(r.adminID)){
-    //     if(!this.lokacijeFilijala.includes(f.grad)){
-    //       this.lokacijeFilijala.push(f.grad);
-    //     }
-    //   }
-    // }
+    
     this.prikaz = RentPrikaz.listaKompanija;
     this.InitFilter();
   }
 
   async prikaziRentu(naziv: string = '') {
-    if(naziv !== ''){
+    if(naziv != ''){
       this.rente.forEach(element => {
-        if(element.naziv === naziv){
+        if(element.naziv == naziv){
           this.sr = element;
         }
       });
     }
+
+    //preuzimanje lokacije drugih filijala iste rente
     this.filijale = await this.service.GetFilijale(this.sr.adminID);
     this.lokacijeFilijala = new Array<string>();
     this.filijale.forEach(element => {
@@ -671,27 +667,28 @@ export class SveRenteComponent implements OnInit {
     
 
     this.kola = await this.service.GetCarsFromRent(this.sr.naziv);
-    this.filtriranaKola = new Array<any>();
-    for(let k of this.kola){
-      if(!k.brzaRezervacija){
-        k.prosecnaOcena = await this.service.ProsecnaOcenaKola(k);
-        for(let element of this.filijale) {
-          if(element.id == k.filijala){
-            k.grad = element.grad;
-            break;
-          }
-        }
-        k.cenaRez = k.cena;
-        this.filtriranaKola.push(k);
-      }
-    }
-    this.filtriranaKola.forEach(element => element.imgURL = 'assets/images/RentACar/Kola/' + element.naziv + '.jpg');
-    this.sr.prosecnaOcena = await this.service.ProsecnaOcenaRente(this.sr);
+    // this.filtriranaKola = new Array<any>();
+    // for(let k of this.kola){
+    //   if(!k.brzaRezervacija){
+    //     k.prosecnaOcena = await this.service.ProsecnaOcenaKola(k);
+    //     for(let element of this.filijale) {
+    //       if(element.id == k.filijala){
+    //         k.grad = element.grad;
+    //         break;
+    //       }
+    //     }
+    //     k.cenaRez = k.cena;
+    //     this.filtriranaKola.push(k);
+    //   }
+    // }
+    // this.filtriranaKola.forEach(element => element.imgURL = 'assets/images/RentACar/Kola/' + element.naziv + '.jpg');
 
     this.prikaz = RentPrikaz.kompanija;
-    if(this.filtrirano){
+    //if(this.filtrirano){
       this.Filtriranje();
-    }
+    //}
+
+    this.sr.prosecnaOcena = await this.service.ProsecnaOcenaRente(this.sr);
   }
   async prikaziKola(k){
     this.sc = k;
