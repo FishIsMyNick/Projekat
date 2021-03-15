@@ -1,0 +1,38 @@
+<!--NAVBAR-->
+<div class="toolbar unselectable">
+  <h1 style="float:left; padding: 0px 5px; margin: 0; font-size: 40px;"><span style="color: rgb(248, 132, 0); padding-right: 1px;">T</span>ravel<span style="color: rgb(248, 132, 0); padding-left: 1px; margin-left: 1px;">B</span>ois</h1>
+  <ul>
+      <li routerLink="/pocetna"><img class="ikonica" src="assets/images/TB-ikonica.png"></li>
+  </ul>
+  <ul style="float: left;" *ngIf="getType() !=='Admin' && getType() !=='AvioAdmin' && getType() !== 'RentAdmin'">        
+      <li routerLink="/kontakt">O nama</li>
+      <li *ngIf="getType() === 'RegularUser'" routerLink="/brzeRezervacije">Brze rezervacije</li>
+  </ul>
+<ul>
+
+</ul>
+  <!--Treba da prikaze ovo za neregistrovane korisnike
+      Za registrovane treba samo 'Profil'-->
+  <ul *ngIf="getType() === 'User'" style="float: right;">
+      <li routerLink="/registration">Registracija</li>
+      <li routerLink="/login">Log in</li>
+  </ul>
+  <ul *ngIf="getType() === 'RegularUser'" style="float: right;">
+      <li routerLink="/profilKorisnika">Profil</li>
+      <li (click)="onLogOut()">LogOut</li>
+  </ul>
+  <ul *ngIf="getType() === 'Admin'" style="float: right;">
+      <li routerLink="/profilAdmina">Profil</li>
+      <li (click)="onLogOut()">LogOut</li>
+  </ul>
+  <ul *ngIf="getType() === 'AvioAdmin'" style="float: right;">
+    <li routerLink="/profilAvio">Profil</li>
+    <li (click)="onLogOut()">LogOut</li>
+  </ul>
+  <ul *ngIf="getType() === 'RentAdmin'" style="float: right;">
+      <li routerLink="/profilRenta">Profil</li>
+      <li (click)="onLogOut()">LogOut</li>
+  </ul>
+</div> 
+<!--BODY-->
+<router-outlet></router-outlet>

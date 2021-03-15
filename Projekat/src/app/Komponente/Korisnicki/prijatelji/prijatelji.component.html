@@ -1,0 +1,112 @@
+<div class="container2">
+    <h1>Prijatelji</h1>
+    <br />
+    <div [hidden]="empty != 0">
+      <button class="btn btn-primary" (click)="prikaziPrijatelje()" type="button">Prikazi prijatelje</button>
+    </div>
+    <div [hidden]="empty == 0">
+      Sortiraj prijatelje po:
+      <form [formGroup]="SortForm" style="display: inline-block">
+        <select class="dropbtn" formControlName="selectedKriterijum" (change)="KriterijumChanged($event)">
+          <option></option>
+          <option>ime</option>
+          <option>prezime</option>
+        </select>
+      </form>
+      <br />
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">IME</th>
+            <th scope="col">PREZIME</th>
+            <th scope="col">USERNAME</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngFor="let prijatelj of mojiPrijatelji">
+            <td>{{prijatelj.Ime}}</td>
+            <td>{{prijatelj.Prezime}}</td>
+            <td>{{prijatelj.Username}}</td>
+            <td>
+              <button class="btn-rez" (click)="ukloniPrijatelja(prijatelj.Username)">Ukloni</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+  
+    <div [hidden]="empty1 != 0">
+      <button class="btn btn-primary" (click)="prikaziZahteve()" type="button">Prikazi zahteve</button>
+    </div>
+    <div [hidden]="empty1 == 0">
+      <h3>Zahtevi za prijateljstvo:</h3>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">IME</th>
+            <th scope="col">PREZIME</th>
+            <th scope="col">USERNAME</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngFor="let prijatelj of zahteviZaPrijatelja">
+            <td>{{prijatelj.Ime}}</td>
+            <td>{{prijatelj.Prezime}}</td>
+            <td>{{prijatelj.Username}}</td>
+            <td>
+              <button class="btn-rez" (click)="prihvatiPrijatelja(prijatelj.Username)">Prihvati</button>
+            </td>
+            <td>
+              <button class="btn-rez" (click)="odbijPrijatelja(prijatelj.Username)">Odbij</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br />
+  
+    <div>
+      <h3>Dodaj prijatelja:</h3>
+      <form [formGroup]="prijateljPodaciForm" style="display:inline-block" (ngSubmit)="onSubmit()">
+        <label for="ime">Ime:</label>
+        <input type="text" class="form-control" id="ime" formControlName="ime">
+        <label for="prezime">Prezime:</label>
+        <input type="text" class="form-control" id="prezime" formControlName="prezime">
+        <button type="submit" style="background-color: darkorange;color: white; margin: 3px 0px;opacity: 0.9; border:none; background-color: darkorange;" [disabled]="!prijateljPodaciForm.controls.ime.valid && !prijateljPodaciForm.controls.prezime.valid">Pretrazi</button>
+      </form>
+    </div>
+    <div [hidden]="empty2 != 1">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">IME</th>
+            <th scope="col">PREZIME</th>
+            <th scope="col">USERNAME</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngFor="let prijatelj of prijatelji">
+            <td>{{prijatelj.name}}</td>
+            <td>{{prijatelj.lastname}}</td>
+            <td>{{prijatelj.userName}}</td>
+            <td>
+              <button class="btn-rez" (click)="dodajPrijatelja(prijatelj.userName)">Dodaj</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div [hidden]="empty2 != 2">
+      <h5>{{poruka}}</h5>
+    </div>
+  
+    <br />
+    <div>
+      <button class="btn btn-primary" (click)="onBack()" type="button">Nazad</button>
+    </div>
+  </div>
+  

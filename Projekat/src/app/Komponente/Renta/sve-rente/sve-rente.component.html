@@ -1,0 +1,240 @@
+<!--PRIKAZ SVIH RENTI-->
+<div *ngIf="prikaz === 1" style="display: inline;">
+    <div style="position: relative; left: 50px; top: 10px;">
+        <ul class="lista-kompanija">
+            <li *ngFor="let f of filijale">
+                <div class="kompanija-container">
+                    <div class="kompanija-element">Naziv: {{f.naziv}}</div>
+                    <hr>
+                    <div class="kompanija-element">Adresa: {{f.adresa}}, {{f.grad}}, {{f.drzava}}</div>
+                    <hr>
+                    <div class="kompanija-element">Opis: {{f.opis}}</div>
+                    <hr>
+                    <div class="kompanija-element">Prosecna ocena: {{f.prosecnaOcena}}</div>
+                    <img [src]="f.imgUrl" class="kompanija-slika">
+                    <!--Prosecna ocena ovde-->
+                    <hr>
+                    <button (click)="prikaziFilijalu(f.id)">Otvori</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div style="position: absolute; top: 30px; left: 10px;">
+        <h3 style="margin-top: 20px; margin-left:15px;">Pretraga</h3>
+        <ul style="list-style: none;">
+            <li>
+                Naziv: <input style="margin-top: 10px; margin-left:32px;" id="pretraga-kompanija" value="{{fNazivKompanije}}">
+            </li>
+            <li>
+                Lokacija:   <select style="margin-top: 10px; margin-left:15px;" id="pretraga-kompanija-lokacija">
+                                <option [selected]="fMestoOd === 'Sve'">Sve</option>
+                                <option *ngFor="let l of lokacijeFilijala" [selected]="fMestoOd === l">{{l}}</option>
+                            </select>
+            </li>
+            <li><br></li>
+            <li>
+                Datum od:
+                <div class="filter-stavka">
+                    <input type="number" style="width: 45px;" id="odDan" value="{{fDatumOd.getDate()}}">/<input type="number" style="width: 45px;" id="odMesec" value="{{fDatumOd.getMonth() + 1}}">/<input type="number" style="width: 65px;" id="odGodina" value="{{fDatumOd.getFullYear()}}">
+                </div>
+                <div>
+                     <label *ngIf="fInvalidDateOd" style="color: red;">Datum nije validan</label>
+                     <label *ngIf="fPassedDateOd" style="color: red;">Ne mozete birati protekle dane</label>
+                </div>
+               
+            </li>
+            <li><br></li>
+            <li>
+                Datum do:
+                <div style="display: inline;">
+                    <input type="number" style="width: 45px;" id="doDan" value="{{fDatumDo.getDate()}}">/<input type="number" style="width: 45px;" id="doMesec" value="{{fDatumDo.getMonth() + 1}}">/<input type="number" style="width: 65px;" id="doGodina" value="{{fDatumDo.getFullYear()}}">
+                </div>
+                <div>
+                    <label *ngIf="fInvalidDateDo" style="color: red; display: block;">Datum nije validan</label>
+                    <label *ngIf="fPassedDateDo" style="color: red; display: block;">Ne mozete birati protekle dane</label>
+                    <label *ngIf="fBadDateOrder" style="color: red; display: block;">Datum kraja rezervacije ne moze biti <br> manji od datuma pocetka</label>
+                </div>
+            </li>
+            <li><br></li>
+            <li>
+                <button (click)="PretraziKompanije()">Pretrazi</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!--PRIKAZ ODABRANE RENTE-->
+
+<div *ngIf="prikaz === 2" style="display: inline;">
+    <div style="position: absolute; top: 80px;">
+        <!--Naziv kompanije-->
+        <div class="kompanija-container" style="margin: 0 30px;">
+            <h1>{{sr.naziv}}</h1>
+        </div>
+        <!-- Podaci o kompaniji i pretraga -->
+        <div class="kompanija-container" style="margin: 10px 30px;">
+            <h3>{{sr.adresa}}</h3>
+            <br>
+            <h3>{{sr.opis}}</h3>
+            <br>
+            <h3>Prosecna ocena: {{sr.prosecnaOcena}}</h3>
+            <hr>
+            <!-- IZBACENA SELEKCIJA FILIJALE 
+                <select (change)="OnFilijalaChanged($event.target.value)">
+                <option selected name="sve">Sve filijale</option>
+                <option *ngFor="let f of filijale; index as i">
+                    {{i + 1}}. {{f.adresa}}, {{f.grad}}, {{f.drzava}}
+                </option>
+            </select>
+            <hr> -->
+            <!-- FILTRIRANJE KOLA -->
+            <div style="position: relative; margin: 5px;">
+                <h4>Filtriranje</h4>
+                <div class="filter-stavka">
+                    Mesto preuzimanja<br>
+                    <select id="mestoOd" class="form-control">
+                        <option [selected]="fMestoOd === 'Sve'">Sve</option>
+                        <option *ngFor="let l of lokacijeFilijala" [selected]="l === fMestoOd">{{l}}</option>
+                    </select>
+                </div>
+                <br>
+                <div class="filter-stavka">
+                    Od:<input type="number" style="width: 45px;" id="selDanOd" value="{{fDatumOd.getDate()}}">/<input type="number" style="width: 45px;" id="selMesecOd" value="{{fDatumOd.getMonth() + 1}}">/<input type="number" style="width: 65px;" id="selGodinaOd" value="{{fDatumOd.getFullYear()}}">
+                    <label *ngIf="invalidDateOd" style="color: red;">Datum nije validan</label>
+                    <label *ngIf="passedDateOd" style="color: red;">Ne mozete praviti rezervacije za protekle dane</label>
+                </div>
+                <br>
+                <br>
+                <div class="filter-stavka">
+                    Do:<input type="number" style="width: 45px;" id="selDanDo" value="{{fDatumDo.getDate()}}">/<input type="number" style="width: 45px;" id="selMesecDo" value="{{fDatumDo.getMonth() + 1}}">/<input type="number" style="width: 65px;" id="selGodinaDo" value="{{fDatumDo.getFullYear()}}">
+                    <label *ngIf="invalidDateDo" style="color: red;">Datum nije validan</label>
+                    <label *ngIf="passedDateDo" style="color: red;">Ne mozete praviti rezervacije za protekle dane</label>
+                    <label *ngIf="badDateOrder" style="color: red;">Datum zavrsetka ne moze biti manji od datuma pocetka</label>
+                </div>
+                <br>
+                <br>
+                <div class="filter-stavka">
+                    <label for="tip">Tip vozila:</label>
+                    <select id="tip" class="form-control" style="position: relative; left: 63px;">
+                        <option>Sva</option>
+                        <option *ngFor="let t of GetTipovi()" [selected]="t === fTip">
+                            {{t}}
+                        </option>
+                    </select>
+                </div>
+                <br>
+                <br>
+                <div class="filter-stavka">
+                    <label for="brPutnika">Broj putnika:  <span style="color: red;">*</span></label><input id="brPutnika" type="number" style="width: 50px;" value="{{fBrPutnika}}">
+                </div>
+                <br>
+                <br>
+                Cenovni opseg <span style="color: red;">*</span>
+                <br>
+                <div class="filter-stavka">
+                    <input type="number" placeholder="Najmanja cena" value="{{fMinCena}}" id="minCena" style="width: 180px;">
+                </div>
+                <br>
+                <div class="filter-stavka">
+                    <input type="number" placeholder="Najveca cena" value="{{fMaxCena}}" id="maxCena" style="width: 180px;">
+                </div>
+                <br>
+                <br>
+                <button (click)="PrimeniFilter()">Primeni</button>
+            </div>
+        </div>
+    </div>
+    <div style="position: absolute; top: 80px; left: 400px;">
+        <div class="kompanija-container" style="float: left;">
+            <h3 *ngIf="filtriranaKola.length === 0">
+                Nema kola koja zadovoljavaju kriterijume
+            </h3>
+            <ul>
+                <li *ngFor="let kola of filtriranaKola">
+                    <div>
+                        <div style="display: inline;">
+                            <div>
+                                <img [src]="kola.imgURL" class="kola-slika-blok">
+                                <button (click)="prikaziKola(kola)" style="position: relative; top: 115px; left: -110px; float:left;">Detaljnije</button>
+                            </div>
+                            <div style="margin-left: 20px;" style="float:left; position: relative; top: -30px; left: 8px;">
+                                Naziv: {{kola.naziv}} <br>
+                                Godiste: {{kola.godiste}} <br>
+                                Broj mesta: {{kola.brojMesta}} <br>
+                                Tip vozila: {{kola.tipVozila}} <br>
+                                Prosecna ocena: {{kola.prosecnaOcena}} <br>
+                                Cena: {{kola.cenaRez}}
+                                <!--Cena za sve dane-->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div><br><br><br><br><br><br><br><hr></div>
+                </li>
+            </ul>
+        </div>
+        <h3><button (click)="prikaziListu()">Nazad</button>
+            <button *ngIf="GetCurrentUserType() === 'RegularUser'"style="float: right;" (click)="Oceni()">Oceni</button></h3>
+    </div>
+    <rent-map [adresa]="mapAddress"></rent-map>
+
+    <!-- <div class="map" style="margin: 500px;" id="map" style="height: 400px;"></div> -->
+    <!-- <div class="map"
+        leaflet
+        [leafletOptions]="options">
+    </div> -->
+</div>
+
+<!-- PRIKAZ ZASEBNIH KOLA PO SELEKCIJI -->
+
+<div *ngIf="prikaz === 3">
+    <div style="position: absolute; top: 50px; left: 10px;">
+        <!--SLIKA-->
+        <div class="kompanija-container">
+            <img [src]="sc.imgURL" class="kola-slika">
+        </div>
+        <hr style="margin: 7px 5px;">
+        <!--MARKA I MODEL-->
+        <div class="kompanija-container">
+            <h2>{{sc.marka}}</h2>
+            <h3>{{sc.model}}</h3>
+        </div>
+        <hr>
+        <div style="display: inline; padding: 5px;">
+            <button (click)="prikaziRentu('')">Nazad</button>
+            <button *ngIf="GetCurrentUserType() === 'RegularUser'" style="float: right;" (click)="NapraviRezervaciju()">Napravi rezervaciju</button>
+        </div>
+    </div>
+    <div style="position: absolute; top: 50px; left:380px">
+        <!--DETALJI-->
+        <div class="kompanija-container">
+            <h3>Broj mesta: {{sc.brojMesta}}</h3>
+            <h3>Tip: {{sc.tipVozila}}</h3>
+            <h3>Godiste: {{sc.godiste}}</h3>
+            <h3>Cena po danu: {{sc.cena}}</h3>
+            <h3>Ocena: {{sc.prosecnaOcena}}</h3>
+        </div>
+        <!--KALENDAR-->
+        <div *ngIf="GetCurrentUserType() !== 'User'">
+            <kalendar [kola]="sc" [startDate]="startDate" [settable] = "settable"></kalendar>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="prikaz === 4">
+    <div style="display: inline; margin:30px 30px">
+      {{kolaZaOcenjivanje}}
+      <label for="r1">1</label>
+      <input checked="checked" type="radio" name="ocena" id="r1" value="1" (change)="ocenaChanged($event.target.value)">
+      <label for="r2">2</label>
+      <input type="radio" name="ocena" id="r2" value="2" (change)="ocenaChanged($event.target.value)">
+      <label for="r3">3</label>
+      <input type="radio" name="ocena" id="r3" value="3" (change)="ocenaChanged($event.target.value)">
+      <label for="r4">4</label>
+      <input type="radio" name="ocena" id="r4" value="4" (change)="ocenaChanged($event.target.value)">
+      <label for="r5">5</label>
+      <input type="radio" name="ocena" id="r5" value="5" (change)="ocenaChanged($event.target.value)">
+    </div>
+    <button (click)="PosaljiOcenu()">Oceni</button>
+    <button (click)="Nazad()">Nazad</button>
+</div>

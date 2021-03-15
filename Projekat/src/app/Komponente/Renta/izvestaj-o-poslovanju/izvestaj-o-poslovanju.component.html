@@ -1,0 +1,104 @@
+<div class="izvestaj-container" *ngIf="ucitaj">
+    <ul>
+        <!-- OCENE -->
+        <li><h3>Ocena servisa:</h3> <h4>{{ocenaServisa}}</h4></li>
+        <hr>
+        <li><h3>Ocena vozila: </h3>
+            <select style="display: inline;" (change)="CarChanged($event.target.selectedOptions[0].innerText)">
+                <option disabled selected>Izaberite vozilo</option>
+                <option *ngFor="let car of carNames">{{car}}</option>
+            </select> 
+            <h5 style="display: inline; margin-left: 7px;">: {{ocenaKola}}</h5>
+        </li>
+        <hr>
+        <li>
+            <!-- REZERVACIJE -->
+            <div style="display: inline;">
+                <h3>Rezervacije vozila:</h3>
+                <input type="number" style="width: 45px;" id="selDan" value="{{rDan}}">/<input type="number" style="width: 45px;" id="selMesec" value="{{rMesec}}">/<input type="number" style="width: 65px;" id="selGodina" value="{{rGodina}}"><button style="position: relative; left:10px;" (click)="CheckDate()">Pronadji rezervacije</button>
+            </div>
+            
+            <br>
+
+            <div *ngIf="invalidDate" style="color: red;">Izabrani datum nije validan!</div>
+
+            <br>
+
+            <select (change)="OnFilijalaChanged($event.target.value)">
+                <option selected name="sve">Sve filijale</option>
+                <option *ngFor="let f of filijale; index as i">
+                    {{i + 1}}. {{f.adresa}}, {{f.grad}}, {{f.drzava}}
+                </option>
+            </select>
+            
+            <div style="display: block;">
+                <canvas baseChart 
+                  [datasets]="barChartData"
+                  [labels]="barChartLabels"
+                  [options]="barChartOptions"
+                  [plugins]="barChartPlugins"
+                  [legend]="barChartLegend"
+                  [chartType]="barChartType">
+                </canvas>
+              </div>
+
+            <div style="display: inline;">
+                <input type="radio" id="dan" name="rezervacije" checked (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="dan">Dan</label>
+                <input type="radio" id="nedelja" name="rezervacije" (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="nedelja">Nedelja</label><nbsp></nbsp>
+                <input type="radio" id="mesec" name="rezervacije" (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="mesec">Mesec</label>
+            </div>
+            <div>Imate {{brojRezervacija}} rezervacija {{viewPeriodRezervacije}}.</div>
+            <div *ngIf="brojRezervacija !== 0">Rezervisana vozila:
+                <ul>
+                    <li *ngFor="let kola of rezervisanaKola" style="display: list-item;">
+                        {{kola}}
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</div>
+<!-- PRIHODI -->
+<div style="position: absolute; top: 50px; left:460px">
+    <div class="kompanija-container" style="margin-top: 15px;">
+        <h3>Prihodi:</h3>
+    </div>
+    <hr>
+    <div class="kompanija-container">
+        <ul>
+            <li>
+                Filijala: 
+                <select (change)="OnFilijalaProfitChanged($event.target.value)" style="display: inline;">
+                    <option selected name="sve">Sve filijale</option>
+                    <option *ngFor="let f of filijale; index as i">
+                        {{i + 1}}. {{f.adresa}}, {{f.grad}}, {{f.drzava}}
+                    </option>
+                </select>
+            </li>
+            <li><br></li>
+            <li>
+                <div style="display: inline;">
+                    Datum:
+                    <input type="number" style="width: 45px;" id="pSelDan" value="{{pDan}}">/<input type="number" style="width: 45px;" id="pSelMesec" value="{{pMesec}}">/<input type="number" style="width: 65px;" id="pSelGodina" value="{{pGodina}}">
+                    <br>
+                    <div *ngIf="pInvalidDate" style="color: red;">Izabrani datum nije validan!</div>
+        
+                </div>
+            </li>
+            <li>
+                <div style="display: inline;">
+                    <input type="radio" id="pNedelja" name="profit" checked (change)="ProfitChanged($event.target.id)"><label style="margin-right: 8px;" for="pNedelja">Nedelja</label>
+                    <input type="radio" id="pMesec" name="profit" (change)="ProfitChanged($event.target.id)"><label style="margin-right: 8px;" for="pMesec">Mesec</label>&nbsp
+                    <input type="radio" id="pGodina" name="profit" (change)="ProfitChanged($event.target.id)"><label style="margin-right: 8px;" for="pGodina">Godina</label>
+                </div>
+            </li>
+            <li>
+                <div style="margin-top: 7px">
+                    <button (click)="IzracunajPrihode()" style="display: inline">Izracunaj</button><input disabled id="prihodi" style="display: inline; margin-left: 8px;" value="{{prihodi}}">
+                    <div *ngIf="pNistaSelektovano" style="color: red;">Ni jedan datum nije selektovan!</div>
+                </div>
+            </li>
+        </ul>
+        
+    </div>
+</div>

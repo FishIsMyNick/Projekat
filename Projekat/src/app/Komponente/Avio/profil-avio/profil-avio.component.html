@@ -1,0 +1,54 @@
+<div class="container" >
+    <div class="container">
+      <h1>Podaci aviokompanije</h1>
+      <form [formGroup]="avioPodaciForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label for="naziv">Naziv:</label>
+            <input readonly type="text" id="naziv" class="form-control" formControlName="naziv">
+            <div class="alert alert-danger" *ngIf="avioPodaciForm.controls.naziv.invalid && (avioPodaciForm.controls.naziv.dirty || avioPodaciForm.controls.naziv.touched)">
+              Unesite naziv
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label for="adresa">Adresa:</label>
+            <input type="text" id="adresa" class="form-control" formControlName="adresa">
+            <div class="alert alert-danger" *ngIf="avioPodaciForm.controls.adresa.invalid && (avioPodaciForm.controls.adresa.dirty || avioPodaciForm.controls.adresa.touched)">
+              Unesite adresu
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label for="grad">Grad:</label>
+            <input type="text" id="grad" class="form-control" formControlName="grad" >
+            <div class="alert alert-danger" *ngIf="avioPodaciForm.controls.grad.invalid && (avioPodaciForm.controls.grad.dirty || avioPodaciForm.controls.grad.touched)">
+              Unesite grad
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <label for="opis">Opis:</label>
+            <input type="text" id="opis" class="form-control" formControlName="opis" style="width: 350px" >
+            <div class="alert alert-danger" *ngIf="avioPodaciForm.controls.opis.invalid && (avioPodaciForm.controls.opis.dirty || avioPodaciForm.controls.opis.touched)">
+              Unesite opis
+            </div>
+          </div>
+        </div>
+        <div>
+          <div>
+            <button [disabled]="!avioPodaciForm.valid" class="btn btn-success" type="submit">Izmeni</button>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-primary" (click)="onBack()" type="button">Nazad</button>
+        </div>
+  
+      </form>
+    </div>
+      <button type="button" (click)="Map()" class="btn btn-rez" style="float: left; margin-left: 0.2%;">Maps</button>
+    </div>
+  

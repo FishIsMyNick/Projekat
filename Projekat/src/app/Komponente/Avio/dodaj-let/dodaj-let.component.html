@@ -1,0 +1,148 @@
+<div class="container">
+    <h1>Dodaj let</h1>
+    <form [formGroup]="letPodaciForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div>
+          <label for="polaznaDestinacija">Polazna destinacija:</label>
+          <select class="dropbtn" formControlName="polaznaDestinacija" (change)="PolaznaChanged($event)">
+            <option></option>
+            <option *ngFor="let dest of moguceDestinacije">{{dest}}</option>
+          </select>
+          <div class="alert alert-danger" *ngIf="letPodaciForm.controls.polaznaDestinacija.invalid && (letPodaciForm.controls.polaznaDestinacija.dirty || letPodaciForm.controls.polaznaDestinacija.touched)">
+            Unesite destinaciju
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <label for="odredisnaDestinacija">Odredisna destinacija:</label>
+          <select class="dropbtn" formControlName="odredisnaDestinacija" (change)="OdredisnaChanged($event)">
+            <option></option>
+            <option *ngFor="let dest of moguceDestinacije">{{dest}}</option>
+          </select>
+          <div class="alert alert-danger" *ngIf="letPodaciForm.controls.odredisnaDestinacija.invalid && (letPodaciForm.controls.odredisnaDestinacija.dirty || letPodaciForm.controls.odredisnaDestinacija.touched)">
+            Unesite destinaciju
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <label for="datumPoletanja">Datum poletanja:</label>
+          <input type="date" class="form-control" style="width: 200px;" formControlName="datumPoletanja" id="datumPoletanja" name="datumPoletanja" min="2020-01-01" max="2023-01-01">
+          <div class="alert alert-danger" *ngIf="letPodaciForm.controls.datumPoletanja.invalid && (letPodaciForm.controls.datumPoletanja.dirty || letPodaciForm.controls.datumPoletanja.touched)">
+            Unesite datum
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <label for="vremePoletanja">Vreme poletanja:</label>
+          <input type="time" class="form-control" style="width: 130px;" id="vremePoletanja" name="vremePoletanja" formControlName="vremePoletanja">
+          <div class="alert alert-danger" *ngIf="letPodaciForm.controls.vremePoletanja.invalid && (letPodaciForm.controls.vremePoletanja.dirty || letPodaciForm.controls.vremePoletanja.touched)">
+            Unesite vreme
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <label for="datumSletanja">Datum sletanja:</label>
+          <input type="date" class="form-control" style="width: 200px;" id="datumSletanja" formControlName="datumSletanja" name="datumSletanja" min="2020-01-01" max="2023-01-01">
+          <div class="alert alert-danger" *ngIf="letPodaciForm.controls.datumSletanja.invalid && (letPodaciForm.controls.datumSletanja.dirty || letPodaciForm.controls.datumSletanja.touched)">
+            Unesite datum
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <label for="vremeSletanja">Vreme sletanja:</label>
+          <input type="time" class="form-control" style="width: 130px;" id="vremeSletanja" name="vremeSletanja" formControlName="vremeSletanja">
+          <div class="alert alert-danger" *ngIf="letPodaciForm.controls.vremeSletanja.invalid && (letPodaciForm.controls.vremeSletanja.dirty || letPodaciForm.controls.vremeSletanja.touched)">
+            Unesite vreme
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <label for="vremePutovanja">Vreme putovanja (min):</label>
+          <input type="number" class="form-control" id="vremePutovanja" formControlName="vremePutovanja">
+          <div class="alert alert-danger" *ngIf="letPodaciForm.controls.vremePutovanja.invalid && (letPodaciForm.controls.vremePutovanja.dirty || letPodaciForm.controls.vremePutovanja.touched)">
+            Unesite vreme putovanja
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <label for="duzinaPutovanja">Duzina putovanja(km):</label>
+          <input type="number" class="form-control" id="duzinaPutovanja" formControlName="duzinaPutovanja">
+          <div class="alert alert-danger" *ngIf="letPodaciForm.controls.duzinaPutovanja.invalid && (letPodaciForm.controls.duzinaPutovanja.dirty || letPodaciForm.controls.duzinaPutovanja.touched)">
+            Unesite duzinu putovanja
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="klasa">Klasa:</label>
+        <div style="margin-left:80px">
+          <input id="first" type="radio" value="first" name="klasa" formControlName="klasa" />
+          <label for="first">first</label>
+        </div>
+        <div style="margin-left:80px">
+          <input id="economy" type="radio" value="economy" name="klasa" formControlName="klasa" checked="checked" />
+          <label for="economy">economy</label>
+        </div>
+        <div style="margin-left:80px">
+          <input id="business" type="radio" value="business" name="klasa" formControlName="klasa" />
+          <label for="business">business</label>
+        </div>
+        <!-- <div class="alert alert-danger" *ngIf="!letPodaciForm.controls.klasa.selected && letPodaciForm.controls.klasa.invalid">
+          Klasa leta je obavezna.
+        </div> -->
+      </div>
+
+      <div class="form-group">
+        <label for="tipLeta">Tip leta:</label>
+        <div style="margin-left:80px">
+          <input id="oneWay" type="radio" value="oneWay" name="tipLeta" formControlName="tipLeta" (click)="radioButton('oneWay')" />
+          <label for="oneWay">one-way</label>
+        </div>
+        <div style="margin-left:80px">
+          <input id="multiCity" type="radio" value="multiCity" name="tipLeta" formControlName="tipLeta" (click)="radioButton('multiCity')" />
+          <label for="multiCity">multi-city</label>
+        </div>
+        <!-- <div *ngIf="!letPodaciForm.controls.tipLeta.selected && letPodaciForm.controls.tipLeta.invalid" class="alert alert-danger">
+          Tip leta je obavezan.
+        </div> -->
+      </div>
+
+      <div [hidden]="empty == 0">
+        <div >
+          <form [formGroup]="presedanjaForm">
+            <div>
+              <label for="lokacijePresedanja">Lokacije presedanja:</label>
+              <div *ngFor="let pres of presedanjaData">
+                <input style="margin-left: 60px" type="checkbox" [value]="pres" (change)="onPresedanjaChange($event)">{{pres}}
+              </div>
+              <!--<div class="alert alert-danger" *ngIf="letPodaciForm.controls.lokacijePresedanja.invalid && (letPodaciForm.controls.lokacijePresedanja.dirty || letPodaciForm.controls.lokacijePresedanja.touched)">
+      Unesite lokaciju/e presedanja
+    </div>-->
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div>
+        <div>
+          <label for="cenaKarte">Cena karte:</label>
+          <input type="number" class="form-control" id="cenaKarte" formControlName="cenaKarte">
+          <div class="alert alert-danger" *ngIf="letPodaciForm.controls.cenaKarte.invalid && (letPodaciForm.controls.cenaKarte.dirty || letPodaciForm.controls.cenaKarte.touched)">
+            Unesite cenu karte
+          </div>
+        </div>
+      </div>
+      <div>
+        <button [disabled]="!letPodaciForm.valid || dugme" class="btn btn-rez" style="float: left; margin-left: 0.2%;" type="submit">Dodaj</button>
+      </div>
+    </form>
+</div>
+<div>
+    <button class="btn btn-primary" style="float: left; margin-left: 0.2%;" (click)="onBack()" type="button">Nazad</button>
+</div>

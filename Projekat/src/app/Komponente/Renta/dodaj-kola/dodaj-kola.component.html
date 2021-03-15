@@ -1,0 +1,85 @@
+<div style="margin: 20px;">
+    <form [formGroup]="carForm" (onSubmit)="onSubmit()">
+        <div class="form">
+            <div>
+                <label for="marka">Marka:</label>
+                <input type="text" id="marka" formControlName="marka" class="form-control">
+                <div *ngIf="carForm.controls.marka.invalid && carForm.get('marka').touched">
+                    Unesite marku
+                </div>
+            </div>
+        </div>
+        <div class="form">
+            <div>
+                <label for="model">Model:</label>
+                <input type="text" id="model" formControlName="model" class="form-control">
+                <div *ngIf="carForm.controls.model.invalid && carForm.get('model').touched">
+                    Unesite model
+                </div>
+            </div>
+        </div>
+        <div class="form">
+            <div>
+                <label for="brojMesta">Broj mesta:</label>
+                <input type="number" id="brojMesta" formControlName="brojMesta" class="form-control">
+                <div *ngIf="carForm.controls.brojMesta.invalid && carForm.get('brojMesta').touched">
+                    Unesite broj mesta
+                </div>
+            </div>
+        </div>
+        <div class="form">
+            <div>
+                <label for="godiste">Godiste:</label>
+                <input type="number" id="godiste" formControlName="godiste" class="form-control">
+                <div *ngIf="carForm.controls.godiste.invalid && carForm.get('godiste').touched">
+                    Unesite godiste
+                </div>
+            </div>
+        </div>
+        <div class="form">
+            <div>
+                <label for="tip">Tip vozila:</label>
+                <select id="tip" formControlName="tip" class="form-control">
+                    <option selected disabled > -- izaberite opciju -- </option>
+                    <option *ngFor="let t of GetTipovi()">
+                        {{t}}
+                    </option>
+                </select>
+                <div *ngIf="carForm.controls.tip.invalid && carForm.get('tip').touched">
+                    Unesite tip vozila
+                </div>
+            </div>
+        </div>
+        <div class="form">
+            <div>
+                <label for="cena">Cena:</label>
+                <input type="number" id="cena" formControlName="cena" class="form-control">
+                <div *ngIf="carForm.controls.cena.invalid && carForm.get('cena').touched">
+                    Izaberite tip vozila
+                </div>
+            </div>
+        </div>
+        <div class="form">
+            <div>
+                <label for="filijala">Filijala:</label>
+                <select id="filijala" formControlName="filijala" class="form-control" (change)="Change($event.target.value)">
+                    <option selected disabled > -- izaberite opciju -- </option>
+                    <option *ngFor="let f of filijale; index as i">
+                        {{i + 1}}. {{f.adresa}}, {{f.grad}}, {{f.drzava}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="form">
+            <div style="display: inline;">
+                <label for="slika">Slika: </label>
+                <input type="file" accept="image/x-png,image/jpeg" id="slika" formControlName="slika" style="margin-left: 7px;" (change)="onFileChanged($event.target.files)">
+                <img [src]="imgURL" height="200" *ngIf="imgURL">
+            </div>
+        </div>
+        <hr>
+        <div class="form">
+            <button [disabled]="!carForm.valid" type="button" class="btn btn-cussess" (click)="onSubmit()">Sacuvaj</button>
+        </div>
+    </form>
+</div>

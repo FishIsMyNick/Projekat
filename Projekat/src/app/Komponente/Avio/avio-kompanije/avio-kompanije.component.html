@@ -1,0 +1,43 @@
+<div style="margin-top:15px; margin-left:250px;">
+    Sortiraj avikompanije po:
+    <form [formGroup]="SortForm" style="display: inline-block">
+      <select class="dropbtn" formControlName="selectedKriterijum" (change)="KriterijumChanged($event)">
+        <option></option>
+        <option>naziv</option>
+        <option>prosecna ocena</option>
+        <option>grad</option>
+      </select>
+    </form>
+  </div>
+  <ul class="lista-kompanija">
+    <li *ngFor='let kompanija of kompanije'>
+      <div class="kompanija-container">
+        <div class="kompanija-element">{{kompanija.naziv}}</div>
+        <hr>
+        <div class="kompanija-element">Grad: {{kompanija.grad}}</div>
+        <hr>
+        <div class="kompanija-element">Opis: {{kompanija.opis}}</div>
+        <hr>
+        <div class="kompanija-element">Prosecna ocena: {{IzracunajProsecnuOcenu(kompanija.naziv)}}</div>   
+  
+        <!--Ovako radi i msm da ako se ista pipne da ce opet odici dk-->
+        <dynamic-image [tip]="kompanija.getType()"
+                       [naziv]='kompanija.naziv'
+                       [klasa]="klasa">
+        </dynamic-image>
+        <div>
+          <button (click)="letoviUrl(kompanija.naziv)" class="letovi-btn"> Prikazi letove</button>
+        </div>
+        <div *ngIf="getType() === 'RegularUser'">
+          <button (click)="oceni(kompanija.naziv)" class="letovi-btn"> Oceni aviokompaniju</button>
+        </div>
+      </div>
+      <br>
+  
+    </li>
+  </ul>
+  <div style="margin-left:46%">
+      <button class="btn btn-primary" (click)="onBack()" type="button">Nazad</button>
+  </div>
+  
+  
