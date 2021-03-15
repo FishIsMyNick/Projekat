@@ -46,7 +46,9 @@ export class IstorijaComponent implements OnInit {
   constructor(private router: Router, private service: LetoviService, private rentService: RentService, private toastr: ToastrService) {}
 
   async ngOnInit() {
+    console.log('istorija init')
     this.currentUser = AppComponent.currentUser as RegisteredUser;
+    console.log(this.currentUser)
     this.letData = new Array<Array<string>>();
     this.letDataRez = new Array<Array<string>>();
     this.kolaData = new Array<any>();

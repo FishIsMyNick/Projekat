@@ -117,14 +117,15 @@ namespace WebApp.Controllers
 
 		[HttpPost]
 		[Route("ProsecnaOcenaRente")]
-		public async Task<ActionResult<float>> ProsecnaOcenaRente(RentACar renta)
+		public async Task<ActionResult<float>> ProsecnaOcenaRente()
 		{
+			var renta = HttpContext.Request.Form.Keys.First().ToString();
 			List<OcenaRente> ocene = await _context.OceneRente.ToListAsync();
 			float sum = 0;
 			int i = 0;
 			foreach (OcenaRente o in ocene)
 			{
-				if (o.kompanija == renta.Naziv)
+				if (o.kompanija == renta)
 				{
 					sum += o.Value;
 					i++;
@@ -374,7 +375,8 @@ namespace WebApp.Controllers
 			if (filijala == -1)
 				return kolaRente;
 			else
-				return kolaRente.Where(e => e.Filijala == filijala).ToList();
+				kolaRente = kolaRente.Where(e => e.Filijala == filijala).ToList();
+			return kolaRente;
 		}
 
 		[HttpPost]

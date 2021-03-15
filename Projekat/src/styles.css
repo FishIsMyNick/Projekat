@@ -224,7 +224,8 @@ body {
     border: solid 1px;
     border-radius: 10px;
     width: 360px;
-    padding: 5px;
+    padding-left: -100px;
+    padding-right: -100px;
     background-color: rgb(215, 238, 229);
 }
 .kompanija-container ul {
@@ -267,6 +268,10 @@ body {
 }
 
 /*=================================RENTACAR=====================================*/
+.lista-kola {
+  transform: translate(420px, -365px);
+}
+
 .izvestaj-container
 {
     border: solid 1px;
@@ -519,7 +524,7 @@ div.form label.required:first-child:after{
   .map {
     height: 400px;
     width: 400px;
-    transform: translate(850px, 100px);
+    transform: translate(410px, 390px);
   }
   
   

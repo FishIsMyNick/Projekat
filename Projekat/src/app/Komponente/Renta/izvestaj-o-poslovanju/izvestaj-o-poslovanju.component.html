@@ -44,7 +44,7 @@
 
             <div style="display: inline;">
                 <input type="radio" id="dan" name="rezervacije" checked (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="dan">Dan</label>
-                <input type="radio" id="nedelja" name="rezervacije" (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="nedelja">Nedelja</label><nbsp></nbsp>
+                <input type="radio" id="nedelja" name="rezervacije" (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="nedelja">Nedelja</label>
                 <input type="radio" id="mesec" name="rezervacije" (change)="RezervacijeChanged($event.target.id)"><label style="margin-right: 8px;" for="mesec">Mesec</label>
             </div>
             <div>Imate {{brojRezervacija}} rezervacija {{viewPeriodRezervacije}}.</div>
@@ -88,7 +88,7 @@
             <li>
                 <div style="display: inline;">
                     <input type="radio" id="pNedelja" name="profit" checked (change)="ProfitChanged($event.target.id)"><label style="margin-right: 8px;" for="pNedelja">Nedelja</label>
-                    <input type="radio" id="pMesec" name="profit" (change)="ProfitChanged($event.target.id)"><label style="margin-right: 8px;" for="pMesec">Mesec</label>&nbsp
+                    <input type="radio" id="pMesec" name="profit" (change)="ProfitChanged($event.target.id)"><label style="margin-right: 8px;" for="pMesec">Mesec</label>
                     <input type="radio" id="pGodina" name="profit" (change)="ProfitChanged($event.target.id)"><label style="margin-right: 8px;" for="pGodina">Godina</label>
                 </div>
             </li>

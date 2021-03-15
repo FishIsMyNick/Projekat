@@ -259,8 +259,10 @@ export class RentService {
   async ProsecnaOcenaKola(kola: Kola): Promise<any> {
     return await this.http.post<any>(this.BaseURI + '/Rent/ProsecnaOcenaKola', kola).toPromise();
   }
-  async ProsecnaOcenaRente(renta: RentACar): Promise<any> {
-    return await this.http.post<any>(this.BaseURI + '/Rent/ProsecnaOcenaRente', renta).toPromise();
+  async ProsecnaOcenaRente(renta: string): Promise<any> {
+    const formData = new FormData();
+    formData.append(renta, renta);
+    return await this.http.post<any>(this.BaseURI + '/Rent/ProsecnaOcenaRente', formData).toPromise();
   }
   async Refresh(): Promise<any> {
     return await this.http.get(this.BaseURI + '/Rent/Refresh');

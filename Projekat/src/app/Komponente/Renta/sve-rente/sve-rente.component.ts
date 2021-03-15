@@ -158,141 +158,10 @@ export class SveRenteComponent implements OnInit {
       }
     }
     this.filijale = Array.from(fil);
-    console.log(this.filijale)
+    //console.log(this.filijale)
   }
 
-  //Mapa
-  ///////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////
-  ///////////////////////////////////////////////////////////////////////////
-  // async initMap(lokFilijale: string[]) {
-  //   console.log('initMap')
-  //   console.log(lokFilijale)
-  //   this.addressLookup(lokFilijale[0]);
-  //   //await this.addAllPoints(lokFilijale);
-
-  //   //this.resetMap();
-  // }
-
-  // async addAllPoints(formAddressList: Array<any>): Promise<any> {
-  //   var searchList = new Array<any>();
-
-  //   for (let i = 0; i < formAddressList.length; i++) {
-  //     console.log(i, formAddressList[i])
-  //     var splited = formAddressList[i].split(",", 3);
-  //     var houseNumber = (splited[0]).replace(' ', '%20');
-  //     var street = (splited[1]).replace(' ', '%20');
-  //     var city = (splited[2]).replace(' ', '%20');
-
-  //     var location = 'street=' + houseNumber + '+' + street + '&city=' + city;
-  //     var search = 'http://nominatim.openstreetmap.org/search?format=json&' + location;
-  //     searchList.push(search);
-  //   }
-  //   console.log('search list', searchList)
-  //   for (let i = 0; i < searchList.length; i++) {
-  //     await this.getCoordsFromAddress(searchList[i])
-  //   }
-  // }
-
-  // async getCoordsFromAddress(search: string): Promise<any> {
-  //   var latLon = '';
-  //   this.http.get(search, { responseType: 'text' }).subscribe(
-  //     (res: any) => {
-  //       console.log('res')
-  //       console.log(res)
-  //       res = JSON.parse(res);
-  //       latLon += res[0].lat + '|' + res[0].lon;
-  //       console.log('latLon', latLon)
-  //       this.addPoint(res[0].lat, res[0].lon)
-  //     },
-  //     err => {
-  //       console.log(err)
-  //     }
-  //   );
-  //   return latLon;
-  // }
-
-  // addressLookup(formatedAddress: string): void {
-  //   console.log('addressLookup(): ', formatedAddress);
-  //   if (formatedAddress.charAt(0) === ",") {
-  //     formatedAddress = formatedAddress.substring(1, formatedAddress.length - 1);
-  //   }
-  //   var splited = formatedAddress.split(",", 3);
-  //   var houseNumber = (splited[0]).replace(' ', '%20');
-  //   var street = (splited[1]).replace(' ', '%20');
-  //   var city = (splited[2]).replace(' ', '%20');
-
-  //   var location = 'street=' + houseNumber + '+' + street + '&city=' + city;
-  //   var search = 'http://nominatim.openstreetmap.org/search?format=json&' + location;
-  //   console.log(search);
-
-  //   this.http.get(search, { responseType: 'text' }).subscribe(
-  //     (res: any) => {
-  //       res = JSON.parse(res);
-  //       console.log(res);
-
-  //       // RentMapComponent.lon = 0;
-  //       // RentMapComponent.lat = 0;
-  //       // RentMapComponent.lon = res[0].lon;
-  //       // RentMapComponent.lat = res[0].lat;
-  //       //console.log(RentMapComponent.lat, RentMapComponent.lon);
-
-  //       this.defineMap(res[0].lon, res[0].lat);
-  //     }
-  //   );
-  // }
-  // defineMap(longitude: any, latitude: any) {
-  //   this.map = new ol.Map({
-  //     target: 'map',
-  //     layers: [
-  //       new ol.layer.Tile({
-  //         source: new ol.source.OSM()
-  //       })
-  //     ],
-  //     view: new ol.View({
-  //       center: ol.proj.fromLonLat([longitude - 0.00, latitude - 0.00]),
-  //       zoom: 15
-  //     })
-  //   });
-
-  //   console.log('kraj def map')
-  //   //this.addPoint(latitude - 0.00, longitude - 0.00);
-  // }
-  // addPoint(lat: number, lng: number) {
-  //   console.log('addPoint lat, lon: ', lat, lng)
-  //   var vectorLayer = new ol.layer.Vector({
-  //     source: new ol.source.Vector({
-  //       features: [new ol.Feature({
-  //         geometry: new ol.geom.Point(ol.proj.transform([lng, lat], 'EPSG:4326', 'EPSG:3857')),
-  //       })]
-  //     }),
-  //     style: new ol.style.Style({
-  //       image: new ol.style.Icon({
-  //         anchor: [0.5, 0.5],
-  //         anchorXUnits: "fraction",
-  //         anchorYUnits: "pixels",
-  //         src: 'http://maps.gstatic.com/intl/de_de/mapfiles/ms/micons/red-pushpin.png'
-  //       })
-  //     })
-  //   });
-
-  //   this.map.addLayer(vectorLayer);
-  // }
-
-  // static resetMap() {
-  //   var element = document.getElementById("map");
-  //   console.log(element)
-  //   element.parentNode.removeChild(element);
-  //   var node = document.createElement("div");
-  //   node.setAttribute("id", "map");
-  //   node.setAttribute("style", "height: 400px;");
-  //   var parent = document.getElementById("destory1");
-  //   parent.appendChild(node);
-  // }
-
-  ////////////////////////////////////////////////////////////////////////
-  ////////////////////////////////////////////////////////////////////////
-
+  
   async InitFilter() {
     this.filtrirano = false;
     this.today = new Date();
@@ -313,7 +182,7 @@ export class SveRenteComponent implements OnInit {
     var dateOd;
     var dateDo;
     this.fBadDateOrder = false;
-    console.log('PretraziKompanije(): returning: ', returning)
+    //console.log('PretraziKompanije(): returning: ', returning)
 
     if (!returning) {
       this.fInvalidDateOd = false;
@@ -328,7 +197,13 @@ export class SveRenteComponent implements OnInit {
       this.fMestoOd = (<HTMLInputElement>document.getElementById('pretraga-kompanija-lokacija')).value;
       //console.log('fMestoOd after get: ', this.fMestoOd)
     }
-    console.log(this.fDatumOd, this.fDatumDo, this.fMestoOd)
+    else {
+      this.fDatumOd = new Date();
+      this.fDatumDo = new Date();
+      this.fNazivKompanije = '';
+      this.fMestoOd = 'Sve';
+    }
+    //console.log(this.fNazivKompanije)
 
     //provera dal je dobar datum
     if (!(this.fDatumOd))
@@ -345,14 +220,15 @@ export class SveRenteComponent implements OnInit {
         this.rente = new Array<any>();
         for (let element of await this.service.GetAllRents()) {
           element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
-          element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
+          element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element.naziv);
           this.rente.push(element)
+          //console.log(element)
         }
-        console.log('naziv', this.rente)
+        //console.log('naziv', this.rente)
       }
       else {
         let nRente = new Array<any>();
-        for (let element of this.rente) {
+        for (let element of await this.service.GetAllRents()) {
           if (element.naziv.toLowerCase().includes(this.fNazivKompanije.toLowerCase())) {
             element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
             element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
@@ -360,19 +236,19 @@ export class SveRenteComponent implements OnInit {
           }
         }
         this.rente = Array.from(nRente);
-        console.log('naziv', this.rente)
+        //console.log('naziv', this.rente)
         let filijale = new Array<any>();
         for (let r of this.rente) {
           for (let f of await this.service.GetFilijale(r.adminID)) {
             f.naziv = r.naziv;
             f.imgUrl = r.imgUrl;
             f.opis = r.opis;
-            f.prosecnaOcena = 1;
+            f.prosecnaOcena = r.prosecnaOcena;
             filijale.push(f);
           }
         }
         this.filijale = Array.from(filijale);
-        console.log('filijale', this.filijale)
+        //console.log('filijale', this.filijale)
       }
       //filter lokacije
       if (this.fMestoOd == 'Sve') {
@@ -382,7 +258,7 @@ export class SveRenteComponent implements OnInit {
             f.naziv = r.naziv;
             f.imgUrl = r.imgUrl;
             f.opis = r.opis;
-            f.prosecnaOcena = 1;
+            f.prosecnaOcena = r.prosecnaOcena;
             filijale.push(f);
           }
         }
@@ -397,7 +273,7 @@ export class SveRenteComponent implements OnInit {
               f.naziv = r.naziv;
               f.imgUrl = r.imgUrl;
               f.opis = r.opis;
-              f.prosecnaOcena = 1;
+              f.prosecnaOcena = r.prosecnaOcena;
               filijale.push(f);
             }
           }
@@ -410,11 +286,11 @@ export class SveRenteComponent implements OnInit {
       //filtriranje po datumu
       let fil = new Array<any>();
       for (let f of this.filijale) {
-        console.log('f', f);
+        //console.log('f', f);
         for (let k of await this.service.GetKolaFilijale(f.naziv, f.id)) {
           let overlapped = false;
           for (let z of await this.service.GetZauzetost(k)) {
-            console.log('z', z.od, z.do)
+            //console.log('z', z.od, z.do)
             //console.log('IsOverlapping(z.od, z.do, f.od, f.do)', this.IsOverlapping(new Date(z.od), new Date(z.do), this.fDatumOd, this.fDatumDo))
             if (this.IsOverlapping(new Date(z.od), new Date(z.do), this.fDatumOd, this.fDatumDo)) {
               overlapped = true;
@@ -428,7 +304,7 @@ export class SveRenteComponent implements OnInit {
         }
       }
       this.filijale = Array.from(fil);
-      console.log('filter datuma', this.filijale)
+      //console.log('filter datuma', this.filijale)
       //console.log('filter datum prosao')
     }
   }
@@ -570,16 +446,8 @@ export class SveRenteComponent implements OnInit {
           this.badDateOrder = true;
         }
         else {
-          //console.log('this.Filtriranje() provera datuma ok.')
-          // Primeni filter
-
-
           this.filtriranaKola = new Array<Kola>();
-          // console.log(this.filtriranaKola.length)
-          // console.log('this.filtriranaKola pre filter: ', this.filtriranaKola)
-          // console.log('for k of this.kola: ')
           for (let k of this.kola) {
-            //console.log('k: ', k)
             if (!k.brzaRezervacija) {
               k.prosecnaOcena = await this.service.ProsecnaOcenaKola(k);
               for (let element of this.filijale) {
@@ -593,10 +461,7 @@ export class SveRenteComponent implements OnInit {
           }
 
           this.filtriranaKola.forEach(element => element.imgURL = 'assets/images/RentACar/Kola/' + element.naziv + '.jpg');
-          //console.log('this.filtriranaKola after init: ', this.filtriranaKola)
-          // do ovde radi
 
-          // filtriranje grada
           if (this.fMestoOd == 'Sve') {
 
           }
@@ -607,7 +472,6 @@ export class SveRenteComponent implements OnInit {
                 prosla.push(element)
             }
             this.filtriranaKola = Array.from(prosla);
-            //console.log('this.filtriranaKola after filter grada: ', this.filtriranaKola)
           }
 
           let prosla = new Array<any>();
@@ -620,7 +484,6 @@ export class SveRenteComponent implements OnInit {
               }
             }
             this.filtriranaKola = Array.from(prosla);
-            //console.log('this.filtriranaKola after filter br putnika: ', this.filtriranaKola)
           }
 
 
@@ -631,7 +494,6 @@ export class SveRenteComponent implements OnInit {
                 prosla.push(k);
             }
             this.filtriranaKola = Array.from(prosla);
-            //console.log('this.filtriranaKola after filter tipa: ', this.filtriranaKola)
           }
 
           prosla = new Array<any>(); //filtriranje zauzetosti
@@ -649,7 +511,6 @@ export class SveRenteComponent implements OnInit {
             }
           }
           this.filtriranaKola = Array.from(prosla);
-          //console.log('this.filtriranaKola after filter zauzetost: ', this.filtriranaKola)
 
           //filtriranje min cene
           if (this.fMinCena != 0) {
@@ -659,7 +520,6 @@ export class SveRenteComponent implements OnInit {
                 prosla.push(k);
             }
             this.filtriranaKola = Array.from(prosla);
-            //console.log('this.filtriranaKola after filter cena min: ', this.filtriranaKola)
           }
 
           //filtriranje max cene
@@ -670,14 +530,12 @@ export class SveRenteComponent implements OnInit {
                 prosla.push(k);
             }
             this.filtriranaKola = Array.from(prosla);
-            //console.log('this.filtriranaKola after filter cena max: ', this.filtriranaKola)
           }
         }
 
         this.filtriranaKola.forEach(element => {
           element.cenaRez = element.cena * (((this.fDatumDo.getTime() - this.fDatumOd.getTime()) / 86400000) + 1)
         });
-        //console.log('this.filtriranaKola after cena rezervacije sracunata: ', this.filtriranaKola)
       }
 
     }
@@ -802,19 +660,18 @@ export class SveRenteComponent implements OnInit {
     this.InitFilter();
   }
 
-  async prikaziFilijalu(id: number) {
-    console.log('Prikazi filijalu: ID: ', id)
-    //console.log('PRIKAZI FILIJALU')
-    //this.fMestoOd = (<HTMLInputElement>document.getElementById('pretraga-kompanija-lokacija')).value;
-    //console.log(this.fMestoOd)
-    // if (naziv != '') {
-    //   this.rente.forEach(element => {
-    //     if (element.naziv == naziv) {
-    //       this.sr = element;
-    //     }
-    //   });
-    // }
-    //console.log(this.sr);
+  async prikaziFilijalu(id: number, admin: string) {
+    console.log(id, admin)
+    this.filijale = await this.service.GetFilijale(admin);
+    this.filijale.forEach(f => {
+      this.rente.forEach(r => {
+        if(f.renta == r.naziv){
+          f.opis = r.opis;
+          f.prosecnaOcena = r.prosecnaOcena
+        }
+      });
+    });
+    //console.log(this.filijale)
 
     for (let i = 0; i < this.filijale.length; i++) {
       if (this.filijale[i].id == id) {
@@ -822,23 +679,19 @@ export class SveRenteComponent implements OnInit {
         break;
       }
     }
-    console.log(this.sr)
-    this.filijale = await this.service.GetFilijale(this.sr.adminID);
-    //console.log('start PF: sve filijale rente', this.filijale);
-    //console.log(this.filijale)
-    //console.log(this.fMestoOd, this.filijale)
     this.lokacijeFilijala = new Array<string>();
     this.filijale.forEach(element => {
       if (!this.lokacijeFilijala.includes(element.grad))
         this.lokacijeFilijala.push(element.grad);
     });
-    if (this.fMestoOd == '' || this.fMestoOd == null) {
-      this.fMestoOd = this.lokacijeFilijala[0];
-    }
-    //console.log('this.lokacijeFilijala: ', this.lokacijeFilijala);
+    // if (this.fMestoOd == '' || this.fMestoOd == null) {
+    //   this.fMestoOd = this.lokacijeFilijala[0];
+    // }
+    this.fMestoOd = this.sr.grad;
+    console.log(this.sr)
 
 
-    //  Lista formatiranih adresa za pretragu
+    //  Lista formatiranih adresa za mapu
     var formatedAddressSearches = new Array<string>();
     let orderedFormatedAddressSearches = new Array<any>();
     {
@@ -856,17 +709,12 @@ export class SveRenteComponent implements OnInit {
 
       let grad = this.sr.grad;
       adresa = broj + ',' + ulica + ',' + grad;
-      orderedFormatedAddressSearches.push(adresa)
+      //prva adresa u listi je adresa odabrane filijale
+      orderedFormatedAddressSearches.push(adresa);
     }
 
     if (this.fMestoOd == 'Sve') {
-      //console.log(this.lokacijeFilijala)
-      //  Izabran prikaz svih filijala odabranog servisa
-      //console.log('fMestoOd = Sve: for element of this.filijale:')
       for (let element of this.filijale) {
-        //console.log('element: ', element);
-        //if (element.grad == this.lokacijeFilijala[0]) {
-        // formatiranje stringa za pretragu adrese
         {
           let adresa = element.adresa;
           let len = Array.from(adresa.split(' ')).length
@@ -884,27 +732,14 @@ export class SveRenteComponent implements OnInit {
           adresa = broj + ',' + ulica + ',' + grad;
           //  String formata: <broj>,<ulica>,<grad>
           formatedAddressSearches.push(adresa);
-          //console.log('adresa = ', adresa)
-          //console.log('formAddrSrc after push: ', formatedAddressSearshes);
         }
-        //}
-        ///
-        // console.log('fMestoOd = Sve: for 2:')
-        // for (let element of this.filijale) {
-        //   filijala = element;
-        //   console.log('filijala = element', filijala);
-        //   break;
-        // }
       }
     }
     else {
-      //  Izabran prikaz filijala odabranog grada
-      //console.log('fMestoOd = <grad>: for element of this.filijale:')
       for (let element of this.filijale) {
-        console.log('element.grad ', element.grad)
-        //console.log('element: ', element);
+        //console.log('element.grad ', element.grad)
         if (element.grad == this.fMestoOd) {
-          console.log('formatiranje adrese')
+          //console.log('formatiranje adrese')
           //  Formatiranje adrese
           {
             let adresa = element.adresa;
@@ -918,15 +753,14 @@ export class SveRenteComponent implements OnInit {
                 ulica += ' ';
             }
             ulica.trimEnd();
-            //console.log(filijala)
             let grad = element.grad;
             adresa = broj + ',' + ulica + ',' + grad;
             formatedAddressSearches.push(adresa);
-            // console.log('element.grad == this.fMestoOd: adresa = ', adresa)
           }
         }
       }
     }
+    //ubacivanje preostalih adresa za mapu
     this.filijale.forEach(e => {
       if (e.id != id) {
         let adresa = e.adresa;
@@ -947,52 +781,23 @@ export class SveRenteComponent implements OnInit {
       }
     });
     
-    console.log('formAddrSrc after init: ', formatedAddressSearches);
-    console.log('ordered after Init: ', orderedFormatedAddressSearches);
-    // console.log('/////////////////////////////////////////////////////////////////////////////////////')
-    // console.log('Pribavljene sve inicijalne filijale')
-    // console.log('/////////////////////////////////////////////////////////////////////////////////////')
     this.mapAddress = '';
     for (let i = 0; i < orderedFormatedAddressSearches.length; i++) {
       this.mapAddress += orderedFormatedAddressSearches[i];
       if (i < orderedFormatedAddressSearches.length - 1)
         this.mapAddress += '|'
     }
-    // Inicijalizacija mape
-    //await this.initMap(lokFilijale);
-    //console.log(this.kola)
-    this.kola = await this.service.GetCarsFromRent(this.sr.naziv);
+    //prosledjivanje liste adresa za pretragu mapi preko parametra
 
-    //console.log('Sva kola rente: ', this.kola)
 
-    // Koordinate za mapu
+    console.log(this.sr.renta)
+    this.kola = await this.service.GetKolaFilijale(this.sr.renta, this.sr.id);
+    console.log(this.kola)
 
-    // let mark = L.marker([ this.lat, this.lon ], {
-    //   icon: icon({
-    //     iconSize: [ 25, 41 ],
-    //     iconAnchor: [ 13, 41 ],
-    //     iconUrl: 'leaflet/marker-icon.png',
-    //     iconRetinaUrl: 'leaflet/marker-icon-2x.png',
-    //     shadowUrl: 'leaflet/marker-shadow.png'
-    //   })
-    // });
-    // let streetMaps = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //     detectRetina: true,
-    //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    // });
-    // this.options = {
-    //   layers: [streetMaps, mark],
-    //   zoom: 7,
-    //   center: latLng([this.lat, this.lon])
-    // }
-
-    //if(this.filtrirano){
-    //console.log('Poziv this.Filtriranje()')
     this.Filtriranje();
-    //console.log('this.fMestoOd: ', this.fMestoOd)
-    //}
-
-    this.sr.prosecnaOcena = await this.service.ProsecnaOcenaRente(this.sr);
+    console.log('filter prosao')
+    this.sr.prosecnaOcena = await this.service.ProsecnaOcenaRente(this.sr.renta);
+    console.log('prosecna ocena prosla')
     //Mora na kraju
     this.prikaz = RentPrikaz.kompanija;
   }

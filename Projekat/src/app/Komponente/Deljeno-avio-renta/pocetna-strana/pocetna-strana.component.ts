@@ -41,8 +41,8 @@ export class PocetnaStranaComponent implements OnInit {
   constructor(private service: UserService, private serviceAvio: AvioAdminService, private serviceO: OcenaService, private router: Router) { }
 
   ngOnInit(): void {
-    console.log('pocetna init')
-    console.log('currentUser: ', AppComponent.currentUser)
+    // console.log('pocetna init')
+    // console.log('currentUser: ', AppComponent.currentUser)
     this.currentUser = AppComponent.currentUser;
     this.userName = this.currentUser.userName;
     if (this.currentUser.tipKorisnika != 'RegularUser' && this.currentUser.tipKorisnika != 'User'){
@@ -50,7 +50,7 @@ export class PocetnaStranaComponent implements OnInit {
         this.router.navigate(['promena-lozinke']);
       }
     }
-    console.log('Kraj pocetna Init')
+    //console.log('Kraj pocetna Init')
     //this.provera(); 
     //this.ucitajAviokompaniju();
     //this.ucitajOcene();
