@@ -29,10 +29,10 @@ export class IstorijaComponent implements OnInit {
   currentUser: RegisteredUser;
   relacija: string;
   ocenjivanje: boolean = false;
+  ocenjivanjeRente: boolean = false;
   ocena: any;
   kolaZaOceniti: string;
   rentaKolaZaOceniti: string;
-  rentaZaOceniti: string;
 
 
   avioRezervacije: Array<Let>;
@@ -46,15 +46,16 @@ export class IstorijaComponent implements OnInit {
   constructor(private router: Router, private service: LetoviService, private rentService: RentService, private toastr: ToastrService) {}
 
   async ngOnInit() {
-    console.log('istorija init')
+    //console.log('istorija init')
     this.currentUser = AppComponent.currentUser as RegisteredUser;
-    console.log(this.currentUser)
+    //console.log(this.currentUser)
     this.letData = new Array<Array<string>>();
     this.letDataRez = new Array<Array<string>>();
     this.kolaData = new Array<any>();
     this.emptyIL = 0;
     this.emptyRL = 0;
     this.ocenjivanje = false;
+    this.ocenjivanjeRente = false;
 
     this.avioSediste = new Array<{ idLeta: number, idSedista: string, cenaSedista: number }>();
     this.service.getSediste().subscribe(sedista => {
@@ -151,6 +152,21 @@ export class IstorijaComponent implements OnInit {
     }
 
   }
+  async OceniRentu(eventName) {
+    console.log('Oceni rentu')
+    let arg = eventName.split('+');
+    this.rentaKolaZaOceniti = arg[0]
+    let dat = new Date(arg[1]);
+    let today = new Date();
+    if(dat<today){
+      this.ocena = await this.rentService.GetOcenaRente(this.rentaKolaZaOceniti, this.currentUser.userName);
+      console.log(this.ocena);
+      this.ocenjivanjeRente = true;
+    }
+    else{
+      this.toastr.error('Rezervacija jos nije ispunjena. Ne mozete jos oceniti!')
+    }
+  }
   ocenaChanged(value) {
     this.ocena = value;
   }
@@ -165,12 +181,24 @@ export class IstorijaComponent implements OnInit {
       this.toastr.error('Vec ste ocenili ova kola');
     }
   }
+  async PosaljiOcenuRente(renta) {
+    var uspeo = await this.rentService.OceniRentu(renta, this.ocena.toString(), this.currentUser.userName);
+    if (uspeo) {
+      this.toastr.success('Uspesno ste ocenili rent servis');
+      this.router.navigate(['/pocetna']);
+    }
+    else {
+      this.toastr.error('Vec ste ocenili ovaj servis');
+    }
+  }
+
   onBack() {
     this.router.navigateByUrl('/pocetna');
   }
   Nazad() {
     this.ngOnInit();
     this.ocenjivanje = false;
+    this.ocenjivanjeRente = false;
   }
 
 

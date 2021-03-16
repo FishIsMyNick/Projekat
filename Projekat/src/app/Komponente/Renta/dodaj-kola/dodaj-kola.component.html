@@ -40,7 +40,7 @@
             <div>
                 <label for="tip">Tip vozila:</label>
                 <select id="tip" formControlName="tip" class="form-control">
-                    <option selected disabled > -- izaberite opciju -- </option>
+                    <option disabled > -- izaberite opciju -- </option>
                     <option *ngFor="let t of GetTipovi()">
                         {{t}}
                     </option>

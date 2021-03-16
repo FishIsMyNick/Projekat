@@ -72,7 +72,7 @@ export class DodajKolaComponent implements OnInit {
 
         this.servis.addCarImage(uploadData).subscribe(
           async (res) => {
-            await this.servis.Refresh();
+            //await this.servis.Refresh();
             this.toastr.success('Uspesno ste dodali kola!');
             this.recievedImageData = res;
             this.base64Data = this.recievedImageData.pic;

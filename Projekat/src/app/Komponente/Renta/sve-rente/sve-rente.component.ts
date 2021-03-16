@@ -98,6 +98,8 @@ export class SveRenteComponent implements OnInit {
   doGodina: number;
   fNazivKompanije: string;
   mapAddress: string;
+  filId: number;
+  filAdmin: string;
 
   constructor(private http: HttpClient, private router: Router, private toastr: ToastrService, public fb: FormBuilder, private service: RentService, private serviceO: OcenaService) {
   }
@@ -138,7 +140,7 @@ export class SveRenteComponent implements OnInit {
     var rente = await this.service.GetAllRents();
     for (let element of rente) {
       element.imgUrl = 'assets/images/RentACar/Kompanije/' + element.naziv.replace(/ /g, '-') + '.jpg';
-      element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element);
+      element.prosecnaOcena = await this.service.ProsecnaOcenaRente(element.naziv);
       this.rente.push(element)
     }
 
@@ -150,7 +152,7 @@ export class SveRenteComponent implements OnInit {
         f.naziv = r.naziv;
         f.opis = r.opis;
         f.imgUrl = r.imgUrl;
-        f.prosecnaOcena = 1;
+        f.prosecnaOcena = r.prosecnaOcena;
         fil.push(f)
         if (!this.lokacijeFilijala.includes(f.grad)) {
           this.lokacijeFilijala.push(f.grad);
@@ -660,7 +662,9 @@ export class SveRenteComponent implements OnInit {
     this.InitFilter();
   }
 
-  async prikaziFilijalu(id: number, admin: string) {
+  async prikaziFilijalu(id: number = this.filId, admin: string = this.filAdmin) {
+    this.filId = id;
+    this.filAdmin = admin;
     console.log(id, admin)
     this.filijale = await this.service.GetFilijale(admin);
     this.filijale.forEach(f => {

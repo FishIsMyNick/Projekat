@@ -13,8 +13,8 @@ namespace Backend.Helpers
     public static class BlobHandler
     {
         private static readonly string blobConnString = "DefaultEndpointsProtocol=https;AccountName=pusgs;AccountKey=R3v93mJv7KrKr7aYqFRM4S3aDqGiXP2sRpgoDNvFfJranEr6OqZRLbMw25aTJDmLtg0pxvQ2C8S48lJuRfqc1A==;EndpointSuffix=core.windows.net";
-        public static string downloadFileDirKola = "C:/Fax/PUSGS/nov projekat/Projekat/src/assets/images/RentACar/Kola";
-        public static string downloadFileDirKompanije = "C:/Fax/PUSGS/nov projekat/Projekat/src/assets/images/RentACar/Kompanije";
+        public static string downloadFileDirKola = "C:/Fax/PUSGS/Projekat/Projekat/Projekat/src/assets/images/RentACar/Kola";
+        public static string downloadFileDirKompanije = "C:/Fax/PUSGS/Projekat/Projekat/Projekat/src/assets/images/RentACar/Kompanije";
         private static BlobServiceClient _blobServiceClient;
         private static BlobContainerClient _kolaContainerClient;
         private static BlobContainerClient _kompanijeContainerClient;

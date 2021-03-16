@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Fax\\PUSGS\\Projekat\\Projekat\\Backend\\Backend\\Backend.csproj": {}
+    "C:\\Fax\\PUSGS\\Projekat\\Projekat\\Backend\\Backend\\Backend.csproj": {}
   },
   "projects": {
-    "c:\\Fax\\PUSGS\\Projekat\\Projekat\\Backend\\Backend\\Backend.csproj": {
+    "C:\\Fax\\PUSGS\\Projekat\\Projekat\\Backend\\Backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Fax\\PUSGS\\Projekat\\Projekat\\Backend\\Backend\\Backend.csproj",
+        "projectUniqueName": "C:\\Fax\\PUSGS\\Projekat\\Projekat\\Backend\\Backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "c:\\Fax\\PUSGS\\Projekat\\Projekat\\Backend\\Backend\\Backend.csproj",
+        "projectPath": "C:\\Fax\\PUSGS\\Projekat\\Projekat\\Backend\\Backend\\Backend.csproj",
         "packagesPath": "C:\\Users\\Fish\\.nuget\\packages\\",
-        "outputPath": "c:\\Fax\\PUSGS\\Projekat\\Projekat\\Backend\\Backend\\obj\\",
+        "outputPath": "C:\\Fax\\PUSGS\\Projekat\\Projekat\\Backend\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Fish\\AppData\\Roaming\\NuGet\\NuGet.Config",

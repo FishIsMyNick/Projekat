@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "3MrfdM9I2TxX3gFfpIvjpNAWeoZNo8+txHTvQk+gMX8crQxMYXMNUFWXqV3V8iGTafW/5Pm/BqAsOPu4dqbzQA==",
+  "dgSpecHash": "/FyrpPno40wOhpgN/f53m29RF84TDOcaNSqAPN5aJFzPchtzNr20Du9A58kRAN3YKOehRtnsN4W5QS6fA/ymow==",
   "success": true,
-  "projectFilePath": "c:\\Fax\\PUSGS\\Projekat\\Projekat\\Backend\\Backend\\Backend.csproj",
+  "projectFilePath": "C:\\Fax\\PUSGS\\Projekat\\Projekat\\Backend\\Backend\\Backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Fish\\.nuget\\packages\\azure.core\\1.8.1\\azure.core.1.8.1.nupkg.sha512",
     "C:\\Users\\Fish\\.nuget\\packages\\azure.storage.blobs\\12.8.0\\azure.storage.blobs.12.8.0.nupkg.sha512",

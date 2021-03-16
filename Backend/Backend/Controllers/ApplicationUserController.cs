@@ -173,6 +173,9 @@ namespace Backend.Controllers
                     //return BadRequest(new { message = test[0].Description});
                     return Ok(result);
                 }
+                var aAdmin = await _userManager.FindByNameAsync(body.UserName);
+                aAdmin.EmailConfirmed = true;
+                await _userManager.UpdateAsync(aAdmin);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -209,6 +212,9 @@ namespace Backend.Controllers
                     //return BadRequest(new { message = test[0].Description});
                     return Ok(result);
                 }
+                var rAdmin = await _userManager.FindByNameAsync(body.UserName);
+                rAdmin.EmailConfirmed = true;
+                await _userManager.UpdateAsync(rAdmin);
                 return Ok(result);
             }
             catch (Exception ex)

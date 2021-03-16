@@ -1,4 +1,4 @@
-<div *ngIf="!ocenjivanje">
+<div *ngIf="!ocenjivanje && !ocenjivanjeRente">
     <h2>Vase rezervacije letova</h2>
     <div class="istorija-container" [hidden]="emptyRL == 0">  
       <table>
@@ -108,11 +108,15 @@
             </td>
             <td>
               <button class="btn-rez" name="{{data.naziv}}+{{data.renta}}+{{data.do}}"
-              (click)="OceniKola($event)">Oceni</button>
+              (click)="OceniKola($event)">Oceni kola</button>
+            </td>
+            <td>
+              <button class="btn-rez" name="{{data.renta}}+{{data.do}}"
+              (click)="OceniRentu($event.target.name)">Oceni rent servis</button>
             </td>
             <td>
               <button class="btn-rez" name="{{data.rezID}}+{{data.od}}"
-              (click)="OtkaziRezervaciju($event.target.name)">Otkazi</button>
+              (click)="OtkaziRezervaciju($event.target.name)">Otkazi rezervaciju</button>
             </td>
           </tr>
         </tbody>
@@ -124,7 +128,7 @@
   </div>
   <div *ngIf="ocenjivanje">
       <div style="display: inline; margin:30px 30px">
-        {{kolaZaOcenjivanje}}
+        {{kolaZaOceniti}}
         <label for="r1">1</label>
         <input checked="checked" type="radio" name="ocena" id="r1" value="1" (change)="ocenaChanged($event.target.value)">
         <label for="r2">2</label>
@@ -139,4 +143,21 @@
       <button (click)="PosaljiOcenu()">Oceni</button>
       <button (click)="Nazad()">Nazad</button>
   </div>
+  <div *ngIf="ocenjivanjeRente">
+    <div style="display: inline; margin:30px 30px">
+      {{rentaKolaZaOceniti}}
+      <label for="r1">1</label>
+      <input [checked]="ocena == 1" type="radio" name="ocena" id="r1" value="1" (change)="ocenaChanged($event.target.value)">
+      <label for="r2">2</label>
+      <input [checked]="ocena == 2" type="radio" name="ocena" id="r2" value="2" (change)="ocenaChanged($event.target.value)">
+      <label for="r3">3</label>
+      <input [checked]="ocena == 3" type="radio" name="ocena" id="r3" value="3" (change)="ocenaChanged($event.target.value)">
+      <label for="r4">4</label>
+      <input [checked]="ocena == 4" type="radio" name="ocena" id="r4" value="4" (change)="ocenaChanged($event.target.value)">
+      <label for="r5">5</label>
+      <input [checked]="ocena == 5" type="radio" name="ocena" id="r5" value="5" (change)="ocenaChanged($event.target.value)">
+    </div>
+    <button (click)="PosaljiOcenuRente(rentaKolaZaOceniti)">Oceni</button>
+    <button (click)="Nazad()">Nazad</button>
+</div>
   

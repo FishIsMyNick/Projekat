@@ -74,7 +74,8 @@ export class AppComponent {
 
   onLogOut() {
     localStorage.removeItem('token');
+    AppComponent.currentUser = new User();
     this.router.navigate(['/pocetna']);
-      window.location.reload();
+     // window.location.reload();
   }
 }

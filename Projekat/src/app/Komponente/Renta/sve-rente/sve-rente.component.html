@@ -17,7 +17,7 @@
                 </div>
             </li>
         </ul>
-    </div>
+    </div> 
     <div style="position: absolute; top: 30px; left: 10px;">
         <h3 style="margin-top: 20px; margin-left:15px;">Pretraga</h3>
         <ul style="list-style: none;">
@@ -219,7 +219,7 @@
         </div>
         <hr>
         <div style="display: inline; padding: 5px;">
-            <button (click)="prikaziRentu('')">Nazad</button>
+            <button (click)="prikaziFilijalu()">Nazad</button>
             <button *ngIf="GetCurrentUserType() === 'RegularUser'" style="float: right;"
                 (click)="NapraviRezervaciju()">Napravi rezervaciju</button>
         </div>

@@ -256,6 +256,12 @@ export class RentService {
     formData.append(user, 'user');
     return await this.http.post<any>(this.BaseURI + '/Rent/OceniRentu', formData).toPromise();
   }
+  async GetOcenaRente(naziv, user): Promise<any>{
+    const formData = new FormData();
+    formData.append(naziv, naziv);
+    formData.append(user, user);
+    return await this.http.post<any>(this.BaseURI + '/Rent/GetOcenaRente', formData).toPromise();
+  }
   async ProsecnaOcenaKola(kola: Kola): Promise<any> {
     return await this.http.post<any>(this.BaseURI + '/Rent/ProsecnaOcenaKola', kola).toPromise();
   }

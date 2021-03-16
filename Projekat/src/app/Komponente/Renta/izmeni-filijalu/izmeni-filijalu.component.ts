@@ -23,11 +23,12 @@ export class IzmeniFilijaluComponent implements OnInit {
 
   async ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      console.debug(params.id);
+      console.log(params.id);
       this.Id = params.id;
     });
-    console.debug('izasao')
     this.filijala = await this.service.GetFilijalaById(this.Id)
+    console.log(this.filijala)
+
     this.service.InitEditFilijalaForm(this.filijala);
   }
 

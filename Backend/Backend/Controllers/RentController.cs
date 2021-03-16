@@ -111,7 +111,7 @@ namespace WebApp.Controllers
 					sum += o.Value;
 					i++;
 				}
-			}
+			} 
 			return i == 0 ? 0 : sum / i;
 		}
 
@@ -147,7 +147,25 @@ namespace WebApp.Controllers
 			}
 			return null;
 		}
-
+		[HttpPost]
+		[Route("GetOcenaRente")]
+		public async Task<ActionResult<int>> GetOcenaRente()
+        {
+			var request = HttpContext.Request.Form.Keys.ToList();
+			string naziv = request[0];
+			string user = request[1];
+			List<OcenaRente> ocene = await _context.OceneRente.ToListAsync();
+			int ret = 1;
+			foreach(OcenaRente o in ocene)
+            {
+				if(o.kompanija == naziv && o.Username == user)
+                {
+					ret = o.Value;
+					break;
+                }
+            }
+			return ret;
+        }
 		[HttpPost]
 		[Route("OceniRentu")]
 		public async Task<ActionResult<bool>> OceniRentu()
