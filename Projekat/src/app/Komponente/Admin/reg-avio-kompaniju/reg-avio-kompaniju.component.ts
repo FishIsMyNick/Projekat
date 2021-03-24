@@ -16,6 +16,7 @@ export class RegAvioKompanijuComponent implements OnInit {
   avioAdminFormModel: FormGroup;
   naziv: string;
   grad: string;
+  drzava: string;
   adresa: string;
   opis: string;
   avioKompanija: AvioKompanija;
@@ -30,19 +31,27 @@ export class RegAvioKompanijuComponent implements OnInit {
     this.avioAdminFormModel = new FormGroup({
       'naziv': new FormControl('', Validators.required),
       'grad': new FormControl('', Validators.required),
+      'drzava': new FormControl('', Validators.required),
       'adresa': new FormControl('', Validators.required),
       'opis': new FormControl('', Validators.required)
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.naziv = this.avioAdminFormModel.get('naziv').value;
     this.grad = this.avioAdminFormModel.get('grad').value;
     this.adresa = this.avioAdminFormModel.get('adresa').value;
     this.opis = this.avioAdminFormModel.get('opis').value;
+    this.drzava = this.avioAdminFormModel.get('drzava').value;
 
-    this.avioKompanija = new AvioKompanija(this.naziv, this.adresa, this.grad, this.opis);
-    this.service.addAvioKompanija(this.avioKompanija).subscribe();
+    var res = await this.service.addAvioKompanija(this.naziv, this.adresa, this.grad, this.drzava, this.opis);
+    if(res != null){
+      this.toastr.success('Uspesno ste registrovali aviokompaniju');
+      this.router.navigate(['/pocetna'])
+    }
+    else{
+      this.toastr.error('Doslo je do greske')
+    }
   }
 
   onBack()

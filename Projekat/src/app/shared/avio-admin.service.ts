@@ -53,8 +53,14 @@ export class AvioAdminService {
     return this.http.post(this.BaseURI + '/AvioAdmin/Register', body);
   }
 
-  addAvioKompanija(aviokompanija: AvioKompanija): Observable<AvioKompanija> {
-    return this.http.post<AvioKompanija>(this.BaseURI + '/Aviokompanija/AddAvioKompanija', aviokompanija);
+  addAvioKompanija(naziv, adresa, grad, drzava, opis): Promise<any> {
+    const formData = new FormData();
+    formData.append(naziv, naziv);
+    formData.append(adresa, adresa);
+    formData.append(grad, grad);
+    formData.append(drzava, drzava);
+    formData.append(opis, opis);
+    return this.http.post<AvioKompanija>(this.BaseURI + '/Aviokompanija/AddAvioKompanija', formData).toPromise();
   }
 
   getAviokompanije(): Observable<AvioKompanija[]> {

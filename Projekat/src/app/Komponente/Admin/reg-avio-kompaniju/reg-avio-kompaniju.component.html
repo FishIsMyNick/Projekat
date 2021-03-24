@@ -32,6 +32,15 @@
             </td>
           </tr>
           <tr>
+            <td>Drzava:</td>
+            <td>
+              <input type="text" name="drzava" formControlName="drzava">
+            </td>
+            <td>
+              <label *ngIf="avioAdminFormModel.get('drzava').touched && avioAdminFormModel.get('drzava').errors?.required">Drzava je potrebna</label>
+            </td>
+          </tr>
+          <tr>
             <td>Opis:</td>
             <td>
               <input type="text" name="opis" formControlName="opis">

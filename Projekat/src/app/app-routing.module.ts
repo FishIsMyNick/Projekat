@@ -56,7 +56,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'kontakt', component: KontaktComponent },
   { path: 'info-stranica', component: InfoStranicaComponent},
-  { path: 'brzeRezervacije', component: BrzeRezervacijeComponent, canActivate: [AuthGuard]},
+  { path: 'brzeRezervacije', component: BrzeRezervacijeComponent},
   { path: 'avioKompanije', component: AvioKompanijeComponent },
   { path: 'letovi/:naziv', component: LetoviComponent },
   //{ path: 'rentAcar', component: RentACarComponent },

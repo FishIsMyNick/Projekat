@@ -53,10 +53,25 @@ namespace WebApp.Controllers
 
         [HttpPost]
         [Route("AddAvioKompanija")]
-        public async Task<ActionResult<Aviokompanija>> AddAvioKompanija(Aviokompanija aviokompanija)
+        public async Task<ActionResult<Aviokompanija>> AddAvioKompanija()
         {
-            if (!AviokompanijaExists(aviokompanija.Naziv))
+            var request = HttpContext.Request.Form.Keys.ToList();
+            var naziv = request[0];
+            var adresa = request[1];
+            var grad = request[2];
+            var drzava = request[3];
+            var opis = request[4];
+
+            if (!AviokompanijaExists(naziv))
             {
+                Aviokompanija aviokompanija = new Aviokompanija()
+                {
+                    Naziv = naziv,
+                    Adresa = adresa,
+                    Grad = grad,
+                    Drzava = drzava,
+                    Opis = opis
+                };
                 _context.Aviokompanije.Add(aviokompanija);
                 await _context.SaveChangesAsync();
 

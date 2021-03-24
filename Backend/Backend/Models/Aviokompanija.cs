@@ -18,11 +18,8 @@ namespace Backend.Models
         public string Adresa { get; set; }
         [Required]
         public string Grad { get; set; }
+        [Required]
+        public string Drzava { get; set; }
         public string Opis { get; set; }
-        [Required]
-        public ICollection<OcenaAviokompanije> OceneAviokompanije { get; set; }
-        public ICollection<Let> Letovi { get; set; }
-        [Required]
-        public ICollection<Aerodrom> Aerodromi { get; set; }
     }
 }
